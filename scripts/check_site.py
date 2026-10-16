@@ -129,6 +129,15 @@ for source_url in (
 if "Not able to donate?" not in HTML or "unverified figures or images" not in HTML:
     errors.append("missing practical non-donation guidance")
 
+for social_url in (
+    "https://x.com/EyeonPalestine",
+    "https://www.facebook.com/eyeonpalestine.offical",
+):
+    if social_url not in HTML:
+        errors.append(f"missing requested social profile link: {social_url}")
+if "wa.me" in HTML or "share-whatsapp" in HTML or "WhatsApp" in HTML or "wa.me" in (JS_FILE.read_text(encoding="utf-8") if JS_FILE.exists() else ""):
+    errors.append("obsolete WhatsApp link remains")
+
 if CSS_FILE.exists():
     css = CSS_FILE.read_text(encoding="utf-8")
     for value in re.findall(r"""url\(["']?([^"')]+)""", css):
