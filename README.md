@@ -25,7 +25,7 @@ Open <http://localhost:8000>.
 
 NOOR is **not affiliated with, endorsed by, or sponsored by UNICEF**. It does not collect donations, process payments, store payment details, issue receipts or claim that a donation purchases a specific item. Donation links take visitors to UNICEF's website so they can review the destination and terms before making their own decision.
 
-The photographs currently load from UNICEF's public website and are credited in the page to UNICEF/UNI820851, UNICEF/UNI849963/Nateel and UNICEF/UNI901432/Nateel. Confirm the applicable image-use terms before wider promotion or redistribution. An image being publicly accessible does not automatically mean it is free to reuse.
+The gallery uses locally optimized WebP photographs from the original project asset pack so the cards are not stretched from tiny remote thumbnails. Confirm each image's original source, photographer credit and reuse permissions before wider promotion or redistribution. Public accessibility alone does not mean an image is free to reuse.
 
 No unverified live statistics, fabricated aid-delivery claims, fake receipts, or simulated donation ledger are used.
 
