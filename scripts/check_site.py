@@ -146,20 +146,63 @@ if "EyeonPalestine" in HTML or "eyeonpalestine.offical" in HTML:
 
 blank_page_path = ROOT / "a-hard-pill-to-swallow.html"
 if 'href="a-hard-pill-to-swallow.html"' not in HTML:
-    errors.append("missing navigation link to the blank A hard pill to swallow page")
+    errors.append("missing navigation link to the A hard pill to swallow story page")
 if not blank_page_path.is_file():
-    errors.append("missing blank page: a-hard-pill-to-swallow.html")
+    errors.append("missing story page: a-hard-pill-to-swallow.html")
 elif "<title>A hard pill to swallow | NOOR Field Notes</title>" not in blank_page_path.read_text(encoding="utf-8"):
     errors.append("blank page title is missing or incorrect")
 
-if "const thresholdLink = document.querySelector" not in js_source:
-    errors.append("missing creepy threshold click transition")
+if "const thresholdLink = document.querySelector" not in js_source or "noor-pixel-exit__cell" not in js_source:
+    errors.append("missing pixel transition from NOOR navigation")
 if CSS_FILE.exists():
     transition_css = CSS_FILE.read_text(encoding="utf-8")
-    if ".noor-threshold__scanlines" not in transition_css or "@keyframes noor-text-glitch" not in transition_css:
-        errors.append("missing retro CRT/glitch transition styles")
-    if "@media(prefers-reduced-motion:reduce)" not in transition_css or ".noor-threshold__scanlines" not in transition_css:
-        errors.append("threshold transition reduced-motion styling is missing")
+    if ".noor-pixel-exit__grid" not in transition_css or "@keyframes noor-pixel-fill" not in transition_css:
+        errors.append("missing pixel-transition grid animation")
+    if "@media(prefers-reduced-motion:reduce)" not in transition_css or ".noor-pixel-exit__cell" not in transition_css:
+        errors.append("pixel transition reduced-motion styling is missing")
+
+story_html_path = ROOT / "a-hard-pill-to-swallow.html"
+story_js_path = ROOT / "js" / "story.js"
+story_css_path = ROOT / "css" / "story.css"
+if not story_html_path.is_file():
+    errors.append("missing story page: a-hard-pill-to-swallow.html")
+else:
+    story_html = story_html_path.read_text(encoding="utf-8")
+    if '<h1 class="story-display" id="story-title"' not in story_html:
+        errors.append("story destination needs its main editorial headline")
+    if '<meta name="robots" content="index,follow">' not in story_html:
+        errors.append("published story page should be indexable")
+    for source_url in (
+        "https://www.unicef.org/sop/stories/i-lost-my-childhood-my-little-brothers-and-sisters-now-call-me-mama",
+        "https://www.unicef.org/stories/gaza-returning-families-confront-incalculable-costs-chaos",
+        "https://www.ochaopt.org/content/humanitarian-situation-report-2-october-2026",
+        "https://www.ochaopt.org/content/humanitarian-situation-report-25-september-2026",
+        "https://www.unicef.org/sop/reports/unicef-state-palestine-escalation-humanitarian-situation-report-no48",
+    ):
+        if source_url not in story_html:
+            errors.append(f"story page is missing a primary source link: {source_url}")
+    if "data-en" not in story_html or "data-ar" not in story_html:
+        errors.append("story destination must support both English and Arabic")
+    if "Samar was 17" not in story_html or "Qusay was 10" not in story_html:
+        errors.append("story page is missing documented personal accounts")
+
+    story_parser = SiteParser()
+    story_parser.feed(story_html)
+    for local_ref in story_parser.local_refs:
+        if local_ref and not (ROOT / local_ref).is_file():
+            errors.append(f"missing story-page local asset: {local_ref}")
+    for fragment in story_parser.fragments:
+        if fragment and fragment not in story_parser.ids:
+            errors.append(f"broken story-page internal link #{fragment}")
+
+if not story_js_path.is_file():
+    errors.append("story page language and transition script is missing")
+else:
+    story_js = story_js_path.read_text(encoding="utf-8")
+    if "function setLanguage" not in story_js or "function revealStoryPage()" not in story_js:
+        errors.append("story page bilingual controls or pixel reveal are missing")
+if not story_css_path.is_file() or ".story-account" not in story_css_path.read_text(encoding="utf-8"):
+    errors.append("story page editorial stylesheet is missing")
 
 for expected_count in ("800000", "600000", "436000", "591800"):
     if f'data-count="{expected_count}"' not in HTML:
