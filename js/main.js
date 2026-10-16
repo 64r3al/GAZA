@@ -367,8 +367,8 @@
   }
   copyButton.addEventListener('click', copyPageLink);
 
-  // A short retro-horror threshold animation plays before opening the reserved page.
-  // The destination still opens normally if JavaScript is disabled.
+  // A pixelated doorway leads into a documented story page. The effect is visual
+  // only: reduced-motion users navigate directly, and modified clicks stay native.
   const thresholdLink = document.querySelector('.nav-feature-link[href="a-hard-pill-to-swallow.html"]');
   let thresholdTransitionActive = false;
 
@@ -385,100 +385,63 @@
 
       event.preventDefault();
       if (thresholdTransitionActive) return;
-      thresholdTransitionActive = true;
 
       const destination = thresholdLink.href;
       const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      const messages = language === 'ar'
-        ? [
-            'تم رصد الإشارة',
-            'أرشيف مقيّد // 07',
-            'لم يكن من المفترض فتح هذا الملف.',
-            'لا يزال بإمكانك الرجوع.',
-            'الدخول إلى المجهول...'
-          ]
-        : [
-            'SIGNAL DETECTED',
-            'RESTRICTED ARCHIVE // 07',
-            "THIS FILE WASN'T MEANT TO BE OPENED.",
-            'YOU CAN STILL TURN BACK.',
-            'ENTERING THE UNKNOWN...'
-          ];
-
-      const overlay = document.createElement('div');
-      overlay.className = 'noor-threshold';
-      overlay.setAttribute('role', 'status');
-      overlay.setAttribute('aria-live', 'polite');
-      overlay.setAttribute('aria-label', language === 'ar' ? 'انتقال إلى صفحة غامضة' : 'Transition to a mysterious page');
-
-      const scanlines = document.createElement('div');
-      scanlines.className = 'noor-threshold__scanlines';
-      scanlines.setAttribute('aria-hidden', 'true');
-
-      const panel = document.createElement('div');
-      panel.className = 'noor-threshold__panel';
-
-      const eyebrow = document.createElement('p');
-      eyebrow.className = 'noor-threshold__eyebrow';
-      eyebrow.textContent = language === 'ar' ? 'نور // أرشيف خارج الاتصال' : 'NOOR // OFFLINE ARCHIVE';
-
-      const signal = document.createElement('span');
-      signal.className = 'noor-threshold__signal';
-      signal.setAttribute('aria-hidden', 'true');
-
-      const label = document.createElement('p');
-      label.className = 'noor-threshold__label';
-      label.textContent = language === 'ar' ? 'اتصال غير معروف' : 'UNKNOWN CONNECTION';
-
-      const message = document.createElement('p');
-      message.className = 'noor-threshold__message';
-      message.textContent = messages[0];
-
-      const cursor = document.createElement('span');
-      cursor.className = 'noor-threshold__cursor';
-      cursor.setAttribute('aria-hidden', 'true');
-      cursor.textContent = '_';
-      message.appendChild(cursor);
-
-      const progressTrack = document.createElement('div');
-      progressTrack.className = 'noor-threshold__progress';
-      progressTrack.setAttribute('aria-hidden', 'true');
-      const progressFill = document.createElement('span');
-      progressFill.className = 'noor-threshold__progress-fill';
-      progressTrack.appendChild(progressFill);
-
-      const footer = document.createElement('p');
-      footer.className = 'noor-threshold__footer';
-      footer.textContent = language === 'ar' ? 'لا تغلق النافذة.' : 'DO NOT CLOSE THIS WINDOW.';
-
-      panel.append(eyebrow, signal, label, message, progressTrack, footer);
-      overlay.append(scanlines, panel);
-      document.body.appendChild(overlay);
-      document.body.classList.add('noor-threshold-active');
-
-      // Keep the sequence atmospheric but brief. Reduced-motion users skip the flicker.
-      window.requestAnimationFrame(() => overlay.classList.add('is-live'));
-
       if (prefersReducedMotion) {
-        message.firstChild.textContent = messages[messages.length - 1];
-        window.setTimeout(() => { window.location.href = destination; }, 350);
+        window.location.href = destination;
         return;
       }
 
-      const sequenceTimers = [];
-      messages.slice(1).forEach((text, index) => {
-        const timer = window.setTimeout(() => {
-          message.classList.remove('is-glitching');
-          message.firstChild.textContent = text;
-          void message.offsetWidth;
-          message.classList.add('is-glitching');
-        }, 520 * (index + 1));
-        sequenceTimers.push(timer);
-      });
+      thresholdTransitionActive = true;
+      try { sessionStorage.setItem('noor-story-arrival', '1'); } catch (_) { /* Storage may be disabled. */ }
+
+      const overlay = document.createElement('div');
+      overlay.className = 'noor-pixel-exit';
+      overlay.setAttribute('role', 'status');
+      overlay.setAttribute('aria-live', 'polite');
+      overlay.setAttribute('aria-label', language === 'ar' ? 'انتقال إلى قصة موثّقة' : 'Transitioning to a documented story');
+
+      const grid = document.createElement('div');
+      grid.className = 'noor-pixel-exit__grid';
+      grid.setAttribute('aria-hidden', 'true');
+
+      const columns = Math.min(48, Math.max(10, Math.ceil(window.innerWidth / 44)));
+      const rows = Math.min(28, Math.max(8, Math.ceil(window.innerHeight / Math.max(1, window.innerWidth / columns))));
+      grid.style.gridTemplateColumns = 'repeat(' + columns + ', minmax(0, 1fr))';
+      grid.style.gridTemplateRows = 'repeat(' + rows + ', minmax(0, 1fr))';
+      const centerX = (columns - 1) / 2;
+      const centerY = (rows - 1) / 2;
+      const maxDistance = Math.max(1, Math.hypot(centerX, centerY));
+
+      for (let row = 0; row < rows; row += 1) {
+        for (let column = 0; column < columns; column += 1) {
+          const pixel = document.createElement('span');
+          pixel.className = 'noor-pixel-exit__cell tone-' + ((row * 3 + column) % 4);
+          const distance = Math.hypot(column - centerX, row - centerY) / maxDistance;
+          pixel.style.setProperty('--pixel-delay', (distance * 0.42).toFixed(3) + 's');
+          grid.appendChild(pixel);
+        }
+      }
+
+      const label = document.createElement('div');
+      label.className = 'noor-pixel-exit__label';
+      const indexLabel = document.createElement('p');
+      indexLabel.className = 'noor-pixel-exit__index';
+      indexLabel.textContent = language === 'ar' ? 'نور // ملاحظات ميدانية 001' : 'NOOR // FIELD NOTES 001';
+      const message = document.createElement('p');
+      message.className = 'noor-pixel-exit__message';
+      message.textContent = language === 'ar' ? 'ما وراء العناوين' : 'LOOK BEYOND THE HEADLINE';
+      label.append(indexLabel, message);
+
+      overlay.append(grid, label);
+      document.body.appendChild(overlay);
+      document.body.classList.add('pixel-transition-active');
+      window.requestAnimationFrame(() => overlay.classList.add('is-running'));
 
       window.setTimeout(() => {
         window.location.href = destination;
-      }, 3150);
+      }, 1060);
     });
   }
 

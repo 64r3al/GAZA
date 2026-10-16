@@ -149,7 +149,7 @@ if 'href="a-hard-pill-to-swallow.html"' not in HTML:
     errors.append("missing navigation link to the blank A hard pill to swallow page")
 if not blank_page_path.is_file():
     errors.append("missing blank page: a-hard-pill-to-swallow.html")
-elif "<title>A hard pill to swallow | NOOR</title>" not in blank_page_path.read_text(encoding="utf-8"):
+elif "<title>A hard pill to swallow | NOOR Field Notes</title>" not in blank_page_path.read_text(encoding="utf-8"):
     errors.append("blank page title is missing or incorrect")
 
 if "const thresholdLink = document.querySelector" not in js_source:
