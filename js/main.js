@@ -66,6 +66,94 @@
 
   syncMotionPreference();
 
+  // Count the response targets up once when the section first enters view.
+  // The semantic text keeps the final figures available even without JavaScript.
+  function setupResponseCounters() {
+    const counters = Array.from(document.querySelectorAll('.response-number[data-count]'));
+    const responseSection = document.getElementById('response');
+    if (!counters.length || !responseSection || reduceMotion.matches || !('IntersectionObserver' in window)) return;
+
+    const formatter = new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 });
+    const activeFrames = new Map();
+    const staggerTimers = new Set();
+    let hasStarted = false;
+
+    function showFinalValues() {
+      staggerTimers.forEach((timer) => window.clearTimeout(timer));
+      staggerTimers.clear();
+      activeFrames.forEach((frameId) => window.cancelAnimationFrame(frameId));
+      activeFrames.clear();
+      counters.forEach((counter) => {
+        const display = counter.querySelector('.response-number-visual');
+        const target = Number(counter.dataset.count);
+        if (!display || !Number.isFinite(target)) return;
+        display.textContent = formatter.format(target);
+        display.classList.remove('is-counting');
+        display.classList.add('is-counted');
+      });
+    }
+
+    function animateCounter(counter, index) {
+      const display = counter.querySelector('.response-number-visual');
+      const target = Number(counter.dataset.count);
+      if (!display || !Number.isFinite(target) || target < 0) return;
+
+      const timer = window.setTimeout(() => {
+        staggerTimers.delete(timer);
+        if (reduceMotion.matches) {
+          showFinalValues();
+          return;
+        }
+
+        const duration = 1850;
+        let startTime = null;
+        display.textContent = '0';
+        display.classList.remove('is-counted');
+        display.classList.add('is-counting');
+
+        function frame(timestamp) {
+          if (reduceMotion.matches) {
+            showFinalValues();
+            return;
+          }
+
+          if (startTime === null) startTime = timestamp;
+          const progress = Math.min((timestamp - startTime) / duration, 1);
+          const easedProgress = 1 - Math.pow(1 - progress, 4);
+          display.textContent = formatter.format(Math.round(target * easedProgress));
+
+          if (progress < 1) {
+            activeFrames.set(display, window.requestAnimationFrame(frame));
+          } else {
+            activeFrames.delete(display);
+            display.textContent = formatter.format(target);
+            display.classList.remove('is-counting');
+            display.classList.add('is-counted');
+          }
+        }
+
+        activeFrames.set(display, window.requestAnimationFrame(frame));
+      }, index * 115);
+
+      staggerTimers.add(timer);
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      const visible = entries.some((entry) => entry.isIntersecting);
+      if (!visible || hasStarted) return;
+      hasStarted = true;
+      observer.disconnect();
+      counters.forEach(animateCounter);
+    }, { threshold: 0.05, rootMargin: '0px 0px -8% 0px' });
+
+    observer.observe(responseSection);
+    reduceMotion.addEventListener?.('change', (event) => {
+      if (event.matches) showFinalValues();
+    });
+  }
+
+  setupResponseCounters();
+
   function setLanguage(nextLanguage) {
     language = nextLanguage === 'ar' ? 'ar' : 'en';
     html.lang = language;

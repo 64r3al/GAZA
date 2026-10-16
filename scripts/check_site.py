@@ -144,6 +144,16 @@ for required_share_item in (
 if "EyeonPalestine" in HTML or "eyeonpalestine.offical" in HTML:
     errors.append("follow-profile links should not replace the original share actions")
 
+for expected_count in ("800000", "600000", "436000", "591800"):
+    if f'data-count="{expected_count}"' not in HTML:
+        errors.append(f"missing response counter target: {expected_count}")
+if HTML.count('class="response-number-accessible"') != 4 or HTML.count('class="response-number-visual"') != 4:
+    errors.append("response counters must keep accessible final values and separate animated visuals")
+if "function setupResponseCounters()" not in js_source or "reduceMotion.matches" not in js_source:
+    errors.append("response counter animation or reduced-motion handling is missing")
+if CSS_FILE.exists() and "noor-counter-enter" not in CSS_FILE.read_text(encoding="utf-8"):
+    errors.append("response counter entrance styling is missing")
+
 if CSS_FILE.exists():
     css = CSS_FILE.read_text(encoding="utf-8")
     for value in re.findall(r"""url\(["']?([^"')]+)""", css):

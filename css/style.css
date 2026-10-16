@@ -135,3 +135,12 @@ html.motion-ready .motion-reveal.is-revealed{
 
 /* Responsive WebP sources in the generated production build. */
 .photo-card picture{display:block}
+
+
+/* Impact counters: stable digit widths, subtle entrance, and no motion for reduced-motion users. */
+.response-number-visual{display:inline-block;font-variant-numeric:tabular-nums;letter-spacing:.015em}
+.response-number-visual.is-counting{animation:noor-counter-enter .42s cubic-bezier(.2,.7,.2,1) both}
+.response-number-visual.is-counted{text-shadow:0 0 22px rgba(246,183,176,.12)}
+.response-number-accessible{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+@keyframes noor-counter-enter{from{opacity:.55;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){.response-number-visual.is-counting{animation:none!important;opacity:1!important;transform:none!important}}
