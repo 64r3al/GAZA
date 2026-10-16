@@ -144,6 +144,14 @@ for required_share_item in (
 if "EyeonPalestine" in HTML or "eyeonpalestine.offical" in HTML:
     errors.append("follow-profile links should not replace the original share actions")
 
+blank_page_path = ROOT / "a-hard-pill-to-swallow.html"
+if 'href="a-hard-pill-to-swallow.html"' not in HTML:
+    errors.append("missing navigation link to the blank A hard pill to swallow page")
+if not blank_page_path.is_file():
+    errors.append("missing blank page: a-hard-pill-to-swallow.html")
+elif "<title>A hard pill to swallow | NOOR</title>" not in blank_page_path.read_text(encoding="utf-8"):
+    errors.append("blank page title is missing or incorrect")
+
 for expected_count in ("800000", "600000", "436000", "591800"):
     if f'data-count="{expected_count}"' not in HTML:
         errors.append(f"missing response counter target: {expected_count}")
