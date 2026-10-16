@@ -407,3 +407,100 @@ body.noor-warning-open{overflow:hidden}
   .noor-warning-screen__actions button:hover:not(:disabled){transform:none}
   .noor-pixel-exit__cell,.noor-pixel-exit__label{opacity:1!important;transform:none!important;filter:none!important}
 }
+
+
+/* Cinematic terminal boot sequence for the content warning. */
+.noor-warning-screen.is-booting .noor-warning-screen__frame{
+  opacity:0;visibility:hidden;pointer-events:none;transform:scale(.992);filter:blur(2px);
+}
+.noor-warning-screen.is-ready .noor-warning-screen__frame{
+  visibility:visible;animation:noor-warning-frame-open .58s cubic-bezier(.19,1,.22,1) both;
+}
+.noor-warning-screen__frame>*{
+  opacity:0;transform:translateY(9px);filter:blur(1px);
+  transition:opacity .38s ease,transform .42s cubic-bezier(.19,1,.22,1),filter .38s ease;
+  transition-delay:calc(var(--warning-order,0) * 65ms);
+}
+.noor-warning-screen.is-ready .noor-warning-screen__frame>*{opacity:1;transform:translateY(0);filter:blur(0)}
+.noor-warning-screen__boot{
+  position:fixed;inset:0;z-index:30;display:flex;flex-direction:column;align-items:stretch;justify-content:center;
+  width:100%;min-height:100vh;min-height:100dvh;margin:0;padding:clamp(24px,7vw,110px);
+  background:radial-gradient(ellipse at center,rgba(104,0,13,.97),rgba(27,0,4,.99) 76%);
+  color:#ffe9e9;text-align:left;font-family:"Courier New",ui-monospace,monospace;
+  opacity:1;visibility:visible;transition:opacity .42s ease,visibility .42s;
+}
+.noor-warning-screen__boot::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:repeating-linear-gradient(to bottom,rgba(0,0,0,.23) 0,rgba(0,0,0,.23) 1px,transparent 1px,transparent 4px);
+  opacity:.7;
+}
+.noor-warning-screen__boot::after{
+  content:"";position:absolute;left:0;right:0;top:0;height:2px;pointer-events:none;
+  background:#ff5360;box-shadow:0 0 18px rgba(255,30,47,.65);
+  animation:noor-boot-scan 2.2s ease-in-out infinite alternate;
+}
+.noor-warning-screen.is-ready .noor-warning-screen__boot{opacity:0;visibility:hidden;pointer-events:none}
+.noor-warning-screen__boot-header,.noor-warning-screen__boot-intro,.noor-warning-screen__boot-terminal,
+.noor-warning-screen__boot-progress,.noor-warning-screen__boot-status{position:relative;z-index:1;width:min(100%,850px);margin-inline:auto}
+.noor-warning-screen__boot-header{
+  display:flex;align-items:center;justify-content:space-between;gap:20px;
+  padding-bottom:14px;border-bottom:1px solid rgba(255,180,185,.36);
+  color:#ffb7bc;font-size:clamp(9px,1.2vw,13px);letter-spacing:.17em;line-height:1.8;
+}
+.noor-warning-screen__boot-mark{color:#fff;font-size:clamp(19px,3.3vw,31px);font-weight:900;letter-spacing:.26em;text-shadow:2px 0 rgba(95,210,255,.45),-2px 0 rgba(255,0,35,.55)}
+.noor-warning-screen__boot-meta{text-align:right}
+.noor-warning-screen__boot-intro{
+  margin:clamp(24px,5vh,48px) auto 18px;color:#fff7f7;
+  font-size:clamp(14px,2vw,21px);font-weight:700;letter-spacing:.08em;line-height:1.7;
+}
+.noor-warning-screen__boot-intro::after{
+  content:"";display:inline-block;width:.65em;height:1em;vertical-align:-.15em;margin-inline-start:.3em;
+  background:#ffb3b9;animation:noor-boot-cursor .68s steps(1,end) infinite;
+}
+.noor-warning-screen__boot-terminal{
+  min-height:clamp(160px,28vh,260px);padding:clamp(16px,2.7vw,28px);
+  border:1px solid rgba(255,150,157,.24);background:rgba(7,0,2,.32);
+  box-shadow:inset 0 0 45px rgba(0,0,0,.24);
+}
+.noor-warning-screen__boot-line{
+  position:relative;margin:0 0 12px;color:rgba(255,223,225,.58);
+  font-size:clamp(11px,1.35vw,15px);font-weight:700;letter-spacing:.015em;line-height:1.65;
+  overflow-wrap:anywhere;white-space:pre-wrap;
+}
+.noor-warning-screen__boot-line.is-typing{color:#fff}
+.noor-warning-screen__boot-line.is-typing::after{
+  content:"█";display:inline-block;margin-inline-start:5px;color:#ff626d;
+  animation:noor-boot-cursor .58s steps(1,end) infinite;
+}
+.noor-warning-screen__boot-line.is-complete{color:#ffb8be;text-shadow:0 0 8px rgba(255,45,59,.18)}
+.noor-warning-screen__boot-line.is-complete::after{content:"";display:inline-block;width:5px;height:5px;margin-inline-start:10px;vertical-align:middle;background:#ff5964;box-shadow:0 0 7px #ff2535}
+.noor-warning-screen__boot-progress{
+  height:3px;margin-top:22px;background:rgba(255,220,222,.15);overflow:hidden;
+}
+.noor-warning-screen__boot-progress-fill{
+  display:block;width:0;height:100%;background:#ff5661;box-shadow:0 0 10px rgba(255,38,54,.7);
+  transition:width .18s linear;
+}
+.noor-warning-screen__boot-status{
+  margin-top:13px;color:rgba(255,184,189,.75);font-size:clamp(9px,1vw,11px);letter-spacing:.14em;line-height:1.8;text-transform:uppercase;
+}
+[dir=rtl] .noor-warning-screen__boot{font-family:Cairo,Arial,sans-serif;text-align:right}
+[dir=rtl] .noor-warning-screen__boot-meta{text-align:left}
+[dir=rtl] .noor-warning-screen__boot-header,[dir=rtl] .noor-warning-screen__boot-status{letter-spacing:0}
+@keyframes noor-boot-cursor{0%,48%{opacity:1}49%,100%{opacity:0}}
+@keyframes noor-boot-scan{from{transform:translateY(0);opacity:.2}to{transform:translateY(calc(100dvh - 2px));opacity:.9}}
+@keyframes noor-warning-frame-open{0%{opacity:.2;filter:blur(3px);transform:scale(1.008)}35%{opacity:1;filter:blur(0);transform:scale(.998)}100%{opacity:1;filter:none;transform:scale(1)}}
+@media(max-width:600px){
+  .noor-warning-screen__boot{padding:22px 16px}
+  .noor-warning-screen__boot-header{gap:10px;letter-spacing:.07em}
+  .noor-warning-screen__boot-meta{font-size:9px;letter-spacing:.04em}
+  .noor-warning-screen__boot-intro{font-size:13px}
+  .noor-warning-screen__boot-terminal{min-height:230px;padding:14px}
+  .noor-warning-screen__boot-line{font-size:11px;margin-bottom:13px}
+}
+@media(prefers-reduced-motion:reduce){
+  .noor-warning-screen__boot::after,.noor-warning-screen__boot-intro::after,
+  .noor-warning-screen__boot-line.is-typing::after{animation:none!important}
+  .noor-warning-screen__frame>*{opacity:1;transform:none;filter:none;transition:none}
+  .noor-warning-screen.is-ready .noor-warning-screen__frame{animation:none}
+}

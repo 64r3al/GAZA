@@ -216,6 +216,18 @@ else:
 if not story_css_path.is_file() or ".story-account" not in story_css_path.read_text(encoding="utf-8"):
     errors.append("story page editorial stylesheet is missing")
 
+
+if "runBootSequence()" not in js_source or "OPENING THE HUMANITARIAN FIELD ARCHIVE" not in js_source:
+    errors.append("warning entry needs the scripted terminal boot sequence")
+if "warningReady.value" not in js_source or "NEXT STEP: READER ACKNOWLEDGEMENT" not in js_source:
+    errors.append("terminal boot must lead to the explicit reader confirmation")
+if CSS_FILE.exists():
+    boot_css = CSS_FILE.read_text(encoding="utf-8")
+    if ".noor-warning-screen__boot-terminal" not in boot_css or "@keyframes noor-boot-cursor" not in boot_css:
+        errors.append("terminal typing/cursor presentation is missing")
+    if ".noor-warning-screen__boot-progress-fill" not in boot_css or "@keyframes noor-boot-scan" not in boot_css:
+        errors.append("terminal progress indicator/scan animation is missing")
+
 for expected_count in ("800000", "600000", "436000", "591800"):
     if f'data-count="{expected_count}"' not in HTML:
         errors.append(f"missing response counter target: {expected_count}")
