@@ -248,7 +248,8 @@ else:
         errors.append("documentary section needs at least three contextual video entries")
     if story_html.count('class="story-video-load"') < 3 or story_html.count('class="story-video-ack"') < 3:
         errors.append("all documentary videos must be click-to-load with a content acknowledgement")
-    if 'youtube-nocookie.com/embed/' not in story_js or 'autoplay=1' in story_js:
+    video_script_source = (ROOT / "js" / "story.js").read_text(encoding="utf-8") if (ROOT / "js" / "story.js").is_file() else ""
+    if 'youtube-nocookie.com/embed/' not in video_script_source or 'autoplay=1' in video_script_source:
         errors.append("documentary videos must use privacy-enhanced, non-autoplay embeds")
     if "https://x.com/PalestineRCS/status/1908458778040631384" not in story_html:
         errors.append("missing the original PRCS social post for phone footage")
