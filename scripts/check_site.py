@@ -141,9 +141,10 @@ if errors:
         print(f" - {error}")
     sys.exit(1)
 
+image_count = HTML.lower().count("<img ")
 print(
     f"Site validation passed: {len(parser.ids)} unique IDs, "
     f"{len(parser.local_refs)} local references, "
     f"{len(parser.fragments)} internal links, "
-    f"{len(re.findall(r'<img\\b', HTML, re.I))} images checked for alt text and dimensions."
+    f"{image_count} images checked for alt text and dimensions."
 )
