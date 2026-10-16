@@ -226,6 +226,35 @@ else:
     if "creativecommons.org/licenses/by-sa/3.0/igo/" not in story_html:
         errors.append("documentary photo essay must link each photo to its license")
 
+
+    for source_url in (
+        "https://www.unicef.org/sop/reports/humanitarian-situation-update-analysis-response-needs-children-mid-year-2026",
+        "https://www.reuters.com/world/middle-east/un-says-gaza-malnutrition-gains-fragile-commercial-supplies-halt-2026-10-16/",
+        "https://www.unicef.org/sop/stories/hope-amid-pain-palestinian-children-gaza-strip-one-year-after-ceasefire",
+        "https://www.bellingcat.com/news/2025/04/09/gaza-palestine-israel-killed-death-aid-workers-international-red-cross-crescent-audio-analysis/",
+        "https://factcheck.afp.com/doc.afp.com.87W89G3",
+    ):
+        if source_url not in story_html:
+            errors.append(f"story page is missing an updated primary or verification source: {source_url}")
+    for account_phrase in (
+        "Jamal and Hamza lost their home and their brother",
+        "Norhan caring for her younger sister Narjis",
+        "82%",
+        "one in eight children under five",
+    ):
+        if account_phrase not in story_html:
+            errors.append(f"story page is missing current humanitarian context: {account_phrase}")
+    if story_html.count('class="story-video-card') < 3:
+        errors.append("documentary section needs at least three contextual video entries")
+    if story_html.count('class="story-video-load"') < 3 or story_html.count('class="story-video-ack"') < 3:
+        errors.append("all documentary videos must be click-to-load with a content acknowledgement")
+    if 'youtube-nocookie.com/embed/' not in story_js or 'autoplay=1' in story_js:
+        errors.append("documentary videos must use privacy-enhanced, non-autoplay embeds")
+    if "https://x.com/PalestineRCS/status/1908458778040631384" not in story_html:
+        errors.append("missing the original PRCS social post for phone footage")
+    if story_html.count('class="story-photo-card"') < 9 or story_html.count('class="story-photo-img"') < 9:
+        errors.append("photo essay must include at least nine captioned, attributed images")
+
     story_parser = SiteParser()
     story_parser.feed(story_html)
     if story_parser.images_without_alt:
@@ -247,6 +276,18 @@ else:
         errors.append("story page bilingual controls or pixel reveal are missing")
 if not story_css_path.is_file() or ".story-account" not in story_css_path.read_text(encoding="utf-8"):
     errors.append("story page editorial stylesheet is missing")
+if story_css_path.is_file():
+    story_css = story_css_path.read_text(encoding="utf-8")
+    for style_marker in (
+        ".story-video-card-critical",
+        ".story-video-player[hidden]{display:none!important}",
+        ".story-survival-grid",
+        ".story-current-account-grid",
+        "@media(prefers-reduced-motion:reduce)",
+    ):
+        if style_marker not in story_css:
+            errors.append(f"story stylesheet is missing professional media layout/support: {style_marker}")
+
 
 
 if "runBootSequence()" not in js_source or "OPENING THE HUMANITARIAN FIELD ARCHIVE" not in js_source:

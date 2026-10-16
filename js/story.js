@@ -95,5 +95,41 @@
     window.setTimeout(() => overlay.remove(), 900);
   }
 
+
+  // Videos are click-to-load, never autoplay. The most distressing phone footage has a separate acknowledgement.
+  document.querySelectorAll('.story-video-card[data-video-id]').forEach((card) => {
+    const consent = card.querySelector('.story-video-ack');
+    const loadButton = card.querySelector('.story-video-load');
+    const player = card.querySelector('.story-video-player');
+    if (!consent || !loadButton || !player) return;
+
+    loadButton.disabled = !consent.checked;
+    consent.addEventListener('change', () => {
+      loadButton.disabled = !consent.checked || Boolean(player.querySelector('iframe'));
+    });
+
+    loadButton.addEventListener('click', () => {
+      if (!consent.checked || player.querySelector('iframe')) return;
+      const videoId = card.getAttribute('data-video-id') || '';
+      if (!/^[A-Za-z0-9_-]{11}$/.test(videoId)) return;
+
+      const iframe = document.createElement('iframe');
+      iframe.src = 'https://www.youtube-nocookie.com/embed/' + videoId + '?rel=0';
+      iframe.title = card.getAttribute('data-video-title') || 'Documentary video';
+      iframe.loading = 'lazy';
+      iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+      iframe.allow = 'encrypted-media; picture-in-picture; web-share';
+      iframe.allowFullscreen = true;
+      iframe.setAttribute('frameborder', '0');
+      player.appendChild(iframe);
+      player.hidden = false;
+      loadButton.disabled = true;
+      loadButton.setAttribute('data-en', 'Video loaded below');
+      loadButton.setAttribute('data-ar', 'تم تحميل الفيديو أدناه');
+      loadButton.textContent = root.lang === 'ar' ? 'تم تحميل الفيديو أدناه' : 'Video loaded below';
+    });
+  });
+
+
   revealStoryPage();
 })();
