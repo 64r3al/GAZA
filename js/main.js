@@ -479,11 +479,107 @@
       footer.className = 'noor-warning-screen__footer';
       footer.textContent = isArabic ? 'ملاحظات ميدانية 001 // شهادات ومصادر موثّقة // لا يوجد صوت تلقائي' : 'FIELD NOTES 001 // DOCUMENTED SOURCES // NO AUTO-PLAY AUDIO';
 
+      // This terminal sequence is a visual introduction to the warning, not a visitor scan.
+      const bootPanel = document.createElement('div');
+      bootPanel.className = 'noor-warning-screen__boot';
+      bootPanel.setAttribute('aria-hidden', 'true');
+      const bootHeader = document.createElement('div');
+      bootHeader.className = 'noor-warning-screen__boot-header';
+      const bootMark = document.createElement('span');
+      bootMark.className = 'noor-warning-screen__boot-mark';
+      bootMark.textContent = 'NOOR';
+      const bootMeta = document.createElement('span');
+      bootMeta.className = 'noor-warning-screen__boot-meta';
+      bootMeta.textContent = isArabic ? 'سجل ميداني / محطة 001' : 'FIELD ARCHIVE / TERMINAL 001';
+      bootHeader.append(bootMark, bootMeta);
+
+      const bootIntro = document.createElement('p');
+      bootIntro.className = 'noor-warning-screen__boot-intro';
+      bootIntro.textContent = isArabic ? 'جارٍ فتح ملف التوعية' : 'OPENING THE HUMANITARIAN FIELD ARCHIVE';
+
+      const bootTerminal = document.createElement('div');
+      bootTerminal.className = 'noor-warning-screen__boot-terminal';
+      const bootCopy = isArabic
+        ? [
+            '> نور // جلسة جديدة',
+            '> الفهرس: الحرب / الفقد / النزوح',
+            '> المصادر: تقارير وشهادات موثّقة',
+            '> تنبيه المحتوى: مواد حساسة',
+            '> الخطوة التالية: تأكيد القارئ'
+          ]
+        : [
+            '> NOOR // FIELD NOTES SESSION',
+            '> INDEX: WAR / LOSS / DISPLACEMENT',
+            '> SOURCES: REPORTS AND TESTIMONIES',
+            '> CONTENT NOTICE: SENSITIVE MATERIAL',
+            '> NEXT STEP: READER ACKNOWLEDGEMENT'
+          ];
+      const bootRows = bootCopy.map((line, index) => {
+        const row = document.createElement('p');
+        row.className = 'noor-warning-screen__boot-line';
+        row.dataset.line = String(index);
+        bootTerminal.appendChild(row);
+        return { row, line };
+      });
+
+      const bootProgress = document.createElement('div');
+      bootProgress.className = 'noor-warning-screen__boot-progress';
+      bootProgress.setAttribute('role', 'presentation');
+      const bootProgressFill = document.createElement('span');
+      bootProgressFill.className = 'noor-warning-screen__boot-progress-fill';
+      bootProgress.appendChild(bootProgressFill);
+      const bootStatus = document.createElement('p');
+      bootStatus.className = 'noor-warning-screen__boot-status';
+      bootStatus.textContent = isArabic ? 'بانتظار موافقة القارئ' : 'AWAITING READER ACKNOWLEDGEMENT';
+      bootPanel.append(bootHeader, bootIntro, bootTerminal, bootProgress, bootStatus);
+
       frame.append(signalRow, title, subhead, copy, note, confirmation, actions, footer);
+      Array.from(frame.children).forEach((element, index) => {
+        element.style.setProperty('--warning-order', String(index));
+      });
+      const warningReady = { value: reduceMotion.matches };
+      if (!warningReady.value) frame.classList.add('is-pending');
       overlay.appendChild(frame);
+      if (!warningReady.value) {
+        overlay.classList.add('is-booting');
+        overlay.appendChild(bootPanel);
+      } else {
+        overlay.classList.add('is-ready');
+      }
       document.body.appendChild(overlay);
       document.body.classList.add('noor-warning-open');
-      acknowledgement.focus({ preventScroll: true });
+      overlay.focus({ preventScroll: true });
+
+      async function runBootSequence() {
+        const wait = (duration) => new Promise((resolve) => window.setTimeout(resolve, duration));
+        for (let index = 0; index < bootRows.length; index += 1) {
+          const entry = bootRows[index];
+          if (!overlay.isConnected) return;
+          entry.row.classList.add('is-typing');
+          for (let character = 1; character <= entry.line.length; character += 1) {
+            if (!overlay.isConnected) return;
+            entry.row.textContent = entry.line.slice(0, character);
+            await wait(7 + (index % 2) * 2);
+          }
+          entry.row.classList.remove('is-typing');
+          entry.row.classList.add('is-complete');
+          bootProgressFill.style.width = Math.round(((index + 1) / bootRows.length) * 100) + '%';
+          await wait(72);
+        }
+        await wait(180);
+        if (!overlay.isConnected) return;
+
+        warningReady.value = true;
+        overlay.classList.remove('is-booting');
+        overlay.classList.add('is-ready');
+        frame.classList.remove('is-pending');
+        acknowledgement.focus({ preventScroll: true });
+        window.setTimeout(() => {
+          if (bootPanel.isConnected) bootPanel.remove();
+        }, 460);
+      }
+
+      if (!warningReady.value) runBootSequence();
 
       function closeWarning() {
         if (!overlay.isConnected) return;
@@ -504,6 +600,11 @@
           return;
         }
         if (keyEvent.key !== 'Tab') return;
+        if (!warningReady.value) {
+          keyEvent.preventDefault();
+          overlay.focus({ preventScroll: true });
+          return;
+        }
         const activeElement = document.activeElement;
         if (keyEvent.shiftKey && activeElement === acknowledgement) {
           keyEvent.preventDefault();
