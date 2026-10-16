@@ -33,3 +33,83 @@ img,svg{display:block;max-width:100%}a{color:inherit}button{font:inherit}button,
 @media(max-width:900px){:root{--header-height:70px}.menu-toggle{display:flex}.header-actions .button-small{display:none}.nav{display:none}.nav.is-open{position:absolute;top:calc(var(--header-height) + env(safe-area-inset-top,0px));left:0;right:0;display:flex;flex-direction:column;align-items:stretch;gap:0;padding:9px 22px 18px;background:rgba(10,10,11,.98);border-bottom:1px solid var(--line);box-shadow:0 18px 40px rgba(0,0,0,.35)}.nav.is-open a{padding:13px 0;border-bottom:1px solid rgba(255,255,255,.07);font-size:12px}.section{padding:76px 0}.section-heading{grid-template-columns:1fr;gap:18px;margin-bottom:27px}.section-intro{font-size:14px}.photo-grid{grid-template-columns:1fr 1fr}.photo-large{grid-column:1/-1}.support-grid{grid-template-columns:1fr}.support-card{min-height:255px}.card-number{margin-top:18px}.transparency-panel{grid-template-columns:auto minmax(0,1fr);gap:20px}.transparency-mark{width:54px;height:54px}.transparency-copy .section-title{font-size:clamp(32px,6vw,46px)}.learn-inner{flex-direction:column;align-items:flex-start;gap:28px}.learn-actions{width:100%;max-width:400px;flex-direction:row;flex-wrap:wrap}.learn-actions .button{flex:1}.footer-inner{grid-template-columns:1fr 1fr}.footer-brand{grid-column:1/-1}}
 @media(max-width:560px){.wrap{width:min(100% - 34px,var(--max))}.brand-mark{width:31px;height:31px}.brand-name{font-size:22px}.brand-ar{font-size:16px}.language-toggle{padding-inline:10px;font-size:11px}.hero{min-height:calc(100svh - var(--header-height));padding:78px 0 64px}.hero-eyebrow{font-size:9px;margin-bottom:26px}.overline{font-size:10px;letter-spacing:.14em}.hero h1{font-size:clamp(44px,13vw,66px)}.hero-quote{max-width:340px;margin-top:19px;font-size:26px}.hero-actions{width:100%;flex-direction:column;align-items:stretch;max-width:360px;margin-top:29px}.hero-actions .button{width:100%}.hero-note{font-size:11px;max-width:330px}.carousel-controls{margin-top:30px}.section{padding:63px 0}.section-title{font-size:clamp(32px,10vw,46px)}.section-heading{gap:14px}.photo-grid{grid-template-columns:1fr;gap:13px}.photo-large{grid-column:auto}.photo-card,.photo-large{min-height:0}.photo-card img,.photo-large img{height:auto;aspect-ratio:3/2}.photo-card figcaption{padding:13px 15px}.image-note{font-size:10px}.support-card{padding:23px}.transparency-panel{grid-template-columns:1fr;padding:25px;gap:17px}.transparency-mark{width:48px;height:48px;font-size:25px}.source-card{grid-column:auto}.transparency-copy .button{width:100%;padding-inline:13px}.learn-section{padding-block:62px}.learn-inner .section-title{font-size:clamp(32px,9.8vw,45px)}.learn-actions{max-width:none;flex-direction:column}.footer-inner{grid-template-columns:1fr;gap:28px;padding-bottom:30px}.footer-brand{grid-column:auto}.footer-quote{grid-column:auto}.footer-bottom{align-items:flex-start;flex-direction:column;gap:10px}.footer-bottom p{font-size:10px}.share-links a,.share-links button{flex-grow:1}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}.hero-slide{transform:none}}
+
+
+/* Refined motion system: restrained, consistent, and respectful of user settings. */
+.nav a{transition:color .22s ease,border-color .22s ease,transform .22s ease}
+.nav a:hover{transform:translateY(-1px)}
+.menu-toggle span{transition:transform .24s cubic-bezier(.2,.7,.2,1),opacity .18s ease}
+.menu-toggle[aria-expanded="true"] span:first-child{transform:translateY(7px) rotate(45deg)}
+.menu-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.menu-toggle[aria-expanded="true"] span:last-child{transform:translateY(-7px) rotate(-45deg)}
+.nav.is-open{animation:noor-menu-enter .24s cubic-bezier(.2,.7,.2,1) both}
+@keyframes noor-menu-enter{from{opacity:0;transform:translateY(-7px)}to{opacity:1;transform:translateY(0)}}
+
+/* Slow cinematic drift keeps the hero alive without making the copy hard to read. */
+.hero-slide{
+  transform:scale(1.035);
+  transition:opacity 1.25s cubic-bezier(.2,.65,.3,1),transform 8s cubic-bezier(.16,1,.3,1);
+  will-change:opacity,transform;
+}
+.hero-slide.is-active{transform:scale(1.085)}
+html.motion-ready .hero-eyebrow,
+html.motion-ready .hero .overline,
+html.motion-ready .hero h1,
+html.motion-ready .hero-quote,
+html.motion-ready .hero-actions,
+html.motion-ready .hero-note,
+html.motion-ready .carousel-controls{
+  animation:noor-hero-rise .85s cubic-bezier(.2,.7,.2,1) both;
+}
+html.motion-ready .hero-eyebrow{animation-delay:80ms}
+html.motion-ready .hero .overline{animation-delay:170ms}
+html.motion-ready .hero h1{animation-delay:250ms}
+html.motion-ready .hero-quote{animation-delay:360ms}
+html.motion-ready .hero-actions{animation-delay:460ms}
+html.motion-ready .hero-note{animation-delay:540ms}
+html.motion-ready .carousel-controls{animation-delay:640ms}
+@keyframes noor-hero-rise{
+  from{opacity:0;transform:translate3d(0,18px,0);filter:blur(3px)}
+  to{opacity:1;transform:translate3d(0,0,0);filter:blur(0)}
+}
+
+/* Reveal content once as it enters view; never hide content without JS support. */
+html.motion-ready .motion-reveal{
+  opacity:0;
+  transform:translate3d(0,20px,0);
+  transition:opacity .72s cubic-bezier(.2,.65,.3,1),transform .72s cubic-bezier(.2,.65,.3,1);
+  transition-delay:var(--reveal-delay,0ms);
+}
+html.motion-ready .motion-reveal.is-revealed{
+  opacity:1;
+  transform:translate3d(0,0,0);
+}
+.photo-card,.support-card{backface-visibility:hidden}
+.button,.button-outline,.support-card,.photo-card{transition-timing-function:cubic-bezier(.2,.65,.3,1)}
+.scroll-cue span{animation-duration:2s}
+
+/* Reduced-motion settings remove entrances, reveals, zooms and decorative motion. */
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  html.motion-ready .hero-eyebrow,
+  html.motion-ready .hero .overline,
+  html.motion-ready .hero h1,
+  html.motion-ready .hero-quote,
+  html.motion-ready .hero-actions,
+  html.motion-ready .hero-note,
+  html.motion-ready .carousel-controls{
+    animation:none!important;
+    opacity:1!important;
+    transform:none!important;
+    filter:none!important;
+  }
+  html.motion-ready .motion-reveal,
+  html.motion-ready .motion-reveal.is-revealed{
+    opacity:1!important;
+    transform:none!important;
+    transition:none!important;
+  }
+  .hero-slide,.hero-slide.is-active{transform:none!important;transition:none!important;will-change:auto}
+  .scroll-cue span{animation:none!important;opacity:1}
+  .nav.is-open{animation:none}
+}

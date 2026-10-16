@@ -21,7 +21,50 @@
   let language = 'en';
   let activeSlide = 0;
   let timerId = null;
+  const hero = document.querySelector('.hero');
+  let pointerInsideHero = false;
+  let focusInsideHero = false;
   let paused = reduceMotion.matches;
+
+  // Motion is progressive enhancement: content stays visible if scripts fail,
+  // IntersectionObserver is unavailable, or the visitor prefers reduced motion.
+  let revealObserver = null;
+  function syncMotionPreference() {
+    if (reduceMotion.matches) {
+      if (revealObserver) revealObserver.disconnect();
+      revealObserver = null;
+      html.classList.remove('motion-ready');
+      document.querySelectorAll('.motion-reveal').forEach((element) => {
+        element.classList.remove('motion-reveal', 'is-revealed');
+        element.style.removeProperty('--reveal-delay');
+      });
+      return;
+    }
+
+    html.classList.add('motion-ready');
+    if (!('IntersectionObserver' in window) || revealObserver) return;
+
+    const revealTargets = Array.from(document.querySelectorAll(
+      '.section-heading > *, .photo-card, .support-card, ' +
+      '.transparency-panel > *, .learn-inner > *, .footer-inner > *'
+    ));
+    revealTargets.forEach((element, index) => {
+      element.classList.add('motion-reveal');
+      element.style.setProperty('--reveal-delay', ((index % 3) * 95) + 'ms');
+    });
+
+    revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-revealed');
+        revealObserver.unobserve(entry.target);
+      });
+    }, { rootMargin: '0px 0px -7% 0px', threshold: 0.12 });
+
+    revealTargets.forEach((element) => revealObserver.observe(element));
+  }
+
+  syncMotionPreference();
 
   function setLanguage(nextLanguage) {
     language = nextLanguage === 'ar' ? 'ar' : 'en';
@@ -94,10 +137,30 @@
   }
   function startCarousel() {
     stopCarousel();
-    if (!paused && !reduceMotion.matches && slides.length > 1 && !document.hidden) {
+    if (!paused && !reduceMotion.matches && slides.length > 1 && !document.hidden && !pointerInsideHero && !focusInsideHero) {
       timerId = window.setInterval(() => showSlide(activeSlide + 1), 6000);
     }
   }
+  // Hold the slideshow while someone is reading or interacting with the hero.
+  if (hero) {
+    hero.addEventListener('pointerenter', () => {
+      pointerInsideHero = true;
+      startCarousel();
+    });
+    hero.addEventListener('pointerleave', () => {
+      pointerInsideHero = false;
+      startCarousel();
+    });
+    hero.addEventListener('focusin', () => {
+      focusInsideHero = true;
+      startCarousel();
+    });
+    hero.addEventListener('focusout', (event) => {
+      focusInsideHero = Boolean(event.relatedTarget && hero.contains(event.relatedTarget));
+      startCarousel();
+    });
+  }
+
   function updatePauseButton() {
     pauseButton.textContent = paused ? '▶' : 'Ⅱ';
     pauseButton.setAttribute('aria-pressed', String(paused));
@@ -124,6 +187,7 @@
   document.addEventListener('visibilitychange', startCarousel);
   reduceMotion.addEventListener?.('change', (event) => {
     if (event.matches) paused = true;
+    syncMotionPreference();
     updatePauseButton();
     startCarousel();
   });
