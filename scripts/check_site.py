@@ -129,14 +129,20 @@ for source_url in (
 if "Not able to donate?" not in HTML or "unverified figures or images" not in HTML:
     errors.append("missing practical non-donation guidance")
 
-for social_url in (
-    "https://x.com/EyeonPalestine",
-    "https://www.facebook.com/eyeonpalestine.offical",
+js_source = JS_FILE.read_text(encoding="utf-8") if JS_FILE.exists() else ""
+for required_share_item in (
+    'id="share-whatsapp"',
+    'id="share-x"',
+    'id="share-facebook"',
+    "https://wa.me/",
+    "https://x.com/intent/post",
+    "https://www.facebook.com/sharer/sharer.php",
+    "function updateShareLinks()",
 ):
-    if social_url not in HTML:
-        errors.append(f"missing requested social profile link: {social_url}")
-if "wa.me" in HTML or "share-whatsapp" in HTML or "WhatsApp" in HTML or "wa.me" in (JS_FILE.read_text(encoding="utf-8") if JS_FILE.exists() else ""):
-    errors.append("obsolete WhatsApp link remains")
+    if required_share_item not in HTML and required_share_item not in js_source:
+        errors.append(f"missing original social sharing feature: {required_share_item}")
+if "EyeonPalestine" in HTML or "eyeonpalestine.offical" in HTML:
+    errors.append("follow-profile links should not replace the original share actions")
 
 if CSS_FILE.exists():
     css = CSS_FILE.read_text(encoding="utf-8")

@@ -85,6 +85,7 @@
       paragraph.textContent = paragraph.textContent.replace(/2026/g, String(currentYear));
     });
     try { localStorage.setItem('noor-language', language); } catch (_) { /* Storage can be disabled. */ }
+    updateShareLinks();
   }
 
   languageButton.addEventListener('click', () => setLanguage(language === 'en' ? 'ar' : 'en'));
@@ -213,6 +214,28 @@
     url.hash = '';
     return url.toString();
   }
+
+  // Build fresh, correctly encoded share URLs for the current page and language.
+  function updateShareLinks() {
+    const pageUrl = getShareableUrl();
+    const shareText = language === 'en'
+      ? 'NOOR — a light for every child. Learn more and find official ways to help.'
+      : 'نور لكل طفل — تعرّف على طرق المساعدة الرسمية.';
+
+    const whatsappUrl = new URL('https://wa.me/');
+    whatsappUrl.searchParams.set('text', shareText + ' ' + pageUrl);
+    document.getElementById('share-whatsapp').href = whatsappUrl.toString();
+
+    const xUrl = new URL('https://x.com/intent/post');
+    xUrl.searchParams.set('text', shareText);
+    xUrl.searchParams.set('url', pageUrl);
+    document.getElementById('share-x').href = xUrl.toString();
+
+    const facebookUrl = new URL('https://www.facebook.com/sharer/sharer.php');
+    facebookUrl.searchParams.set('u', pageUrl);
+    document.getElementById('share-facebook').href = facebookUrl.toString();
+  }
+  updateShareLinks();
 
   async function copyPageLink() {
     const currentUrl = getShareableUrl();
