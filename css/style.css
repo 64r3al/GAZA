@@ -177,3 +177,80 @@ html.motion-ready .motion-reveal.is-revealed{
     white-space:normal;
   }
 }
+
+
+/* Retro-horror threshold transition: a brief CRT signal before the blank page. */
+body.noor-threshold-active{overflow:hidden}
+.noor-threshold{
+  position:fixed;inset:0;z-index:9999;display:grid;place-items:center;overflow:hidden;
+  padding:28px;background:#050706;color:#d9f5d9;
+  opacity:0;isolation:isolate;
+  font-family:"Courier New",ui-monospace,monospace;
+  transition:opacity .22s ease;
+}
+.noor-threshold.is-live{opacity:1}
+.noor-threshold::before{
+  content:"";position:absolute;inset:-8%;z-index:-1;pointer-events:none;
+  background:radial-gradient(ellipse at center,rgba(27,49,33,.25) 0%,rgba(2,4,3,.78) 58%,#000 100%);
+}
+.noor-threshold__scanlines{
+  position:absolute;inset:0;z-index:2;pointer-events:none;opacity:.2;
+  background:repeating-linear-gradient(to bottom,transparent 0 2px,rgba(0,0,0,.62) 3px 4px);
+  animation:noor-crt-roll 7s linear infinite;
+}
+.noor-threshold__panel{
+  width:min(100%,720px);position:relative;padding:clamp(24px,5vw,54px);
+  border:1px solid rgba(135,203,140,.25);
+  background:rgba(3,9,5,.82);
+  box-shadow:0 0 0 1px rgba(135,203,140,.04),0 0 55px rgba(24,92,42,.12),inset 0 0 55px rgba(24,92,42,.06);
+  text-align:center;
+  animation:noor-crt-arrive .55s steps(4,end) both;
+}
+.noor-threshold__eyebrow{
+  margin:0 0 30px;color:#7da985;font-size:11px;letter-spacing:.22em;
+}
+.noor-threshold__signal{
+  display:inline-block;width:8px;height:8px;margin-bottom:15px;border-radius:50%;
+  background:#e34444;box-shadow:0 0 12px rgba(227,68,68,.72);
+  animation:noor-signal-pulse 1.2s steps(2,end) infinite;
+}
+.noor-threshold__label{
+  margin:0 0 18px;color:#ba4b4b;font-size:10px;letter-spacing:.2em;
+}
+.noor-threshold__message{
+  min-height:3.2em;display:flex;align-items:center;justify-content:center;gap:2px;
+  margin:0;color:#d9f5d9;font-size:clamp(17px,3.8vw,29px);font-weight:700;
+  line-height:1.5;letter-spacing:.04em;text-shadow:0 0 12px rgba(103,231,125,.25);
+  overflow-wrap:anywhere;
+}
+.noor-threshold__message.is-glitching{animation:noor-text-glitch .18s steps(2,end) both}
+.noor-threshold__cursor{color:#b8f9b8;animation:noor-cursor-blink .8s steps(2,end) infinite}
+.noor-threshold__progress{
+  height:3px;margin:31px 0 15px;overflow:hidden;background:rgba(127,168,132,.16);
+}
+.noor-threshold__progress-fill{
+  display:block;width:0;height:100%;background:#a8dca9;box-shadow:0 0 12px rgba(168,220,169,.45);
+  animation:noor-threshold-progress 3.15s linear forwards;
+}
+.noor-threshold__footer{
+  margin:0;color:#687c6b;font-size:9px;letter-spacing:.18em;
+}
+@keyframes noor-crt-roll{from{transform:translateY(-5%)}to{transform:translateY(5%)}}
+@keyframes noor-crt-arrive{0%{opacity:0;transform:scale(1.015);clip-path:inset(48% 0 48% 0)}65%{opacity:1;clip-path:inset(0 0 0 0)}100%{transform:scale(1);opacity:1}}
+@keyframes noor-signal-pulse{0%,100%{opacity:1}50%{opacity:.38}}
+@keyframes noor-cursor-blink{0%,48%{opacity:1}50%,100%{opacity:0}}
+@keyframes noor-text-glitch{0%{transform:translateX(-3px);opacity:.55;filter:hue-rotate(35deg)}45%{transform:translateX(2px);opacity:1}100%{transform:none;filter:none}}
+@keyframes noor-threshold-progress{to{width:100%}}
+@media(prefers-reduced-motion:reduce){
+  .noor-threshold{transition:none}
+  .noor-threshold__scanlines,.noor-threshold__panel,.noor-threshold__signal,
+  .noor-threshold__cursor,.noor-threshold__message.is-glitching,.noor-threshold__progress-fill{
+    animation:none!important;clip-path:none!important;transform:none!important;filter:none!important;
+  }
+}
+@media(max-width:560px){
+  .noor-threshold{padding:16px}
+  .noor-threshold__panel{padding:27px 18px}
+  .noor-threshold__eyebrow{font-size:9px;letter-spacing:.12em}
+  .noor-threshold__message{font-size:clamp(16px,5vw,23px)}
+}

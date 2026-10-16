@@ -152,6 +152,15 @@ if not blank_page_path.is_file():
 elif "<title>A hard pill to swallow | NOOR</title>" not in blank_page_path.read_text(encoding="utf-8"):
     errors.append("blank page title is missing or incorrect")
 
+if "const thresholdLink = document.querySelector" not in js_source:
+    errors.append("missing creepy threshold click transition")
+if CSS_FILE.exists():
+    transition_css = CSS_FILE.read_text(encoding="utf-8")
+    if ".noor-threshold__scanlines" not in transition_css or "@keyframes noor-text-glitch" not in transition_css:
+        errors.append("missing retro CRT/glitch transition styles")
+    if "@media(prefers-reduced-motion:reduce)" not in transition_css or ".noor-threshold__scanlines" not in transition_css:
+        errors.append("threshold transition reduced-motion styling is missing")
+
 for expected_count in ("800000", "600000", "436000", "591800"):
     if f'data-count="{expected_count}"' not in HTML:
         errors.append(f"missing response counter target: {expected_count}")
