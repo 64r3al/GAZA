@@ -132,3 +132,6 @@ html.motion-ready .motion-reveal.is-revealed{
 [dir=rtl] .response-card h3{font-family:Cairo,sans-serif}
 @media(max-width:1050px){.response-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.response-source{flex-direction:column;gap:10px}}
 @media(max-width:560px){.response-grid{grid-template-columns:1fr;gap:11px;margin-top:25px}.response-card{padding:20px}.response-number{font-size:35px;margin-bottom:11px}.response-source{padding:15px}.response-source-links{flex-direction:column;gap:10px}}
+
+/* Responsive WebP sources in the generated production build. */
+.photo-card picture{display:block}

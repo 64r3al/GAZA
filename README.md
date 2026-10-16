@@ -17,7 +17,8 @@ Open <http://localhost:8000>.
 - `index.html` — bilingual page, accessible image carousel, official humanitarian links
 - `css/style.css` — responsive design, right-to-left layout, reduced-motion support
 - `js/main.js` — language toggle, mobile navigation, carousel and sharing controls
-- `scripts/check_site.py` — checks local files, fragment links, duplicate IDs, image alt text/dimensions, accessible button names, new-tab link safety, metadata and unfinished copy
+- `scripts/check_site.py` — checks local files, fragment links, duplicate IDs, image alt text/dimensions, accessible button names, new-tab link safety, metadata, responsive source paths and unfinished copy
+- `scripts/build_site.py` — builds an optimized `_site/` folder with responsive WebP variants while retaining JPG fallbacks
 - `.github/workflows/ci.yml` — automated validation on pushes and pull requests
 - `.github/workflows/pages.yml` — GitHub Pages build and deployment
 
@@ -33,12 +34,20 @@ No unverified live statistics, fabricated aid-delivery claims, fake receipts, or
 
 A workflow builds and attempts to publish this static site on pushes to `main`. **One-time repository setup is still required:** open **Settings → Pages** and choose **GitHub Actions** as the build/deployment source. The current deployment log confirms that the workflow token cannot create the Pages site itself (`Resource not accessible by integration`), even though the site checks pass. After selecting GitHub Actions, rerun the latest deployment from the Actions tab and wait for the deploy job to succeed before sharing the published URL. Do not treat a successful validation run as proof that the site is online.
 
-## Run the checks
+## Build and validate the production version
+
+The source page continues to use the original JPG files. The production build creates responsive WebP variants and smaller WebP hero backgrounds in the ignored `_site/` directory; the original JPGs remain in the output as fallbacks and for social previews.
 
 ```bash
+python -m pip install "Pillow>=11,<13"
 node --check js/main.js
 python scripts/check_site.py
+python scripts/build_site.py
+python scripts/check_site.py --root _site
+python -m http.server 8000 --directory _site
 ```
+
+Open <http://localhost:8000> to preview the same optimized output that the deployment workflow uploads.
 
 
 ## Official humanitarian information

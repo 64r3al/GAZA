@@ -2,10 +2,14 @@
 """Validate NOOR's HTML references, basic accessibility, metadata, and template copy."""
 from html.parser import HTMLParser
 from pathlib import Path
+import argparse
 import re
 import sys
 
-ROOT = Path(__file__).resolve().parents[1]
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+ARGUMENTS = argparse.ArgumentParser(description="Validate source or generated NOOR site files.")
+ARGUMENTS.add_argument("--root", default=str(PROJECT_ROOT), help="Site root to validate (defaults to the repository root).")
+ROOT = Path(ARGUMENTS.parse_args().root).resolve()
 HTML_FILE = ROOT / "index.html"
 CSS_FILE = ROOT / "css" / "style.css"
 JS_FILE = ROOT / "js" / "main.js"
@@ -58,9 +62,17 @@ class SiteParser(HTMLParser):
                 if not {"noopener", "noreferrer"}.issubset(rel):
                     self.new_tab_without_safe_rel.append(href)
 
-        for key in ("src",):
-            value = attr.get(key, "")
-            if value and not re.match(r"^(?:[a-z][a-z0-9+.-]*:|//|#|data:)", value, re.I):
+        value = attr.get("src", "")
+        if value and not re.match(r"^(?:[a-z][a-z0-9+.-]*:|//|#|data:)", value, re.I):
+            self.local_refs.append(value.split("#", 1)[0].split("?", 1)[0])
+
+        srcset = attr.get("srcset", "")
+        for candidate in srcset.split(","):
+            candidate_url = candidate.strip().split()
+            if not candidate_url:
+                continue
+            value = candidate_url[0]
+            if not re.match(r"^(?:[a-z][a-z0-9+.-]*:|//|#|data:)", value, re.I):
                 self.local_refs.append(value.split("#", 1)[0].split("?", 1)[0])
 
     def handle_data(self, data):
