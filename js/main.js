@@ -82,7 +82,7 @@
     Array.from(dotsContainer.children).forEach((dot, index) => { dot.setAttribute('aria-label', language === 'en' ? 'Show image ' + (index + 1) : 'عرض الصورة ' + (index + 1)); });
     copyButton.textContent = copyLabel[language];
     document.querySelectorAll('.footer-bottom p').forEach((paragraph) => {
-      paragraph.innerHTML = paragraph.innerHTML.replace(/2026/g, String(currentYear));
+      paragraph.textContent = paragraph.textContent.replace(/2026/g, String(currentYear));
     });
     try { localStorage.setItem('noor-language', language); } catch (_) { /* Storage can be disabled. */ }
     updateShareLinks();
@@ -203,14 +203,20 @@
         });
       });
     }, { rootMargin: '-38% 0px -54% 0px', threshold: 0 });
-    ['need', 'help', 'ledger', 'learn'].forEach((id) => {
+    ['need', 'response', 'help', 'ledger', 'learn'].forEach((id) => {
       const section = document.getElementById(id);
       if (section) observer.observe(section);
     });
   }
 
+  function getShareableUrl() {
+    const url = new URL(window.location.href);
+    url.hash = '';
+    return url.toString();
+  }
+
   function updateShareLinks() {
-    const pageUrl = encodeURIComponent(window.location.href);
+    const pageUrl = encodeURIComponent(getShareableUrl());
     const shareText = encodeURIComponent(language === 'en' ? 'NOOR — a light for every child. Learn more and find official ways to help.' : 'نور لكل طفل — تعرّف على طرق المساعدة الرسمية.');
     document.getElementById('share-whatsapp').href = 'https://wa.me/?text=' + shareText + '%20' + pageUrl;
     document.getElementById('share-x').href = 'https://x.com/intent/post?text=' + shareText + '&url=' + pageUrl;
@@ -219,22 +225,34 @@
   updateShareLinks();
 
   async function copyPageLink() {
-    const currentUrl = window.location.href;
+    const currentUrl = getShareableUrl();
     try {
       if (navigator.clipboard && window.isSecureContext) {
-        await navigator.clipboard.writeText(currentUrl);
-      } else {
-        const temporaryInput = document.createElement('textarea');
-        temporaryInput.value = currentUrl;
-        temporaryInput.setAttribute('readonly', '');
-        temporaryInput.style.position = 'fixed';
-        temporaryInput.style.opacity = '0';
-        document.body.appendChild(temporaryInput);
-        temporaryInput.select();
-        const successful = document.execCommand('copy');
-        temporaryInput.remove();
-        if (!successful) throw new Error('Clipboard copy command failed');
+        try {
+          await navigator.clipboard.writeText(currentUrl);
+          shareStatus.textContent = feedback[language].copied;
+          return;
+        } catch (_) {
+          // Fall through to the compatibility copy method if permission is denied.
+        }
       }
+
+      const temporaryInput = document.createElement('textarea');
+      temporaryInput.value = currentUrl;
+      temporaryInput.setAttribute('readonly', '');
+      temporaryInput.setAttribute('aria-hidden', 'true');
+      temporaryInput.style.position = 'fixed';
+      temporaryInput.style.opacity = '0';
+      document.body.appendChild(temporaryInput);
+
+      let successful = false;
+      try {
+        temporaryInput.select();
+        successful = document.execCommand('copy');
+      } finally {
+        temporaryInput.remove();
+      }
+      if (!successful) throw new Error('Clipboard copy command failed');
       shareStatus.textContent = feedback[language].copied;
     } catch (_) {
       shareStatus.textContent = feedback[language].failed;

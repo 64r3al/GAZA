@@ -4,7 +4,16 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0b0b0c">
-  <meta name="description" content="NOOR is an independent awareness page sharing information and official ways to support children affected by the humanitarian crisis in Gaza.">
+  <meta name="description" content="NOOR is an independent, bilingual awareness page sharing verified humanitarian information and official ways to support children affected by the crisis in Gaza.">
+  <meta name="robots" content="index,follow">
+  <meta property="og:site_name" content="NOOR — A light for every child">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:image" content="https://raw.githubusercontent.com/64r3al/GAZA/main/assets/hero/child-receiving-a-meal.jpg">
+  <meta property="og:image:alt" content="A child receiving a meal during a food distribution">
+  <meta name="twitter:title" content="NOOR — A light for every child">
+  <meta name="twitter:description" content="Learn about humanitarian needs and find official ways to help children affected by the crisis in Gaza.">
+  <meta name="twitter:image" content="https://raw.githubusercontent.com/64r3al/GAZA/main/assets/hero/child-receiving-a-meal.jpg">
+  <meta name="twitter:image:alt" content="A child receiving a meal during a food distribution">
   <meta property="og:type" content="website">
   <meta property="og:title" content="NOOR — A light for every child">
   <meta property="og:description" content="Every child deserves warmth, food, care and safety. Learn more and use official humanitarian channels to help.">
@@ -14,6 +23,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Cairo:wght@400;600;700;800&family=Caveat:wght@500;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preload" as="image" href="assets/hero/child-receiving-a-meal.jpg" fetchpriority="high">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -39,9 +49,9 @@
   <main id="main">
     <section class="hero" id="top" aria-labelledby="hero-title">
       <div class="hero-slides" id="carousel" aria-hidden="true">
-        <div class="hero-slide is-active" style="background-image:url('assets/hero/families-seeking-assistance.jpg')"></div>
-        <div class="hero-slide" style="background-image:url('assets/hero/children-and-families-collecting-water.jpg')"></div>
-        <div class="hero-slide" style="background-image:url('assets/hero/food-distribution-for-children.jpg')"></div>
+        <div class="hero-slide is-active" style="background-image:url('assets/hero/child-receiving-a-meal.jpg')"></div>
+        <div class="hero-slide" style="background-image:url('assets/hero/crowd-at-aid-distribution.jpg')"></div>
+        <div class="hero-slide" style="background-image:url('assets/hero/families-at-water-distribution.jpg')"></div>
       </div>
       <div class="hero-shade" aria-hidden="true"></div>
       <div class="wrap hero-content">
@@ -54,7 +64,7 @@
           <a class="button button-outline" href="#help" data-en="Explore ways to help" data-ar="اكتشف طرق المساعدة">Explore ways to help</a>
         </div>
         <p class="hero-note" data-en="Donations are completed on UNICEF’s official website. NOOR never collects money or payment details." data-ar="تتم التبرعات عبر الموقع الرسمي لليونيسف. نور لا تجمع الأموال أو بيانات الدفع.">Donations are completed on UNICEF’s official website. NOOR never collects money or payment details.</p>
-        <div class="carousel-controls" aria-label="Hero image controls">
+        <div class="carousel-controls" role="group" aria-label="Hero image controls">
           <div class="carousel-dots" id="dots"></div>
           <button class="carousel-pause" id="pause" type="button" aria-pressed="false" aria-label="Pause slideshow">Ⅱ</button>
         </div>
@@ -110,7 +120,7 @@
           </article>
         </div>
         <div class="response-source">
-          <p data-en="Source: UNICEF, State of Palestine Appeal — September 2026 revision. The targets cover the State of Palestine, including Gaza and the West Bank; they are not Gaza-only figures." data-ar="المصدر: نداء اليونيسف لدولة فلسطين — مراجعة سبتمبر 2026. تشمل الأهداف دولة فلسطين، بما فيها غزة والضفة الغربية، وليست أرقاماً خاصة بغزة وحدها.">Source: UNICEF, State of Palestine Appeal — September 2026 revision. The targets cover the State of Palestine, including Gaza and the West Bank; they are not Gaza-only figures.</p>
+          <p data-en="Source: UNICEF, State of Palestine Appeal — September 2026 revision. These are provisional planned targets for the State of Palestine, including Gaza and the West Bank, not Gaza-only figures; UNICEF may revise them." data-ar="المصدر: نداء اليونيسف لدولة فلسطين — مراجعة سبتمبر 2026. هذه أهداف مخططة ومؤقتة لدولة فلسطين، بما فيها غزة والضفة الغربية، وليست أرقاماً خاصة بغزة وحدها؛ وقد تعدّلها اليونيسف.">Source: UNICEF, State of Palestine Appeal — September 2026 revision. These are provisional planned targets for the State of Palestine, including Gaza and the West Bank, not Gaza-only figures; UNICEF may revise them.</p>
           <div class="response-source-links">
             <a href="https://www.unicef.org/appeals/state-of-palestine" target="_blank" rel="noopener noreferrer" data-en="Read the 2026 appeal ↗" data-ar="اقرأ نداء 2026 ↗">Read the 2026 appeal ↗</a>
             <a href="https://www.unicef.org/appeals/state-of-palestine/situation-reports" target="_blank" rel="noopener noreferrer" data-en="Browse situation reports ↗" data-ar="تصفّح تقارير الوضع ↗">Browse situation reports ↗</a>
@@ -134,7 +144,7 @@
       <div class="wrap transparency-panel">
         <div class="transparency-mark" aria-hidden="true">↗</div>
         <div class="transparency-copy"><p class="eyebrow" data-en="Clear by design" data-ar="الوضوح أساس العمل">Clear by design</p><h2 class="display section-title" id="transparency-title" data-en="No hidden donation flow." data-ar="لا توجد تبرعات تمر عبر هذه الصفحة.">No hidden donation flow.</h2><p data-en="NOOR is an independent awareness page. It does not collect donations, store payment details, issue receipts or represent UNICEF. When you choose to help, you leave this site and review the details on UNICEF’s official donation page." data-ar="نور صفحة توعوية مستقلة. لا تجمع التبرعات ولا تخزّن بيانات الدفع ولا تصدر إيصالات ولا تمثل اليونيسف. عند اختيار المساعدة، ستغادر هذه الصفحة وتراجع التفاصيل على صفحة التبرع الرسمية لليونيسف.">NOOR is an independent awareness page. It does not collect donations, store payment details, issue receipts or represent UNICEF. When you choose to help, you leave this site and review the details on UNICEF’s official donation page.</p><a class="button" href="https://help.unicef.org/en/gaza-2026" target="_blank" rel="noopener noreferrer" data-en="Review UNICEF’s official appeal ↗" data-ar="اطّلع على نداء اليونيسف الرسمي ↗">Review UNICEF’s official appeal ↗</a></div>
-        <aside class="source-card"><span class="source-label" data-en="PRIMARY SOURCE" data-ar="المصدر الأساسي">PRIMARY SOURCE</span><h3 data-en="UNICEF — Gaza response" data-ar="اليونيسف — الاستجابة في غزة">UNICEF — Gaza response</h3><p data-en="Read official updates on humanitarian needs, response activities and the ways support may be used." data-ar="اقرأ التحديثات الرسمية حول الاحتياجات الإنسانية وأنشطة الاستجابة وطرق استخدام الدعم.">Read official updates on humanitarian needs, response activities and the ways support may be used.</p><p class="source-note" data-en="UNICEF notes that if funds raised exceed Gaza’s immediate response needs, they may be redirected to other UNICEF initiatives for vulnerable children. Review the official appeal terms before donating." data-ar="توضح اليونيسف أنه إذا تجاوزت الأموال المجمعة احتياجات الاستجابة الفورية في غزة، فقد تُوجَّه إلى مبادرات أخرى لليونيسف لدعم الأطفال الأكثر ضعفاً. راجع شروط النداء الرسمي قبل التبرع.">UNICEF notes that if funds raised exceed Gaza’s immediate response needs, they may be redirected to other UNICEF initiatives for vulnerable children. Review the official appeal terms before donating.</p><a href="https://www.unicef.org/emergencies/children-gaza-need-lifesaving-support" target="_blank" rel="noopener noreferrer" data-en="Read the latest update ↗" data-ar="اقرأ آخر تحديث ↗">Read the latest update ↗</a></aside>
+        <aside class="source-card"><span class="source-label" data-en="PRIMARY SOURCE" data-ar="المصدر الأساسي">PRIMARY SOURCE</span><h3 data-en="UNICEF — Gaza response" data-ar="اليونيسف — الاستجابة في غزة">UNICEF — Gaza response</h3><p data-en="Read official updates on humanitarian needs, response activities and the ways support may be used." data-ar="اقرأ التحديثات الرسمية حول الاحتياجات الإنسانية وأنشطة الاستجابة وطرق استخدام الدعم.">Read official updates on humanitarian needs, response activities and the ways support may be used.</p><p class="source-note" data-en="UNICEF notes that if funds raised exceed Gaza’s immediate response needs, they may be redirected to other UNICEF initiatives for vulnerable children. Review the official appeal terms before donating." data-ar="توضح اليونيسف أنه إذا تجاوزت الأموال المجمعة احتياجات الاستجابة الفورية في غزة، فقد تُوجَّه إلى مبادرات أخرى لليونيسف لدعم الأطفال الأكثر ضعفاً. راجع شروط النداء الرسمي قبل التبرع.">UNICEF notes that if funds raised exceed Gaza’s immediate response needs, they may be redirected to other UNICEF initiatives for vulnerable children. Review the official appeal terms before donating.</p><p class="source-note donation-terms-note" data-en="The official donation page may display a currency or terms for your region. Confirm the amount, whether your gift is one-time or monthly, and the destination before paying." data-ar="قد تعرض صفحة التبرع الرسمية العملة أو الشروط الخاصة بمنطقتك. تأكد من المبلغ وما إذا كان التبرع لمرة واحدة أو شهرياً والجهة المستفيدة قبل الدفع.">The official donation page may display a currency or terms for your region. Confirm the amount, whether your gift is one-time or monthly, and the destination before paying.</p><a href="https://www.unicef.org/emergencies/children-gaza-need-lifesaving-support" target="_blank" rel="noopener noreferrer" data-en="Read the latest update ↗" data-ar="اقرأ آخر تحديث ↗">Read the latest update ↗</a></aside>
       </div>
     </section>
 
