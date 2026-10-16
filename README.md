@@ -25,7 +25,7 @@ Open <http://localhost:8000>.
 
 NOOR is **not affiliated with, endorsed by, or sponsored by UNICEF**. It does not collect donations, process payments, store payment details, issue receipts or claim that a donation purchases a specific item. Donation links take visitors to UNICEF's website so they can review the destination and terms before making their own decision.
 
-The gallery uses locally optimized WebP photographs from the original project asset pack so the cards are not stretched from tiny remote thumbnails. Confirm each image's original source, photographer credit and reuse permissions before wider promotion or redistribution. Public accessibility alone does not mean an image is free to reuse.
+The nine JPGs you uploaded are now renamed with descriptive filenames. The website's gallery and hero carousel use the higher-resolution originals: families-seeking-assistance.jpg (1915×1433), children-and-families-collecting-water.jpg (1888×1255), and food-distribution-for-children.jpg (2322×1393). The two smallest images remain available with “small” in their filenames and are not used in the main gallery. Verify each photo's original source, photographer credit and reuse permission before wider publication; public accessibility alone does not mean an image is free to reuse.
 
 No unverified live statistics, fabricated aid-delivery claims, fake receipts, or simulated donation ledger are used.
 
