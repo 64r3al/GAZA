@@ -107,6 +107,15 @@ if not re.search(r'<html\b[^>]*\blang=["\']en["\']', HTML, re.I):
     errors.append("HTML document needs a default language")
 if 'property="og:image"' not in HTML or 'name="twitter:description"' not in HTML:
     errors.append("missing social preview image/description metadata")
+for source_url in (
+    "https://www.unicef.org/appeals/state-of-palestine",
+    "https://www.unicef.org/appeals/state-of-palestine/situation-reports",
+    "https://help.unicef.org/en/gaza-2026",
+):
+    if source_url not in HTML:
+        errors.append(f"missing primary information/donation link: {source_url}")
+if "Not able to donate?" not in HTML or "unverified figures or images" not in HTML:
+    errors.append("missing practical non-donation guidance")
 
 if CSS_FILE.exists():
     css = CSS_FILE.read_text(encoding="utf-8")
