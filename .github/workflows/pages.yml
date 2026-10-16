@@ -26,6 +26,8 @@ jobs:
         run: node --check js/main.js
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
+        with:
+          enablement: true
       - name: Prepare the public site
         run: |
           mkdir -p _site
