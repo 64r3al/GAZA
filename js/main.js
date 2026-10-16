@@ -107,8 +107,8 @@
 
         // Begin near the target, not zero: these are planned reach targets,
         // and a full-range counter makes large figures feel artificial.
-        const duration = 4200;
-        const initialProgress = 0.82;
+        const duration = 1700;
+        const initialProgress = 0.94;
         const startValue = Math.round(target * initialProgress);
         let startTime = null;
         display.textContent = formatter.format(startValue);
@@ -123,8 +123,8 @@
 
           if (startTime === null) startTime = timestamp;
           const progress = Math.min((timestamp - startTime) / duration, 1);
-          // Quadratic ease-out decelerates across the full count, especially at the end.
-          const easedProgress = 1 - Math.pow(1 - progress, 2);
+          // Cubic ease-out moves quickly at first, then slows gently into the exact target.
+          const easedProgress = 1 - Math.pow(1 - progress, 3);
           const currentValue = startValue + ((target - startValue) * easedProgress);
           display.textContent = formatter.format(Math.round(currentValue));
 
@@ -139,7 +139,7 @@
         }
 
         activeFrames.set(display, window.requestAnimationFrame(frame));
-      }, index * 180);
+      }, index * 100);
 
       staggerTimers.add(timer);
     }
