@@ -154,12 +154,18 @@ elif "<title>A hard pill to swallow | NOOR Field Notes</title>" not in blank_pag
 
 if "const thresholdLink = document.querySelector" not in js_source or "noor-pixel-exit__cell" not in js_source:
     errors.append("missing pixel transition from NOOR navigation")
+if "noor-warning-screen" not in js_source or "PSYCHOLOGY WARNING" not in js_source:
+    errors.append("missing retro pre-entry psychology warning screen")
+if "This website does not psychologically profile you" not in js_source:
+    errors.append("pre-entry warning must not falsely claim the site profiles visitors")
 if CSS_FILE.exists():
     transition_css = CSS_FILE.read_text(encoding="utf-8")
     if ".noor-pixel-exit__grid" not in transition_css or "@keyframes noor-pixel-fill" not in transition_css:
         errors.append("missing pixel-transition grid animation")
-    if "@media(prefers-reduced-motion:reduce)" not in transition_css or ".noor-pixel-exit__cell" not in transition_css:
-        errors.append("pixel transition reduced-motion styling is missing")
+    if ".noor-warning-screen__frame" not in transition_css or "@keyframes noor-warning-flicker" not in transition_css:
+        errors.append("missing red retro CRT warning styles")
+    if "@media(prefers-reduced-motion:reduce)" not in transition_css or ".noor-pixel-exit__cell" not in transition_css or ".noor-warning-screen" not in transition_css:
+        errors.append("warning/pixel transition reduced-motion styling is missing")
 
 story_html_path = ROOT / "a-hard-pill-to-swallow.html"
 story_js_path = ROOT / "js" / "story.js"

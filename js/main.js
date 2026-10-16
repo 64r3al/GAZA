@@ -367,8 +367,8 @@
   }
   copyButton.addEventListener('click', copyPageLink);
 
-  // A pixelated doorway leads into a documented story page. The effect is visual
-  // only: reduced-motion users navigate directly, and modified clicks stay native.
+  // A restrained CRT warning sits between the navigation link and the documented story.
+  // It uses the site's existing language preference and never claims to profile visitors.
   const thresholdLink = document.querySelector('.nav-feature-link[href="a-hard-pill-to-swallow.html"]');
   let thresholdTransitionActive = false;
 
@@ -385,63 +385,166 @@
 
       event.preventDefault();
       if (thresholdTransitionActive) return;
+      thresholdTransitionActive = true;
 
       const destination = thresholdLink.href;
-      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (prefersReducedMotion) {
-        window.location.href = destination;
-        return;
-      }
-
-      thresholdTransitionActive = true;
-      try { sessionStorage.setItem('noor-story-arrival', '1'); } catch (_) { /* Storage may be disabled. */ }
-
+      const isArabic = language === 'ar';
       const overlay = document.createElement('div');
-      overlay.className = 'noor-pixel-exit';
-      overlay.setAttribute('role', 'status');
-      overlay.setAttribute('aria-live', 'polite');
-      overlay.setAttribute('aria-label', language === 'ar' ? 'انتقال إلى قصة موثّقة' : 'Transitioning to a documented story');
+      overlay.className = 'noor-warning-screen';
+      overlay.setAttribute('role', 'dialog');
+      overlay.setAttribute('aria-modal', 'true');
+      overlay.setAttribute('tabindex', '-1');
+      overlay.setAttribute('aria-labelledby', 'noor-warning-title');
+      overlay.setAttribute('aria-describedby', 'noor-warning-copy');
+      overlay.setAttribute('lang', isArabic ? 'ar' : 'en');
+      overlay.setAttribute('dir', isArabic ? 'rtl' : 'ltr');
 
-      const grid = document.createElement('div');
-      grid.className = 'noor-pixel-exit__grid';
-      grid.setAttribute('aria-hidden', 'true');
+      const frame = document.createElement('section');
+      frame.className = 'noor-warning-screen__frame';
 
-      const columns = Math.min(48, Math.max(10, Math.ceil(window.innerWidth / 44)));
-      const rows = Math.min(28, Math.max(8, Math.ceil(window.innerHeight / Math.max(1, window.innerWidth / columns))));
-      grid.style.gridTemplateColumns = 'repeat(' + columns + ', minmax(0, 1fr))';
-      grid.style.gridTemplateRows = 'repeat(' + rows + ', minmax(0, 1fr))';
-      const centerX = (columns - 1) / 2;
-      const centerY = (rows - 1) / 2;
-      const maxDistance = Math.max(1, Math.hypot(centerX, centerY));
+      const signalRow = document.createElement('div');
+      signalRow.className = 'noor-warning-screen__signal-row';
+      signalRow.setAttribute('aria-hidden', 'true');
+      const signal = document.createElement('span');
+      signal.className = 'noor-warning-screen__signal';
+      const metadata = document.createElement('span');
+      metadata.className = 'noor-warning-screen__meta';
+      metadata.textContent = isArabic ? 'نور // سجل تحذير 001' : 'NOOR // WARNING FILE 001';
+      signalRow.append(signal, metadata);
 
-      for (let row = 0; row < rows; row += 1) {
-        for (let column = 0; column < columns; column += 1) {
-          const pixel = document.createElement('span');
-          pixel.className = 'noor-pixel-exit__cell tone-' + ((row * 3 + column) % 4);
-          const distance = Math.hypot(column - centerX, row - centerY) / maxDistance;
-          pixel.style.setProperty('--pixel-delay', (distance * 0.42).toFixed(3) + 's');
-          grid.appendChild(pixel);
-        }
+      const title = document.createElement('h2');
+      title.className = 'noor-warning-screen__title';
+      title.id = 'noor-warning-title';
+      title.textContent = isArabic ? 'تحذير نفسي' : 'PSYCHOLOGY WARNING';
+
+      const copy = document.createElement('div');
+      copy.className = 'noor-warning-screen__copy';
+      copy.id = 'noor-warning-copy';
+
+      const lineOne = document.createElement('p');
+      lineOne.className = 'noor-warning-screen__lead';
+      lineOne.textContent = isArabic
+        ? 'قد ترافقك هذه التجربة حتى بعد مغادرتك.'
+        : 'This experience may stay with you after you leave.';
+
+      const lineTwo = document.createElement('p');
+      lineTwo.textContent = isArabic
+        ? 'تدعوك إلى النظر إلى ما وراء العناوين. تعرض الصفحة التالية شهادات موثّقة عن أطفال وعائلات تأثروا بالحرب في غزة. هؤلاء أناس حقيقيون وخسائرهم حقيقية، وليسوا شخصيات خيالية.'
+        : 'It asks you to look beyond the headline. The next page shares documented accounts of children and families affected by the war in Gaza. These are real people and real losses—not fictional characters.';
+
+      const lineThree = document.createElement('p');
+      lineThree.textContent = isArabic
+        ? 'هذا الموقع لا ينشئ ملفاً نفسياً عنك ولا يستخدم ردودك الشخصية ضدك. إنه يعرض معلومات موثّقة، وما تختار فعله بها يعود إليك.'
+        : 'This website does not psychologically profile you or use personal responses against you. It presents sourced information; what you choose to do with it is yours.';
+
+      copy.append(lineOne, lineTwo, lineThree);
+
+      const note = document.createElement('p');
+      note.className = 'noor-warning-screen__note';
+      note.textContent = isArabic
+        ? 'اقرأ على مهل. غادر متى احتجت.'
+        : 'READ AT YOUR OWN PACE. LEAVE WHENEVER YOU NEED.';
+
+      const actions = document.createElement('div');
+      actions.className = 'noor-warning-screen__actions';
+      const continueButton = document.createElement('button');
+      continueButton.type = 'button';
+      continueButton.className = 'noor-warning-screen__continue';
+      continueButton.textContent = isArabic ? 'أفهم ذلك — تابع' : 'I UNDERSTAND — CONTINUE';
+      const returnButton = document.createElement('button');
+      returnButton.type = 'button';
+      returnButton.className = 'noor-warning-screen__return';
+      returnButton.textContent = isArabic ? 'العودة إلى نور' : 'RETURN TO NOOR';
+      actions.append(continueButton, returnButton);
+
+      const footer = document.createElement('div');
+      footer.className = 'noor-warning-screen__footer';
+      footer.textContent = isArabic ? 'إشارة ثابتة // لا توجد بيانات نفسية' : 'SIGNAL STABLE // NO PSYCHOLOGICAL PROFILING';
+
+      frame.append(signalRow, title, copy, note, actions, footer);
+      overlay.appendChild(frame);
+      document.body.appendChild(overlay);
+      document.body.classList.add('noor-warning-open');
+      continueButton.focus({ preventScroll: true });
+
+      function closeWarning() {
+        if (!overlay.isConnected) return;
+        overlay.remove();
+        document.body.classList.remove('noor-warning-open');
+        thresholdTransitionActive = false;
+        thresholdLink.focus({ preventScroll: true });
       }
 
-      const label = document.createElement('div');
-      label.className = 'noor-pixel-exit__label';
-      const indexLabel = document.createElement('p');
-      indexLabel.className = 'noor-pixel-exit__index';
-      indexLabel.textContent = language === 'ar' ? 'نور // ملاحظات ميدانية 001' : 'NOOR // FIELD NOTES 001';
-      const message = document.createElement('p');
-      message.className = 'noor-pixel-exit__message';
-      message.textContent = language === 'ar' ? 'ما وراء العناوين' : 'LOOK BEYOND THE HEADLINE';
-      label.append(indexLabel, message);
+      overlay.addEventListener('keydown', (keyEvent) => {
+        if (keyEvent.key === 'Escape') {
+          keyEvent.preventDefault();
+          closeWarning();
+          return;
+        }
+        if (keyEvent.key !== 'Tab') return;
+        const activeElement = document.activeElement;
+        if (keyEvent.shiftKey && activeElement === continueButton) {
+          keyEvent.preventDefault();
+          returnButton.focus();
+        } else if (!keyEvent.shiftKey && activeElement === returnButton) {
+          keyEvent.preventDefault();
+          continueButton.focus();
+        }
+      });
+      returnButton.addEventListener('click', closeWarning);
 
-      overlay.append(grid, label);
-      document.body.appendChild(overlay);
-      document.body.classList.add('pixel-transition-active');
-      window.requestAnimationFrame(() => overlay.classList.add('is-running'));
+      continueButton.addEventListener('click', () => {
+        if (!overlay.isConnected) return;
+        overlay.remove();
+        document.body.classList.remove('noor-warning-open');
+        try { sessionStorage.setItem('noor-story-arrival', '1'); } catch (_) { /* Storage may be disabled. */ }
 
-      window.setTimeout(() => {
-        window.location.href = destination;
-      }, 1060);
+        if (reduceMotion.matches) {
+          window.location.href = destination;
+          return;
+        }
+
+        const pixelOverlay = document.createElement('div');
+        pixelOverlay.className = 'noor-pixel-exit';
+        pixelOverlay.setAttribute('aria-hidden', 'true');
+        const grid = document.createElement('div');
+        grid.className = 'noor-pixel-exit__grid';
+
+        const columns = Math.min(48, Math.max(10, Math.ceil(window.innerWidth / 44)));
+        const rows = Math.min(28, Math.max(8, Math.ceil(window.innerHeight / Math.max(1, window.innerWidth / columns))));
+        grid.style.gridTemplateColumns = 'repeat(' + columns + ', minmax(0, 1fr))';
+        grid.style.gridTemplateRows = 'repeat(' + rows + ', minmax(0, 1fr))';
+        const centerX = (columns - 1) / 2;
+        const centerY = (rows - 1) / 2;
+        const maxDistance = Math.max(1, Math.hypot(centerX, centerY));
+
+        for (let row = 0; row < rows; row += 1) {
+          for (let column = 0; column < columns; column += 1) {
+            const pixel = document.createElement('span');
+            pixel.className = 'noor-pixel-exit__cell tone-' + ((row * 3 + column) % 4);
+            const distance = Math.hypot(column - centerX, row - centerY) / maxDistance;
+            pixel.style.setProperty('--pixel-delay', (distance * 0.34).toFixed(3) + 's');
+            grid.appendChild(pixel);
+          }
+        }
+
+        const label = document.createElement('div');
+        label.className = 'noor-pixel-exit__label';
+        const indexLabel = document.createElement('p');
+        indexLabel.className = 'noor-pixel-exit__index';
+        indexLabel.textContent = isArabic ? 'نور // ملاحظات ميدانية 001' : 'NOOR // FIELD NOTES 001';
+        const message = document.createElement('p');
+        message.className = 'noor-pixel-exit__message';
+        message.textContent = isArabic ? 'ما وراء العناوين' : 'LOOK BEYOND THE HEADLINE';
+        label.append(indexLabel, message);
+
+        pixelOverlay.append(grid, label);
+        document.body.appendChild(pixelOverlay);
+        document.body.classList.add('pixel-transition-active');
+        window.setTimeout(() => {
+          window.location.href = destination;
+        }, 920);
+      });
     });
   }
 
