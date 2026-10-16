@@ -46,7 +46,7 @@
 
     const revealTargets = Array.from(document.querySelectorAll(
       '.section-heading > *, .photo-card, .support-card, ' +
-      '.transparency-panel > *, .learn-inner > *, .footer-inner > *'
+      '.response-card, .response-source, .transparency-panel > *, .learn-inner > *, .footer-inner > *'
     ));
     revealTargets.forEach((element, index) => {
       element.classList.add('motion-reveal');

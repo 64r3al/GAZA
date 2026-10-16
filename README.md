@@ -39,3 +39,10 @@ A workflow attempts to publish this static site on pushes to `main`. If Pages is
 node --check js/main.js
 python scripts/check_site.py
 ```
+
+
+## Official humanitarian information
+
+The homepage includes selected **planned targets** from UNICEF's *State of Palestine Appeal — September 2026 revision*. The targets cover the State of Palestine, including Gaza and the West Bank, and must not be presented as achieved results or Gaza-only totals. Consult the [official appeal](https://www.unicef.org/appeals/state-of-palestine) and [situation reports](https://www.unicef.org/appeals/state-of-palestine/situation-reports) for source context and updates.
+
+NOOR links visitors to UNICEF's [Gaza appeal](https://help.unicef.org/en/gaza-2026). That page notes funds may be redirected to other UNICEF initiatives for vulnerable children if resources raised exceed the immediate response needs in Gaza. Donors should review the live appeal terms before contributing.

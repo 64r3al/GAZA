@@ -113,3 +113,22 @@ html.motion-ready .motion-reveal.is-revealed{
   .scroll-cue span{animation:none!important;opacity:1}
   .nav.is-open{animation:none}
 }
+
+
+/* Verified 2026 response information */
+.response-section{background:linear-gradient(180deg,#0d0d0f,#101012 55%,#0c0c0e);border-block:1px solid rgba(255,255,255,.045)}
+.response-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px;margin-top:34px}
+.response-card{min-width:0;padding:24px 21px 22px;border:1px solid var(--line);border-radius:10px;background:linear-gradient(155deg,#19191c,#121214);box-shadow:0 10px 30px rgba(0,0,0,.10)}
+.response-number{margin:0 0 16px;color:var(--rose);font:400 clamp(30px,3.15vw,43px)/1 Anton,Impact,sans-serif;letter-spacing:.015em;font-variant-numeric:tabular-nums}
+.response-card h3{margin:0 0 11px;color:var(--text);font-size:14px;line-height:1.55;font-weight:700}
+.response-card>p:last-child{margin:0;color:var(--muted);font-size:12px;line-height:1.8}
+.response-source{display:flex;justify-content:space-between;align-items:flex-start;gap:22px;margin-top:19px;padding:17px 19px;border:1px solid var(--line);border-radius:8px;background:rgba(255,255,255,.018)}
+.response-source>p{max-width:740px;margin:0;color:var(--muted-dark);font-size:11px;line-height:1.8}
+.response-source-links{display:flex;flex-wrap:wrap;gap:16px;flex-shrink:0}
+.response-source-links a{color:var(--rose);font-size:11px;font-weight:700;text-decoration:none}
+.response-source-links a:hover{color:var(--text)}
+.source-note{margin:15px 0 0;padding:12px 13px;border-inline-start:2px solid var(--rose);background:rgba(193,18,31,.07);color:var(--muted)!important;font-size:11px!important;line-height:1.75!important}
+[dir=rtl] .response-number{letter-spacing:0;font-family:Cairo,sans-serif;font-weight:800}
+[dir=rtl] .response-card h3{font-family:Cairo,sans-serif}
+@media(max-width:1050px){.response-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.response-source{flex-direction:column;gap:10px}}
+@media(max-width:560px){.response-grid{grid-template-columns:1fr;gap:11px;margin-top:25px}.response-card{padding:20px}.response-number{font-size:35px;margin-bottom:11px}.response-source{padding:15px}.response-source-links{flex-direction:column;gap:10px}}
