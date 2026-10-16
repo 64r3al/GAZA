@@ -409,13 +409,17 @@
       signal.className = 'noor-warning-screen__signal';
       const metadata = document.createElement('span');
       metadata.className = 'noor-warning-screen__meta';
-      metadata.textContent = isArabic ? 'نور // سجل تحذير 001' : 'NOOR // WARNING FILE 001';
+      metadata.textContent = isArabic ? 'نور // تنبيه محتوى حساس // 001' : 'NOOR // SENSITIVE CONTENT NOTICE // 001';
       signalRow.append(signal, metadata);
 
       const title = document.createElement('h2');
       title.className = 'noor-warning-screen__title';
       title.id = 'noor-warning-title';
-      title.textContent = isArabic ? 'تحذير نفسي' : 'PSYCHOLOGY WARNING';
+      title.textContent = isArabic ? 'تحذير من محتوى حساس' : 'CONTENT WARNING';
+
+      const subhead = document.createElement('p');
+      subhead.className = 'noor-warning-screen__subhead';
+      subhead.textContent = isArabic ? 'قد تكون المواد التالية مؤلمة أو مزعجة' : 'SENSITIVE MATERIAL AHEAD // READER DISCRETION ADVISED';
 
       const copy = document.createElement('div');
       copy.className = 'noor-warning-screen__copy';
@@ -424,48 +428,62 @@
       const lineOne = document.createElement('p');
       lineOne.className = 'noor-warning-screen__lead';
       lineOne.textContent = isArabic
-        ? 'قد ترافقك هذه التجربة حتى بعد مغادرتك.'
-        : 'This experience may stay with you after you leave.';
+        ? 'تتناول هذه التجربة الحرب في غزة، والوفاة، وفقدان أفراد الأسرة أو الانفصال عنهم، والنزوح، والإصابات، والظروف الإنسانية القاسية.'
+        : 'This experience discusses the war in Gaza, death, family loss or separation, displacement, injuries, and severe humanitarian conditions.';
 
       const lineTwo = document.createElement('p');
       lineTwo.textContent = isArabic
-        ? 'تدعوك إلى النظر إلى ما وراء العناوين. تعرض الصفحة التالية شهادات موثّقة عن أطفال وعائلات تأثروا بالحرب في غزة. هؤلاء أناس حقيقيون وخسائرهم حقيقية، وليسوا شخصيات خيالية.'
-        : 'It asks you to look beyond the headline. The next page shares documented accounts of children and families affected by the war in Gaza. These are real people and real losses—not fictional characters.';
+        ? 'قد تشير بعض التقارير أو الشهادات المرتبطة إلى الدم أو تفاصيل أخرى مؤلمة. قد تكون القصص أو الصور المرتبطة صعبة المشاهدة أو القراءة.'
+        : 'Some linked reports or personal accounts may refer to blood or other distressing details. Stories or images in related sources may be difficult to read or view.';
 
       const lineThree = document.createElement('p');
       lineThree.textContent = isArabic
-        ? 'هذا الموقع لا ينشئ ملفاً نفسياً عنك ولا يستخدم ردودك الشخصية ضدك. إنه يعرض معلومات موثّقة، وما تختار فعله بها يعود إليك.'
-        : 'This website does not psychologically profile you or use personal responses against you. It presents sourced information; what you choose to do with it is yours.';
+        ? 'المحتوى موثّق ويهدف إلى التوعية، وليس إلى الصدمة. تابع فقط إذا كنت مستعداً، ويمكنك التوقف أو المغادرة في أي وقت.'
+        : 'The material is sourced to inform and bear witness, not to shock. Continue only if you feel ready; you can pause or leave at any time.';
 
       copy.append(lineOne, lineTwo, lineThree);
 
       const note = document.createElement('p');
       note.className = 'noor-warning-screen__note';
       note.textContent = isArabic
-        ? 'اقرأ على مهل. غادر متى احتجت.'
-        : 'READ AT YOUR OWN PACE. LEAVE WHENEVER YOU NEED.';
+        ? 'خذ وقتك. سلامتك وراحتك أهم من المتابعة.'
+        : 'TAKE YOUR TIME. YOUR WELL-BEING MATTERS MORE THAN CONTINUING.';
 
       const actions = document.createElement('div');
       actions.className = 'noor-warning-screen__actions';
       const continueButton = document.createElement('button');
       continueButton.type = 'button';
       continueButton.className = 'noor-warning-screen__continue';
-      continueButton.textContent = isArabic ? 'أفهم ذلك — تابع' : 'I UNDERSTAND — CONTINUE';
+      continueButton.disabled = true;
+      continueButton.textContent = isArabic ? 'متابعة إلى القصص' : 'CONTINUE TO THE STORIES';
       const returnButton = document.createElement('button');
       returnButton.type = 'button';
       returnButton.className = 'noor-warning-screen__return';
       returnButton.textContent = isArabic ? 'العودة إلى نور' : 'RETURN TO NOOR';
       actions.append(continueButton, returnButton);
 
+      const confirmation = document.createElement('div');
+      confirmation.className = 'noor-warning-screen__confirmation';
+      const acknowledgement = document.createElement('input');
+      acknowledgement.type = 'checkbox';
+      acknowledgement.id = 'noor-warning-confirm';
+      acknowledgement.className = 'noor-warning-screen__checkbox';
+      const confirmationLabel = document.createElement('label');
+      confirmationLabel.htmlFor = acknowledgement.id;
+      confirmationLabel.textContent = isArabic
+        ? 'قرأت التحذير وأختار المتابعة إلى القصص.'
+        : 'I have read this warning and choose to continue to the stories.';
+      confirmation.append(acknowledgement, confirmationLabel);
+
       const footer = document.createElement('div');
       footer.className = 'noor-warning-screen__footer';
-      footer.textContent = isArabic ? 'إشارة ثابتة // لا توجد بيانات نفسية' : 'SIGNAL STABLE // NO PSYCHOLOGICAL PROFILING';
+      footer.textContent = isArabic ? 'ملاحظات ميدانية 001 // شهادات ومصادر موثّقة // لا يوجد صوت تلقائي' : 'FIELD NOTES 001 // DOCUMENTED SOURCES // NO AUTO-PLAY AUDIO';
 
-      frame.append(signalRow, title, copy, note, actions, footer);
+      frame.append(signalRow, title, subhead, copy, note, confirmation, actions, footer);
       overlay.appendChild(frame);
       document.body.appendChild(overlay);
       document.body.classList.add('noor-warning-open');
-      continueButton.focus({ preventScroll: true });
+      acknowledgement.focus({ preventScroll: true });
 
       function closeWarning() {
         if (!overlay.isConnected) return;
@@ -475,6 +493,10 @@
         thresholdLink.focus({ preventScroll: true });
       }
 
+      acknowledgement.addEventListener('change', () => {
+        continueButton.disabled = !acknowledgement.checked;
+      });
+
       overlay.addEventListener('keydown', (keyEvent) => {
         if (keyEvent.key === 'Escape') {
           keyEvent.preventDefault();
@@ -483,18 +505,22 @@
         }
         if (keyEvent.key !== 'Tab') return;
         const activeElement = document.activeElement;
-        if (keyEvent.shiftKey && activeElement === continueButton) {
+        if (keyEvent.shiftKey && activeElement === acknowledgement) {
           keyEvent.preventDefault();
           returnButton.focus();
         } else if (!keyEvent.shiftKey && activeElement === returnButton) {
           keyEvent.preventDefault();
-          continueButton.focus();
+          if (continueButton.disabled) acknowledgement.focus();
+          else continueButton.focus();
+        } else if (keyEvent.shiftKey && activeElement === continueButton) {
+          keyEvent.preventDefault();
+          acknowledgement.focus();
         }
       });
       returnButton.addEventListener('click', closeWarning);
 
       continueButton.addEventListener('click', () => {
-        if (!overlay.isConnected) return;
+        if (!overlay.isConnected || !acknowledgement.checked) return;
         overlay.remove();
         document.body.classList.remove('noor-warning-open');
         try { sessionStorage.setItem('noor-story-arrival', '1'); } catch (_) { /* Storage may be disabled. */ }
