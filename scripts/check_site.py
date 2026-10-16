@@ -156,14 +156,20 @@ if "const thresholdLink = document.querySelector" not in js_source or "noor-pixe
     errors.append("missing pixel transition from NOOR navigation")
 if "noor-warning-screen" not in js_source or "PSYCHOLOGY WARNING" not in js_source:
     errors.append("missing retro pre-entry psychology warning screen")
-if "This website does not psychologically profile you" not in js_source:
-    errors.append("pre-entry warning must not falsely claim the site profiles visitors")
+if "Some linked reports or personal accounts may refer to blood or other distressing details." not in js_source:
+    errors.append("content warning must mention potentially distressing material accurately")
+if "continueButton.disabled = true" not in js_source or "I have read this warning and choose to continue to the stories." not in js_source:
+    errors.append("content warning must require explicit acknowledgement before entry")
 if CSS_FILE.exists():
     transition_css = CSS_FILE.read_text(encoding="utf-8")
     if ".noor-pixel-exit__grid" not in transition_css or "@keyframes noor-pixel-fill" not in transition_css:
         errors.append("missing pixel-transition grid animation")
     if ".noor-warning-screen__frame" not in transition_css or "@keyframes noor-warning-flicker" not in transition_css:
         errors.append("missing red retro CRT warning styles")
+    if ".noor-warning-screen__frame{\n  position:relative;isolation:isolate;width:100%;min-height:100vh;min-height:100dvh;" not in transition_css:
+        errors.append("warning screen must fill the viewport rather than render as a small card")
+    if "@keyframes noor-crt-roll" not in transition_css or "@keyframes noor-crt-tracking" not in transition_css:
+        errors.append("warning screen is missing CRT roll/tracking effects")
     if "@media(prefers-reduced-motion:reduce)" not in transition_css or ".noor-pixel-exit__cell" not in transition_css or ".noor-warning-screen" not in transition_css:
         errors.append("warning/pixel transition reduced-motion styling is missing")
 
