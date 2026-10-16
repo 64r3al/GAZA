@@ -105,9 +105,13 @@
           return;
         }
 
-        const duration = 1850;
+        // Begin near the target, not zero: these are planned reach targets,
+        // and a full-range counter makes large figures feel artificial.
+        const duration = 4200;
+        const initialProgress = 0.82;
+        const startValue = Math.round(target * initialProgress);
         let startTime = null;
-        display.textContent = '0';
+        display.textContent = formatter.format(startValue);
         display.classList.remove('is-counted');
         display.classList.add('is-counting');
 
@@ -119,8 +123,10 @@
 
           if (startTime === null) startTime = timestamp;
           const progress = Math.min((timestamp - startTime) / duration, 1);
-          const easedProgress = 1 - Math.pow(1 - progress, 4);
-          display.textContent = formatter.format(Math.round(target * easedProgress));
+          // Quadratic ease-out decelerates across the full count, especially at the end.
+          const easedProgress = 1 - Math.pow(1 - progress, 2);
+          const currentValue = startValue + ((target - startValue) * easedProgress);
+          display.textContent = formatter.format(Math.round(currentValue));
 
           if (progress < 1) {
             activeFrames.set(display, window.requestAnimationFrame(frame));
@@ -133,7 +139,7 @@
         }
 
         activeFrames.set(display, window.requestAnimationFrame(frame));
-      }, index * 115);
+      }, index * 180);
 
       staggerTimers.add(timer);
     }

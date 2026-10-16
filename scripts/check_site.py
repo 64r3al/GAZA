@@ -151,6 +151,10 @@ if HTML.count('class="response-number-accessible"') != 4 or HTML.count('class="r
     errors.append("response counters must keep accessible final values and separate animated visuals")
 if "function setupResponseCounters()" not in js_source or "reduceMotion.matches" not in js_source:
     errors.append("response counter animation or reduced-motion handling is missing")
+if "const duration = 4200;" not in js_source or "const initialProgress = 0.82;" not in js_source:
+    errors.append("response counters should use a slower near-target count-up")
+if "1 - Math.pow(1 - progress, 2)" not in js_source:
+    errors.append("response counters must decelerate smoothly near their final values")
 if CSS_FILE.exists() and "noor-counter-enter" not in CSS_FILE.read_text(encoding="utf-8"):
     errors.append("response counter entrance styling is missing")
 
