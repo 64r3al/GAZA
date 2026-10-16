@@ -12,6 +12,9 @@
     document.querySelectorAll('[data-en][data-ar]').forEach((element) => {
       element.textContent = element.getAttribute('data-' + language);
     });
+    document.querySelectorAll('[data-en-alt][data-ar-alt]').forEach((element) => {
+      element.alt = element.getAttribute('data-' + language + '-alt');
+    });
     if (languageButton) {
       languageButton.setAttribute('aria-label', language === 'en' ? 'Switch language to Arabic' : 'حوّل اللغة إلى الإنجليزية');
     }

@@ -198,8 +198,40 @@ else:
     if "Samar was 17" not in story_html or "Qusay was 10" not in story_html:
         errors.append("story page is missing documented personal accounts")
 
+
+    new_story_sources = (
+        "https://www.unicef.org/sop/stories/childhood-displaced-gaza",
+        "https://www.unicef.org/sop/stories/gazas-children-need-urgent-international-support-get-them-back-learning",
+        "https://www.unicef.org/sop/stories/renewed-attacks-leave-gazas-children-cascading-crises",
+        "https://www.unicef.org/sop/stories/life-hangs-tenuously-balance-gaza-strip",
+        "https://www.unicef.org/sop/stories/hope-amid-pain-palestinian-children-gaza-strip-one-year-after-ceasefire",
+    )
+    for source_url in new_story_sources:
+        if source_url not in story_html:
+            errors.append(f"story page is missing a researched account or dated update: {source_url}")
+    for phrase in (
+        "Jana was 17",
+        "Reda, 12, and Siraj, 5",
+        "Mays, a girl using a wheelchair",
+        "Mais Abu Saif",
+        "There’s a long line",
+        "A year after the ceasefire",
+    ):
+        if phrase not in story_html:
+            errors.append(f"story page is missing researched content: {phrase}")
+    if story_html.count('class="story-photo-card"') < 6:
+        errors.append("documentary photo essay needs at least six captioned photographs")
+    if story_html.count('class="story-photo-img"') < 6:
+        errors.append("documentary photo essay image markup is incomplete")
+    if "creativecommons.org/licenses/by-sa/3.0/igo/" not in story_html:
+        errors.append("documentary photo essay must link each photo to its license")
+
     story_parser = SiteParser()
     story_parser.feed(story_html)
+    if story_parser.images_without_alt:
+        errors.append("story-page images missing alt attributes: " + ", ".join(story_parser.images_without_alt))
+    if story_parser.images_without_dimensions:
+        errors.append("story-page images missing width/height: " + ", ".join(story_parser.images_without_dimensions))
     for local_ref in story_parser.local_refs:
         if local_ref and not (ROOT / local_ref).is_file():
             errors.append(f"missing story-page local asset: {local_ref}")
