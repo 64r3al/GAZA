@@ -1,37 +1,39 @@
 # NOOR — A light for every child
 
-A responsive, bilingual (English/Arabic) static awareness page for humanitarian support for children affected by the crisis in Gaza.
+NOOR is an independent, responsive awareness page in English and Arabic, sharing practical ways to learn about humanitarian support for children affected by the crisis in Gaza.
 
 ## Run locally
 
-No build step or package installation is required. From this folder, run a static server, for example:
+No build step or package installation is required:
 
 ```bash
 python -m http.server 8000
 ```
 
-Then open <http://localhost:8000>.
+Open <http://localhost:8000>.
 
 ## Project structure
 
-- `index.html` — page structure, copy and official resource links
-- `css/style.css` — responsive visual styles and reduced-motion support
-- `js/main.js` — language toggle, mobile navigation, carousel, share and copy actions
-- `assets/hero/` — optimized WebP photography supplied with the project
-- `scripts/check_site.py` — local asset, anchor and unfinished-placeholder checks
-- `.github/workflows/` — automated quality checks and GitHub Pages deployment
+- `index.html` — bilingual page, accessible image carousel, official humanitarian links
+- `css/style.css` — responsive design, right-to-left layout, reduced-motion support
+- `js/main.js` — language toggle, mobile navigation, carousel and sharing controls
+- `scripts/check_site.py` — checks local files, fragment links, duplicate IDs and unfinished copy
+- `.github/workflows/ci.yml` — automated validation on pushes and pull requests
+- `.github/workflows/pages.yml` — GitHub Pages build and deployment
 
-## Important transparency notes
+## Transparency and image credits
 
-NOOR is an independent awareness page and is **not affiliated with, endorsed by, or sponsored by UNICEF**. It does not collect donations, process payments, or store donor details. Donation buttons lead to UNICEF's official website so visitors can review the appeal and terms there.
+NOOR is **not affiliated with, endorsed by, or sponsored by UNICEF**. It does not collect donations, process payments, store payment details, issue receipts or claim that a donation purchases a specific item. Donation links take visitors to UNICEF's website so they can review the destination and terms before making their own decision.
 
-The images were supplied with the project. Confirm their original source, date, photographer credit and reuse permissions before promoting the site widely. Do not add unverified statistics, donation amounts, claims of delivery, or fabricated ledger entries.
+The photographs currently load from UNICEF's public website and are credited in the page to UNICEF/UNI820851, UNICEF/UNI849963/Nateel and UNICEF/UNI901432/Nateel. Confirm the applicable image-use terms before wider promotion or redistribution. An image being publicly accessible does not automatically mean it is free to reuse.
+
+No unverified live statistics, fabricated aid-delivery claims, fake receipts, or simulated donation ledger are used.
 
 ## Publish with GitHub Pages
 
-The Pages workflow publishes the static site on pushes to `main`. In the repository’s **Settings → Pages**, select **GitHub Actions** as the build and deployment source if GitHub Pages has not already been enabled for the repository. Once deployment finishes, GitHub Actions will show the published URL.
+A workflow attempts to publish this static site on pushes to `main`. If Pages is not enabled yet, open **Settings → Pages** and choose **GitHub Actions** as the deployment source. Check the Actions tab for validation and deployment results and for the published URL.
 
-## Checks
+## Run the checks
 
 ```bash
 node --check js/main.js
