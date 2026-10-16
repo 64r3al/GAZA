@@ -154,7 +154,7 @@ elif "<title>A hard pill to swallow | NOOR Field Notes</title>" not in blank_pag
 
 if "const thresholdLink = document.querySelector" not in js_source or "noor-pixel-exit__cell" not in js_source:
     errors.append("missing pixel transition from NOOR navigation")
-if "noor-warning-screen" not in js_source or "PSYCHOLOGY WARNING" not in js_source:
+if "noor-warning-screen" not in js_source or "CONTENT WARNING" not in js_source:
     errors.append("missing retro pre-entry psychology warning screen")
 if "Some linked reports or personal accounts may refer to blood or other distressing details." not in js_source:
     errors.append("content warning must mention potentially distressing material accurately")
