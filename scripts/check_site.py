@@ -58,7 +58,7 @@ if not css_path.exists():
     errors.append("missing stylesheet: css/style.css")
 else:
     css = css_path.read_text(encoding="utf-8")
-    for value in re.findall(r"url\([\\"']?([^\\"')]+)", css):
+    for value in re.findall(r"""url\(["']?([^"')]+)""", css):
         if re.match(r"^(?:data:|https?:|#)", value, re.I):
             continue
         if not (css_path.parent / value).exists():
