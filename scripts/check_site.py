@@ -214,6 +214,26 @@ else:
     for source_url in new_story_sources:
         if source_url not in story_html:
             errors.append(f"story page is missing a researched account or dated update: {source_url}")
+
+    new_evidence_media_sources = (
+        "https://www.hrw.org/news/2024/04/04/gaza-israeli-strike-killing-106-civilians-an-apparent-war-crime",
+        "https://www.youtube.com/watch?v=jZdcDhYuBNs",
+        "https://www.amnesty.org/en/latest/news/2026/05/israel-opt-israels-systematic-destruction-of-high-rise-buildings-must-be-investigated-as-war-crimes-of-wanton-destruction-and-collective-punishment/",
+        "https://www.theguardian.com/world/2026/oct/17/couples-families-separated-war-in-gaza",
+        "https://commons.wikimedia.org/wiki/File:Images_of_war_23-25_from_Gaza,_by_Jaber_Badwen,_IMG_5889.jpg",
+        "https://creativecommons.org/licenses/by-sa/4.0/",
+    )
+    for source_url in new_evidence_media_sources:
+        if source_url not in story_html:
+            errors.append(f"story page is missing a new evidence/media source link: {source_url}")
+    if story_html.count('class="story-lived-card"') < 3 or 'id="lived-accounts-title"' not in story_html:
+        errors.append("field notes need the three source-linked personal testimony cards")
+    if 'href="#lived-accounts-title"' not in story_html:
+        errors.append("field-note jump navigation must link to the personal testimony section")
+    if 'data-video-id="jZdcDhYuBNs"' not in story_html or 'id="video-ack-engineers"' not in story_html:
+        errors.append("Human Rights Watch strike footage must have an explicit content-warning gate")
+    if 'Jaber Jehad Badwan' not in story_html or 'CC BY-SA 4.0' not in story_html:
+        errors.append("the added documentary school photograph needs clear creator and licence attribution")
     for phrase in (
         "Jana was 17",
         "Reda, 12, and Siraj, 5",
@@ -397,6 +417,17 @@ else:
         "https://www.hrw.org/news/2025/08/01/gaza-israeli-killings-palestinians-seeking-food-are-war-crimes",
         "https://www.bellingcat.com/news/2025/04/09/gaza-palestine-israel-killed-death-aid-workers-international-red-cross-crescent-audio-analysis/",
         "https://www.reuters.com/default/israel-opens-criminal-probes-over-killings-hind-rajab-gaza-rescue-workers-2026-08-19/",
+        "https://www.hrw.org/news/2024/04/04/gaza-israeli-strike-killing-106-civilians-an-apparent-war-crime",
+        "https://www.un.org/unispal/document/commission-of-inquiry-report-genocide-in-gaza-a-hrc-60-crp-3/",
+        "https://embassies.gov.il/ungeneva/en/node/9158",
+        "https://icj-web.leman-icc.cloud/case/192",
+        "https://www.un.org/unispal/document/coi-report-23jun26/",
+        "https://www.gov.il/en/pages/israel-s-response-to-the-coi-report-regarding-palestinian-children-since-october-7-2023",
+        "https://www.icc-cpi.int/news/situation-state-palestine-icc-pre-trial-chamber-i-rejects-state-israels-challenges",
+        "https://www.icc-cpi.int/palestine",
+        "https://www.ft.com/content/432c9cff-b86f-4712-8e64-56cf3895d687",
+        "https://www.theguardian.com/world/2026/oct/17/couples-families-separated-war-in-gaza",
+        "https://www.reuters.com/world/middle-east/israeli-fire-kills-two-people-gaza-medics-say-2026-10-12/",
     ):
         if source_url not in archive_html:
             errors.append(f"evidence archive is missing a key source: {source_url}")
@@ -404,6 +435,10 @@ else:
     archive_cards = re.findall(r'<article class="archive-card"([^>]*)>', archive_html)
     if len(archive_cards) < 8:
         errors.append(f"evidence archive needs at least eight case/report records; found {len(archive_cards)}")
+    if len(archive_cards) < 18:
+        errors.append(f"expanded evidence archive needs at least 18 case/report records; found {len(archive_cards)}")
+    if '<span class="archive-fact-number" id="archive-total">18</span>' not in archive_html:
+        errors.append("evidence archive’s initial record total should match its expanded index")
     record_ids = []
     for index, attributes in enumerate(archive_cards, start=1):
         match = re.search(r'data-record-id="([^"]+)"', attributes)
