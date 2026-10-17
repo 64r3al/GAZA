@@ -23,6 +23,8 @@ jobs:
         run: node --check js/story.js
       - name: Check archive JavaScript syntax
         run: node --check js/archive.js
+      - name: Smoke-test archive filters and language controls
+        run: node scripts/test_archive.js
       - name: Validate local assets and links
         run: python scripts/check_site.py
       - name: Install image optimization dependency
