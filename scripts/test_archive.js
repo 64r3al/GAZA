@@ -16,14 +16,14 @@ function toDatasetName(attributeName) {
 
 function readAttributes(source) {
   const attributes = {};
-  const pattern = /([a-zA-Z_:][\\w:.-]*)="([^"]*)"/g;
+  const pattern = /([a-zA-Z_:][\w:.-]*)="([^"]*)"/g;
   let match;
   while ((match = pattern.exec(source))) attributes[match[1]] = match[2];
   return attributes;
 }
 
 function buildCards(documentHtml) {
-  const cardMatches = [...documentHtml.matchAll(/<article class="archive-card"([^>]*)>([\\s\\S]*?)<\\/article>/g)];
+  const cardMatches = [...documentHtml.matchAll(/<article class="archive-card"([^>]*)>([\s\S]*?)<\/article>/g)];
   assert.ok(cardMatches.length >= 8, 'HTML should contain at least eight archive records');
 
   return cardMatches.map((match) => {
@@ -32,7 +32,7 @@ function buildCards(documentHtml) {
     Object.entries(attrs).forEach(([key, value]) => {
       if (key.startsWith('data-')) dataset[toDatasetName(key)] = value;
     });
-    const textContent = match[2].replace(/<[^>]*>/g, ' ').replace(/\\s+/g, ' ');
+    const textContent = match[2].replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ');
     return {
       dataset,
       textContent,
@@ -134,7 +134,6 @@ const localStorage = {
 };
 vm.runInNewContext(script, { document, localStorage }, { filename: 'archive.js' });
 
-const byId = (id) => cards.find((card) => card.dataset.recordId === id);
 const visibleIds = () => cards.filter((card) => !card.hidden).map((card) => card.dataset.recordId);
 const trigger = (node, type) => node.dispatch(type, { preventDefault() {} });
 const reset = () => trigger(nodes['archive-clear'], 'click');
