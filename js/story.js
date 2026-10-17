@@ -15,6 +15,9 @@
     document.querySelectorAll('[data-en-alt][data-ar-alt]').forEach((element) => {
       element.alt = element.getAttribute('data-' + language + '-alt');
     });
+    document.querySelectorAll('[data-en-aria][data-ar-aria]').forEach((element) => {
+      element.setAttribute('aria-label', element.getAttribute('data-' + language + '-aria'));
+    });
     if (languageButton) {
       languageButton.setAttribute('aria-label', language === 'en' ? 'Switch language to Arabic' : 'حوّل اللغة إلى الإنجليزية');
     }
@@ -42,6 +45,30 @@
     reveals.forEach((element) => observer.observe(element));
   } else {
     reveals.forEach((element) => element.classList.add('is-visible'));
+  }
+
+  // Keep the field-note jump links in sync with the section currently being read.
+  const jumpNavigation = document.querySelector('.story-jump-nav');
+  if (jumpNavigation && 'IntersectionObserver' in window) {
+    const jumpLinks = Array.from(jumpNavigation.querySelectorAll('a[href^="#"]'));
+    const jumpTargets = jumpLinks
+      .map((link) => document.getElementById(link.hash.slice(1)))
+      .filter(Boolean);
+
+    const jumpObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        jumpLinks.forEach((link) => {
+          if (link.hash === '#' + entry.target.id) {
+            link.setAttribute('aria-current', 'location');
+          } else {
+            link.removeAttribute('aria-current');
+          }
+        });
+      });
+    }, { rootMargin: '-15% 0px -74% 0px', threshold: 0 });
+
+    jumpTargets.forEach((target) => jumpObserver.observe(target));
   }
 
   function buildPixelGrid(grid, columns, rows, delayMax, classPrefix) {
