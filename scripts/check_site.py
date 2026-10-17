@@ -13,6 +13,9 @@ ROOT = Path(ARGUMENTS.parse_args().root).resolve()
 HTML_FILE = ROOT / "index.html"
 CSS_FILE = ROOT / "css" / "style.css"
 JS_FILE = ROOT / "js" / "main.js"
+ARCHIVE_HTML_FILE = ROOT / "evidence-archive.html"
+ARCHIVE_CSS_FILE = ROOT / "css" / "archive.css"
+ARCHIVE_JS_FILE = ROOT / "js" / "archive.js"
 HTML = HTML_FILE.read_text(encoding="utf-8")
 errors = []
 
@@ -143,6 +146,8 @@ for required_share_item in (
         errors.append(f"missing original social sharing feature: {required_share_item}")
 if "EyeonPalestine" in HTML or "eyeonpalestine.offical" in HTML:
     errors.append("follow-profile links should not replace the original share actions")
+if 'href="evidence-archive.html"' not in HTML or "Browse the evidence archive" not in HTML:
+    errors.append("homepage must link to the searchable evidence archive from navigation and the learn section")
 
 blank_page_path = ROOT / "a-hard-pill-to-swallow.html"
 if 'href="a-hard-pill-to-swallow.html"' not in HTML:
@@ -345,6 +350,141 @@ if story_css_path.is_file():
             errors.append(f"story stylesheet is missing professional media layout/support: {style_marker}")
 
 
+
+# The archive is a first-class page in both source and production builds.
+if not ARCHIVE_HTML_FILE.is_file():
+    errors.append("missing searchable evidence archive: evidence-archive.html")
+    archive_html = ""
+else:
+    archive_html = ARCHIVE_HTML_FILE.read_text(encoding="utf-8")
+    if not archive_html.lstrip().lower().startswith("<!doctype html>"):
+        errors.append("evidence archive is missing the HTML5 doctype")
+    if "<title>Gaza Evidence Archive | NOOR Field Notes</title>" not in archive_html:
+        errors.append("evidence archive title is missing or incorrect")
+    for metadata in (
+        'name="description"',
+        'name="robots" content="index,follow"',
+        'property="og:image"',
+        'name="twitter:card" content="summary_large_image"',
+        'rel="canonical"',
+    ):
+        if metadata not in archive_html:
+            errors.append(f"evidence archive is missing metadata: {metadata}")
+    if 'href="evidence-archive.html"' not in HTML:
+        errors.append("homepage is missing a local link to the evidence archive")
+
+    for source_url in (
+        "https://www.unicef.org/mena/press-releases/childhood-defined-struggle-survival-gaza-strip",
+        "https://www.reuters.com/world/middle-east/un-says-gaza-malnutrition-gains-fragile-commercial-supplies-halt-2026-10-16/",
+        "https://www.ochaopt.org/content/humanitarian-situation-report-2-october-2026",
+        "https://www.un.org/unispal/document/conflict-related-sexual-violence-report-of-the-secretary-general-s-2026-321/",
+        "https://www.amnesty.org/en/latest/news/2026/05/israel-opt-israels-systematic-destruction-of-high-rise-buildings-must-be-investigated-as-war-crimes-of-wanton-destruction-and-collective-punishment/",
+        "https://www.hrw.org/news/2025/08/07/gaza-israeli-school-strikes-magnify-civilian-peril",
+        "https://www.hrw.org/news/2025/08/01/gaza-israeli-killings-palestinians-seeking-food-are-war-crimes",
+        "https://www.bellingcat.com/news/2025/04/09/gaza-palestine-israel-killed-death-aid-workers-international-red-cross-crescent-audio-analysis/",
+        "https://www.reuters.com/default/israel-opens-criminal-probes-over-killings-hind-rajab-gaza-rescue-workers-2026-08-19/",
+    ):
+        if source_url not in archive_html:
+            errors.append(f"evidence archive is missing a key source: {source_url}")
+
+    archive_cards = re.findall(r'<article class="archive-card"([^>]*)>', archive_html)
+    if len(archive_cards) < 8:
+        errors.append(f"evidence archive needs at least eight case/report records; found {len(archive_cards)}")
+    record_ids = []
+    for index, attributes in enumerate(archive_cards, start=1):
+        match = re.search(r'data-record-id="([^"]+)"', attributes)
+        if match:
+            record_ids.append(match.group(1))
+        else:
+            errors.append(f"archive record {index} is missing a stable record ID")
+        for field in ("data-start", "data-end", "data-category", "data-location", "data-source-type", "data-status", "data-footage", "data-keywords"):
+            if not re.search(rf'\b{field}="[^"]+"', attributes):
+                errors.append(f"archive record {index} is missing {field}")
+        start_date = re.search(r'data-start="(\d{4}-\d{2}-\d{2})"', attributes)
+        end_date = re.search(r'data-end="(\d{4}-\d{2}-\d{2})"', attributes)
+        if not start_date or not end_date:
+            errors.append(f"archive record {index} needs ISO-formatted start and end dates")
+        elif start_date.group(1) > end_date.group(1):
+            errors.append(f"archive record {index} has a start date later than its end date")
+    if len(record_ids) != len(set(record_ids)):
+        errors.append("evidence archive contains duplicate record IDs")
+    if archive_html.count('class="archive-sources"') != len(archive_cards):
+        errors.append("every archive record must include a source-and-scope details panel")
+
+    for control_id in (
+        "archive-query",
+        "archive-date-from",
+        "archive-date-to",
+        "archive-category",
+        "archive-location",
+        "archive-source-type",
+        "archive-status",
+        "archive-footage",
+        "archive-sort",
+        "archive-clear",
+        "archive-result-count",
+        "archive-no-results",
+    ):
+        if f'id="{control_id}"' not in archive_html:
+            errors.append(f"evidence archive is missing a required filter/result control: {control_id}")
+    if 'class="archive-no-results"' not in archive_html or 'aria-live="polite"' not in archive_html:
+        errors.append("archive result updates need an accessible live region")
+    if "<iframe" in archive_html.lower() or "autoplay=1" in archive_html.lower():
+        errors.append("evidence archive must not embed or autoplay distressing source media")
+
+    archive_parser = SiteParser()
+    archive_parser.feed(archive_html)
+    archive_parser.close()
+    for fragment in archive_parser.fragments:
+        if fragment and fragment not in archive_parser.ids:
+            errors.append(f"evidence archive has a broken internal link #{fragment}")
+    for local_ref in archive_parser.local_refs:
+        if not local_ref:
+            continue
+        target = (ROOT / local_ref).resolve()
+        if ROOT.resolve() not in target.parents and target != ROOT.resolve():
+            errors.append(f"archive path escapes project root: {local_ref}")
+        elif not target.is_file():
+            errors.append(f"evidence archive is missing a local asset/page: {local_ref}")
+    if archive_parser.new_tab_without_safe_rel:
+        errors.append("archive new-tab links missing rel=noopener noreferrer: " + ", ".join(archive_parser.new_tab_without_safe_rel))
+    if archive_parser.unlabelled_buttons:
+        errors.extend(archive_parser.unlabelled_buttons)
+
+if not ARCHIVE_JS_FILE.is_file():
+    errors.append("missing evidence archive script: js/archive.js")
+else:
+    archive_js = ARCHIVE_JS_FILE.read_text(encoding="utf-8")
+    for required_logic in (
+        "function normalize",
+        "function setLanguage",
+        "function sortCards",
+        "function matchesDateRange",
+        "function applyFilters",
+        "preventDefault()",
+        "noResults.hidden = visibleCount > 0 || invalidRange",
+        "fromDate > toDate",
+        "localStorage.setItem('noor-language', language)",
+    ):
+        if required_logic not in archive_js:
+            errors.append(f"archive search/filter/language logic is missing: {required_logic}")
+
+if not ARCHIVE_CSS_FILE.is_file():
+    errors.append("missing evidence archive stylesheet: css/archive.css")
+else:
+    archive_css = ARCHIVE_CSS_FILE.read_text(encoding="utf-8")
+    for style_marker in (
+        ".archive-filter-grid",
+        ".archive-card-grid",
+        ".archive-card[hidden]",
+        "@media(max-width:420px)",
+        "@media(prefers-reduced-motion:reduce)",
+    ):
+        if style_marker not in archive_css:
+            errors.append(f"archive stylesheet is missing responsive/accessibility support: {style_marker}")
+
+if not story_html_path.is_file() or 'href="evidence-archive.html"' not in story_html:
+    errors.append("documentary field notes must link to the evidence archive")
 
 if "runBootSequence()" not in js_source or "OPENING THE HUMANITARIAN FIELD ARCHIVE" not in js_source:
     errors.append("warning entry needs the scripted terminal boot sequence")
