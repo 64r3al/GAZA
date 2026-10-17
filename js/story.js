@@ -158,5 +158,81 @@
   });
 
 
+  // Load official X post widgets only after a visitor acknowledges each card's content/context note.
+  const xWidgetsUrl = 'https://platform.x.com/widgets.js';
+  let xWidgetsPromise = null;
+
+  function loadXWidgets() {
+    if (window.twttr && window.twttr.widgets) return Promise.resolve(window.twttr);
+    if (!xWidgetsPromise) {
+      xWidgetsPromise = new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = xWidgetsUrl;
+        script.async = true;
+        script.charset = 'utf-8';
+        script.onload = () => {
+          if (window.twttr && window.twttr.widgets) resolve(window.twttr);
+          else reject(new Error('X widgets did not initialize'));
+        };
+        script.onerror = () => reject(new Error('Could not load X widgets'));
+        document.head.appendChild(script);
+      }).catch((error) => {
+        xWidgetsPromise = null;
+        throw error;
+      });
+    }
+    return xWidgetsPromise;
+  }
+
+  document.querySelectorAll('.story-x-video-card[data-x-post-url]').forEach((card) => {
+    const consent = card.querySelector('.story-video-ack');
+    const loadButton = card.querySelector('[data-x-load-button="true"]');
+    const player = card.querySelector('.story-x-player');
+    if (!consent || !loadButton || !player) return;
+
+    loadButton.disabled = !consent.checked;
+    consent.addEventListener('change', () => {
+      loadButton.disabled = !consent.checked || Boolean(player.querySelector('iframe'));
+    });
+
+    loadButton.addEventListener('click', async () => {
+      if (!consent.checked || player.querySelector('iframe')) return;
+      const postUrl = card.getAttribute('data-x-post-url') || '';
+      if (!/^https:\/\/x\.com\/[A-Za-z0-9_]+\/status\/[0-9]+$/.test(postUrl)) return;
+
+      const blockquote = document.createElement('blockquote');
+      blockquote.className = 'twitter-tweet';
+      blockquote.setAttribute('data-theme', 'dark');
+      const link = document.createElement('a');
+      link.href = postUrl;
+      link.textContent = root.lang === 'ar' ? 'افتح المنشور الأصلي على إكس' : 'Open original post on X';
+      blockquote.appendChild(link);
+      player.replaceChildren(blockquote);
+      player.hidden = false;
+      loadButton.disabled = true;
+      loadButton.textContent = root.lang === 'ar' ? 'جارٍ تحميل منشور إكس...' : 'Loading original X post…';
+
+      try {
+        const twttr = await loadXWidgets();
+        await twttr.widgets.load(player);
+        if (player.querySelector('iframe')) {
+          loadButton.setAttribute('data-en', 'Original X post loaded above');
+          loadButton.setAttribute('data-ar', 'تم تحميل منشور إكس الأصلي أعلاه');
+          loadButton.textContent = root.lang === 'ar' ? 'تم تحميل منشور إكس الأصلي أعلاه' : 'Original X post loaded above';
+        } else {
+          player.hidden = true;
+          player.replaceChildren();
+          loadButton.disabled = false;
+          loadButton.textContent = root.lang === 'ar' ? 'تعذّر التضمين؛ افتح المصدر أدناه' : 'Embed unavailable — use the source link below';
+        }
+      } catch (_) {
+        player.hidden = true;
+        player.replaceChildren();
+        loadButton.disabled = false;
+        loadButton.textContent = root.lang === 'ar' ? 'تعذّر التضمين؛ افتح المصدر أدناه' : 'Embed unavailable — use the source link below';
+      }
+    });
+  });
+
   revealStoryPage();
 })();
