@@ -337,3 +337,89 @@ html.story-motion-ready .story-reveal.is-visible{opacity:1;transform:none}
 @media(prefers-reduced-motion:reduce){
   .story-investigation-links a{transition:none}
 }
+
+
+/* Quick navigation for the long field note; sticky on desktop and swipeable on small screens. */
+.story-jump-nav{
+  position:sticky;
+  top:0;
+  z-index:30;
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:8px;
+  padding:12px 0;
+  border-bottom:1px solid var(--story-line);
+  background:rgba(8,10,9,.96);
+  -webkit-backdrop-filter:blur(14px);
+  backdrop-filter:blur(14px);
+}
+.story-jump-label{
+  flex:0 0 auto;
+  margin-inline-end:4px;
+  color:#839286;
+  font:700 9px/1.6 "Courier New",monospace;
+  letter-spacing:.16em;
+}
+.story-jump-nav a{
+  flex:0 0 auto;
+  display:inline-flex;
+  align-items:center;
+  min-height:34px;
+  padding:7px 10px;
+  border:1px solid #2d3a30;
+  background:#0c100d;
+  color:#c7d4c9;
+  border-radius:2px;
+  font-size:10px;
+  font-weight:700;
+  line-height:1.5;
+  text-decoration:none;
+  transition:background .18s ease,border-color .18s ease,color .18s ease;
+}
+.story-jump-nav a:hover,
+.story-jump-nav a[aria-current="location"]{
+  border-color:#718b73;
+  background:#172019;
+  color:#f0f5ef;
+}
+.story-jump-nav a:focus-visible{
+  outline:2px solid #e3eee1;
+  outline-offset:3px;
+}
+#current-update-title,
+#photo-essay-title,
+#media-doc-title,
+#current-accounts-title,
+#investigations-title,
+#reality-title,
+#sources-title{
+  scroll-margin-top:94px;
+}
+.story-update-nutrition{
+  max-width:980px;
+  margin:18px 0 0;
+  padding:15px 17px;
+  border-inline-start:2px solid #9a3b41;
+  background:rgba(255,255,255,.025);
+  color:#b9c3b9;
+  font-size:12px;
+  line-height:1.9;
+}
+.story-update-source{flex-wrap:wrap}
+.story-update-source>span{flex:1 1 100%}
+
+@media(max-width:760px){
+  .story-jump-nav{
+    flex-wrap:nowrap;
+    overflow-x:auto;
+    overscroll-behavior-inline:contain;
+    scrollbar-width:thin;
+    padding:10px 0;
+  }
+  .story-jump-nav a{min-height:36px;padding:8px 10px}
+  .story-update-nutrition{padding:13px 14px;font-size:11px}
+}
+@media(prefers-reduced-motion:reduce){
+  .story-jump-nav a{transition:none}
+}
