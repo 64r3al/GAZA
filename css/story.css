@@ -423,3 +423,44 @@ html.story-motion-ready .story-reveal.is-visible{opacity:1;transform:none}
 @media(prefers-reduced-motion:reduce){
   .story-jump-nav a{transition:none}
 }
+
+
+/* Keep the evidence archive adjacent to the story, not in the homepage navigation. */
+.story-archive-link{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:34px;
+  padding:6px 10px;
+  border:1px solid #3e5841;
+  border-radius:2px;
+  background:#111812;
+  color:#d0e4cf;
+  font-size:10px;
+  font-weight:800;
+  line-height:1.5;
+  text-decoration:none;
+  white-space:nowrap;
+  transition:background .18s ease,border-color .18s ease,color .18s ease;
+}
+.story-archive-link:hover{
+  border-color:#9eb99e;
+  background:#19231a;
+  color:#fff;
+}
+.story-archive-link:focus-visible{
+  outline:2px solid #e8f2e7;
+  outline-offset:3px;
+}
+@media(max-width:760px){
+  .story-header-actions{gap:8px}
+  .story-archive-link{font-size:9px;padding:6px 8px}
+}
+@media(max-width:440px){
+  .story-header-actions{gap:6px}
+  .story-archive-link{font-size:9px;padding:5px 7px;min-height:32px}
+  .story-back{max-width:75px;font-size:9px}
+}
+@media(prefers-reduced-motion:reduce){
+  .story-archive-link{transition:none}
+}
