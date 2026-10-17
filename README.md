@@ -14,9 +14,12 @@ Open <http://localhost:8000>.
 
 ## Project structure
 
-- `index.html` — bilingual page, accessible image carousel, official humanitarian links
-- `css/style.css` — responsive design, right-to-left layout, reduced-motion support
-- `js/main.js` — language toggle, mobile navigation, carousel and sharing controls
+- `index.html` — bilingual homepage, accessible image carousel, official humanitarian links and archive entry points
+- `evidence-archive.html` — searchable bilingual source archive with date-range, topic, location, source-type, reporting-status and footage filters
+- `css/style.css` — shared responsive design, right-to-left layout and reduced-motion support
+- `css/archive.css` — responsive archive layout, filters, source cards and bilingual styles
+- `js/main.js` — homepage language toggle, mobile navigation, carousel and sharing controls
+- `js/archive.js` — archive search, chronological sorting, overlapping date-window filters, accessible result counts and language toggle
 - `scripts/check_site.py` — checks local files, fragment links, duplicate IDs, image alt text/dimensions, accessible button names, new-tab link safety, metadata, responsive source paths and unfinished copy
 - `scripts/build_site.py` — builds an optimized `_site/` folder with responsive WebP variants while retaining JPG fallbacks
 - `.github/workflows/ci.yml` — automated validation on pushes and pull requests
