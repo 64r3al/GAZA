@@ -51,7 +51,7 @@ html{scroll-padding-top:24px}
 .archive-language{
   min-height:38px;padding:0 12px;border:1px solid #354037;
   background:#101511;color:var(--archive-text);border-radius:2px;
-  font:700 11px/1.5 inherit;cursor:pointer
+  font-family:"DM Sans",system-ui,sans-serif;font-size:11px;font-weight:700;line-height:1.5;cursor:pointer
 }
 .archive-header-link{color:#d4e2d2;font-size:11px;font-weight:700;text-decoration:none;border-bottom:1px solid #536a55;padding-bottom:4px}
 .archive-header-link:hover,.archive-footer a:hover{color:#fff;border-color:var(--archive-green)}
