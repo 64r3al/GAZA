@@ -275,7 +275,7 @@ else:
     ):
         if evidence_phrase not in story_html:
             errors.append(f"story page is missing sourced investigation content: {evidence_phrase}")
-    if story_html.count('class="story-video-card') < 5:
+    if len(re.findall(r'class="[^"]*\\bstory-video-card\\b', story_html)) < 5:
         errors.append("sensitive documentary video archive needs at least five gated video items")
     if story_html.count('class="story-video-load"') < 5 or story_html.count('class="story-video-ack"') < 5:
         errors.append("every sensitive documentary video needs its own confirmation gate")
