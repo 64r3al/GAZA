@@ -23,6 +23,8 @@
 
   const cards = Array.from(cardsContainer.querySelectorAll('.archive-card'));
   const originalOrder = new Map(cards.map((card, index) => [card, index]));
+  const totalLabel = document.getElementById('archive-total');
+  if (totalLabel) totalLabel.textContent = String(cards.length);
   let language = 'en';
 
   function normalize(value) {
@@ -130,7 +132,7 @@
       if (matches) visibleCount += 1;
     });
 
-    noResults.hidden = visibleCount > 0 && !invalidRange;
+    noResults.hidden = visibleCount > 0 || invalidRange;
     if (invalidRange) {
       resultCount.textContent = language === 'en'
         ? 'Invalid date range — start date must be on or before end date.'
