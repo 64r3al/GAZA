@@ -158,14 +158,15 @@ reset();
 
 inputs['archive-source-type'].value = 'journalism';
 trigger(inputs['archive-source-type'], 'change');
-assert.deepEqual(visibleIds(), ['children-shot-bbc-investigation'], 'source-type filter should isolate the journalism record');
+assert.deepEqual(visibleIds(), ['children-shot-bbc-investigation', 'west-bank-settler-attacks-olive-harvest', 'families-separated-medical-evacuation', 'mawasi-tent-strike-october-2026'], 'source-type filter should return every journalism record');
 reset();
 
 inputs['archive-status'].value = 'probe';
 trigger(inputs['archive-status'], 'change');
-assert.equal(visibleIds().length, 2, 'probe status should select the two records with an investigation reported');
+assert.equal(visibleIds().length, 3, 'probe status should select all records with an investigation or court warrant reported');
 assert.ok(visibleIds().includes('hind-rajab-and-rescue'));
 assert.ok(visibleIds().includes('aid-workers-tal-as-sultan'));
+assert.ok(visibleIds().includes('icc-arrest-warrants-leadership-gaza'));
 reset();
 
 inputs['archive-footage'].value = 'primary';
@@ -191,7 +192,7 @@ reset();
 
 inputs['archive-sort'].value = 'oldest';
 trigger(inputs['archive-sort'], 'change');
-assert.equal(container.children.find((card) => !card.hidden).dataset.recordId, 'hind-rajab-and-rescue', 'oldest-first sort should reorder by event end date');
+assert.equal(container.children.find((card) => !card.hidden).dataset.recordId, 'engineers-building-106-civilians', 'oldest-first sort should reorder by event end date');
 reset();
 
 trigger(nodes['archive-language'], 'click');
