@@ -309,6 +309,22 @@ else:
         errors.append("sensitive documentary video archive needs at least five gated video items")
     if story_html.count('class="story-video-load"') < 5 or story_html.count('class="story-video-ack"') < 5:
         errors.append("every sensitive documentary video needs its own confirmation gate")
+
+    required_x_posts = (
+        "https://x.com/PalestineRCS/status/1908458778040631384",
+        "https://x.com/Israel_katz/status/1965257786159436226",
+        "https://x.com/IDF/status/1963910424694280403",
+    )
+    for x_post_url in required_x_posts:
+        if x_post_url not in story_html:
+            errors.append(f"story page is missing an original X video post: {x_post_url}")
+    x_embed_script = story_js_path.read_text(encoding="utf-8") if story_js_path.is_file() else ""
+    if "https://platform.x.com/widgets.js" not in x_embed_script or "twttr.widgets.load(player)" not in x_embed_script:
+        errors.append("original X posts must use X's official, click-to-load embed widget")
+    if "autoplay=1" in x_embed_script:
+        errors.append("X and video embeds must not enable autoplay")
+    if story_html.count('class="story-x-player"') < 3 or story_html.count('data-x-load-button="true"') < 3:
+        errors.append("each original X post must have its own consent-gated player")
     if story_html.count('class="story-investigation-case') < 3:
         errors.append("investigative evidence section is incomplete")
 
