@@ -256,6 +256,32 @@ else:
     if story_html.count('class="story-photo-card"') < 9 or story_html.count('class="story-photo-img"') < 9:
         errors.append("photo essay must include at least nine captioned, attributed images")
 
+
+    for evidence_url in (
+        "https://www.reuters.com/default/israel-opens-criminal-probes-over-killings-hind-rajab-gaza-rescue-workers-2026-08-19/",
+        "https://www.un.org/unispal/document/conflict-related-sexual-violence-report-of-the-secretary-general-s-2026-321/",
+        "https://apnews.com/article/b11e5f0639b7fe51c5ea101f4b320f56",
+        "https://www.amnesty.org/en/latest/news/2026/05/israel-opt-israels-systematic-destruction-of-high-rise-buildings-must-be-investigated-as-war-crimes-of-wanton-destruction-and-collective-punishment/",
+        "https://www.hrw.org/news/2025/08/07/gaza-israeli-school-strikes-magnify-civilian-peril",
+    ):
+        if evidence_url not in story_html:
+            errors.append(f"story page is missing an investigation source: {evidence_url}")
+    for evidence_phrase in (
+        "A child's calls for help, then silence.",
+        "The UN Secretary-General's 2026 report",
+        "14 men, 7 women, 9 boys and 1 girl",
+        "charges against five soldiers accused",
+        "more than 25 videos",
+    ):
+        if evidence_phrase not in story_html:
+            errors.append(f"story page is missing sourced investigation content: {evidence_phrase}")
+    if story_html.count('class="story-video-card') < 5:
+        errors.append("sensitive documentary video archive needs at least five gated video items")
+    if story_html.count('class="story-video-load"') < 5 or story_html.count('class="story-video-ack"') < 5:
+        errors.append("every sensitive documentary video needs its own confirmation gate")
+    if story_html.count('class="story-investigation-case') < 3:
+        errors.append("investigative evidence section is incomplete")
+
     story_parser = SiteParser()
     story_parser.feed(story_html)
     if story_parser.images_without_alt:

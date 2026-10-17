@@ -292,3 +292,48 @@ html.story-motion-ready .story-reveal.is-visible{opacity:1;transform:none}
 @media(prefers-reduced-motion:reduce){
   .story-photo-report-links a,.story-video-load,.story-field-link{transition:none}
 }
+
+
+/* Investigative case files: dated evidence, legal context and gated source footage. */
+.story-investigations{padding:clamp(56px,8vw,94px) 0;border-bottom:1px solid var(--story-line)}
+.story-investigations-heading{display:grid;grid-template-columns:minmax(150px,.55fr) minmax(0,1.6fr);gap:0 45px;margin-bottom:30px}
+.story-investigations-heading .story-index{grid-row:span 3}
+.story-investigations-heading h2{max-width:900px;margin:0 0 15px;color:#f0f2ef;font:400 clamp(32px,5vw,60px)/1.07 Anton,Impact,sans-serif;text-transform:uppercase;letter-spacing:.005em}
+.story-investigations-heading>p:last-child{grid-column:2;max-width:840px;margin:0;color:var(--story-muted);font-size:13px;line-height:1.9}
+[dir=rtl] .story-investigations-heading{grid-template-columns:1fr;gap:12px}
+[dir=rtl] .story-investigations-heading .story-index{grid-row:auto}
+[dir=rtl] .story-investigations-heading h2{font:800 clamp(27px,4.2vw,43px)/1.4 Cairo,sans-serif;text-transform:none}
+[dir=rtl] .story-investigations-heading>p:last-child{grid-column:1}
+.story-investigation-case{display:grid;grid-template-columns:minmax(170px,.42fr) minmax(0,1.58fr);gap:24px clamp(24px,4vw,52px);padding:clamp(23px,4vw,40px) 0;border-top:1px solid #2c352e}
+.story-investigation-case-feature{border-top-color:rgba(184,74,82,.55);background:linear-gradient(100deg,rgba(113,14,22,.08),transparent 67%)}
+.story-investigation-label{display:flex;flex-direction:column;align-items:flex-start;gap:11px}
+.story-investigation-status{color:#c98085;font:700 10px/1.7 "Courier New",monospace;letter-spacing:.13em}
+.story-investigation-date{color:#859186;font:10px/1.8 "Courier New",monospace;letter-spacing:.02em}
+.story-investigation-body{max-width:850px}
+.story-investigation-body .story-eyebrow{margin:0 0 10px}
+.story-investigation-body h3{margin:0 0 15px;color:#f0f2ed;font:400 clamp(26px,3.8vw,43px)/1.12 Anton,Impact,sans-serif;text-transform:uppercase;letter-spacing:.005em}
+[dir=rtl] .story-investigation-body h3{font:800 clamp(25px,3.8vw,39px)/1.45 Cairo,sans-serif;text-transform:none}
+.story-investigation-body>p:not(.story-eyebrow){margin:0 0 17px;color:#b5beb5;font-size:13px;line-height:1.95}
+.story-investigation-content-note{padding:13px 15px;border-inline-start:3px solid #aa555b;background:rgba(129,22,30,.12);color:#dfb4b7!important;font-size:11px!important}
+.story-investigation-links{display:flex;flex-wrap:wrap;gap:9px 18px;margin-top:17px}
+.story-investigation-links a{max-width:100%;color:#d0dfcf;font-size:11px;font-weight:700;line-height:1.75;text-decoration:none;border-bottom:1px solid #4b604c;padding-bottom:4px}
+.story-investigation-links a:hover{color:#fff;border-color:#d4e5d2}
+.story-investigation-links a:focus-visible{outline:2px solid #e8f2e7;outline-offset:4px}
+.story-evidence-video-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:5px 0 24px}
+.story-evidence-video{min-width:0}
+.story-evidence-method{margin-top:28px;padding:clamp(20px,3vw,28px);border:1px solid #354136;background:#0c110d}
+.story-evidence-method h3{margin:0 0 10px;color:#e6eee4;font-size:14px;line-height:1.6}
+.story-evidence-method p{max-width:1000px;margin:0;color:#aab5aa;font-size:12px;line-height:1.95}
+@media(max-width:760px){
+  .story-investigations-heading{grid-template-columns:1fr;gap:12px}
+  .story-investigations-heading .story-index{grid-row:auto}
+  .story-investigations-heading>p:last-child{grid-column:1}
+  .story-investigation-case{grid-template-columns:1fr;gap:17px}
+  .story-investigation-label{flex-direction:row;flex-wrap:wrap;gap:8px 14px}
+  .story-investigation-body h3{font-size:29px}
+  .story-investigation-links{flex-direction:column;align-items:flex-start}
+  .story-evidence-video-grid{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){
+  .story-investigation-links a{transition:none}
+}
