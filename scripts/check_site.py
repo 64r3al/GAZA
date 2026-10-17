@@ -229,6 +229,7 @@ else:
 
     for source_url in (
         "https://www.unicef.org/sop/reports/humanitarian-situation-update-analysis-response-needs-children-mid-year-2026",
+        "https://www.unicef.org/mena/press-releases/childhood-defined-struggle-survival-gaza-strip",
         "https://www.reuters.com/world/middle-east/un-says-gaza-malnutrition-gains-fragile-commercial-supplies-halt-2026-10-16/",
         "https://www.unicef.org/sop/stories/hope-amid-pain-palestinian-children-gaza-strip-one-year-after-ceasefire",
         "https://www.bellingcat.com/news/2025/04/09/gaza-palestine-israel-killed-death-aid-workers-international-red-cross-crescent-audio-analysis/",
@@ -244,6 +245,30 @@ else:
     ):
         if account_phrase not in story_html:
             errors.append(f"story page is missing current humanitarian context: {account_phrase}")
+    for phrase in (
+        "UNICEF UPDATE / 16 OCT 2026",
+        "Nutrition remains precarious",
+        "7 + 2",
+        "article:modified_time",
+        "twitter:card\" content=\"summary_large_image\"",
+    ):
+        if phrase not in story_html:
+            errors.append(f"story page is missing the latest dated update or share metadata: {phrase}")
+    if "LATEST VERIFIED UPDATE / 07 OCT 2026" in story_html:
+        errors.append("story page still presents the 7 October briefing as the latest verified update")
+    for jump_target in (
+        "current-update-title",
+        "photo-essay-title",
+        "media-doc-title",
+        "current-accounts-title",
+        "investigations-title",
+        "reality-title",
+        "sources-title",
+    ):
+        if f'href="#{jump_target}"' not in story_html or f'id="{jump_target}"' not in story_html:
+            errors.append(f"field-note quick navigation is missing a valid target: {jump_target}")
+    if 'data-en-aria="Navigate the field notes"' not in story_html:
+        errors.append("field-note navigation needs a bilingual accessible label")
     if story_html.count('class="story-video-card') < 3:
         errors.append("documentary section needs at least three contextual video entries")
     if story_html.count('class="story-video-load"') < 3 or story_html.count('class="story-video-ack"') < 3:
@@ -301,6 +326,8 @@ else:
     story_js = story_js_path.read_text(encoding="utf-8")
     if "function setLanguage" not in story_js or "function revealStoryPage()" not in story_js:
         errors.append("story page bilingual controls or pixel reveal are missing")
+    if "jumpObserver" not in story_js or "data-en-aria" not in story_js:
+        errors.append("field-note navigation must track the active section and translate its accessible label")
 if not story_css_path.is_file() or ".story-account" not in story_css_path.read_text(encoding="utf-8"):
     errors.append("story page editorial stylesheet is missing")
 if story_css_path.is_file():
@@ -310,6 +337,8 @@ if story_css_path.is_file():
         ".story-video-player[hidden]{display:none!important}",
         ".story-survival-grid",
         ".story-current-account-grid",
+        ".story-jump-nav",
+        ".story-update-nutrition",
         "@media(prefers-reduced-motion:reduce)",
     ):
         if style_marker not in story_css:
