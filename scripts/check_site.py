@@ -146,8 +146,8 @@ for required_share_item in (
         errors.append(f"missing original social sharing feature: {required_share_item}")
 if "EyeonPalestine" in HTML or "eyeonpalestine.offical" in HTML:
     errors.append("follow-profile links should not replace the original share actions")
-if 'href="evidence-archive.html"' not in HTML or "Browse the evidence archive" not in HTML:
-    errors.append("homepage must link to the searchable evidence archive from navigation and the learn section")
+if 'href="evidence-archive.html"' in HTML or "Browse the evidence archive" in HTML:
+    errors.append("homepage must not link directly to the evidence archive; keep that entry point on the field-notes page")
 
 blank_page_path = ROOT / "a-hard-pill-to-swallow.html"
 if 'href="a-hard-pill-to-swallow.html"' not in HTML:
@@ -370,8 +370,6 @@ else:
     ):
         if metadata not in archive_html:
             errors.append(f"evidence archive is missing metadata: {metadata}")
-    if 'href="evidence-archive.html"' not in HTML:
-        errors.append("homepage is missing a local link to the evidence archive")
 
     for source_url in (
         "https://www.unicef.org/mena/press-releases/childhood-defined-struggle-survival-gaza-strip",
@@ -485,6 +483,8 @@ else:
 
 if not story_html_path.is_file() or 'href="evidence-archive.html"' not in story_html:
     errors.append("documentary field notes must link to the evidence archive")
+elif 'class="story-archive-link" href="evidence-archive.html"' not in story_html:
+    errors.append("documentary field-notes header must expose the evidence archive link")
 
 if "runBootSequence()" not in js_source or "OPENING THE HUMANITARIAN FIELD ARCHIVE" not in js_source:
     errors.append("warning entry needs the scripted terminal boot sequence")
