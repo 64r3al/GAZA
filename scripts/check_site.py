@@ -500,6 +500,72 @@ else:
     if archive_parser.unlabelled_buttons:
         errors.extend(archive_parser.unlabelled_buttons)
 
+methodology_html_path = ROOT / "methodology.html"
+research_css_path = ROOT / "css" / "research.css"
+research_js_path = ROOT / "js" / "research.js"
+if not methodology_html_path.is_file():
+    errors.append("missing evidence methodology page: methodology.html")
+else:
+    methodology_html = methodology_html_path.read_text(encoding="utf-8")
+    if "<title>Evidence methodology | NOOR</title>" not in methodology_html:
+        errors.append("evidence methodology page title is missing or incorrect")
+    for required_copy in (
+        "not affiliated with UNICEF",
+        "An arrest warrant is not a conviction",
+        "18+ confirmation is an access warning",
+        "issues/new",
+    ):
+        if required_copy.lower() not in methodology_html.lower():
+            errors.append(f"methodology page is missing important transparency copy: {required_copy}")
+    methodology_parser = SiteParser()
+    methodology_parser.feed(methodology_html)
+    methodology_parser.close()
+    for fragment in methodology_parser.fragments:
+        if fragment and fragment not in methodology_parser.ids:
+            errors.append(f"methodology page has a broken internal link #{fragment}")
+    for local_ref in methodology_parser.local_refs:
+        if not local_ref:
+            continue
+        target = (ROOT / local_ref).resolve()
+        if ROOT.resolve() not in target.parents and target != ROOT.resolve():
+            errors.append(f"methodology path escapes project root: {local_ref}")
+        elif not target.is_file():
+            errors.append(f"methodology page is missing a local asset/page: {local_ref}")
+    if methodology_parser.new_tab_without_safe_rel:
+        errors.append("methodology new-tab links missing rel=noopener noreferrer: " + ", ".join(methodology_parser.new_tab_without_safe_rel))
+    if methodology_parser.unlabelled_buttons:
+        errors.extend(methodology_parser.unlabelled_buttons)
+
+for page_name, page_html in (
+    ("field notes", story_html if story_html_path.is_file() else ""),
+    ("evidence archive", archive_html if archive_html_path.is_file() else ""),
+    ("methodology", methodology_html if methodology_html_path.is_file() else ""),
+):
+    if 'class="research-nav"' not in page_html:
+        errors.append(f"{page_name} is missing shared research navigation")
+    if 'href="methodology.html"' not in page_html:
+        errors.append(f"{page_name} does not link to the methodology page")
+
+if methodology_html_path.is_file():
+    topic_matches = re.findall(r'<button\b[^>]*data-archive-category="([^"]*)"[^>]*>', archive_html)
+    for category in topic_matches:
+        if category and f'data-category="{category}"' not in archive_html:
+            errors.append(f"archive topic shortcut points to an unknown category: {category}")
+    if len(topic_matches) < 7 or len(topic_matches) != len(set(topic_matches)):
+        errors.append("archive topic shortcuts must be present and unique")
+
+if not research_css_path.is_file():
+    errors.append("missing shared research stylesheet: css/research.css")
+else:
+    research_css = research_css_path.read_text(encoding="utf-8")
+    if ".research-nav" not in research_css or ".archive-topic-button" not in research_css:
+        errors.append("shared research stylesheet is missing navigation or archive-topic styles")
+    if "@media(prefers-reduced-motion:reduce)" not in research_css:
+        errors.append("shared research stylesheet must respect reduced-motion preferences")
+
+if not research_js_path.is_file():
+    errors.append("missing methodology language script: js/research.js")
+
 if not ARCHIVE_JS_FILE.is_file():
     errors.append("missing evidence archive script: js/archive.js")
 else:
