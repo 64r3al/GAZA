@@ -4,6 +4,7 @@
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
+const { execFileSync } = require('node:child_process');
 const root = path.resolve(__dirname, '..');
 const read = (file) => fs.readFileSync(path.join(root, file), 'utf8');
 const story = read('a-hard-pill-to-swallow.html');
@@ -14,6 +15,7 @@ const visual = read('visual-evidence.html');
 const stylesheet = read('css/research.css');
 const script = read('js/research.js');
 const visualScript = read('js/visual-evidence.js');
+execFileSync(process.execPath, ['--check', path.join(root, 'js/visual-evidence.js')]);
 const archiveScript = read('js/archive.js');
 const builder = read('scripts/build_site.py');
 const caseFiles = [
