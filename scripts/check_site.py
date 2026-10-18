@@ -657,6 +657,73 @@ for pattern in (
     if re.search(pattern, HTML, re.I):
         errors.append(f"unfinished/corrupted template text matched: {pattern}")
 
+
+# Validate the research desk as a connected multi-page site in both source and _site builds.
+research_pages = (
+    "methodology.html",
+    "visual-evidence.html",
+    "legal-record.html",
+    "case-engineers-building.html",
+    "case-hind-rajab.html",
+    "case-rescue-workers.html",
+    "case-high-rise-destruction.html",
+    "case-aid-distribution.html",
+    "case-school-shelters.html",
+    "case-mawasi-tent-strike.html",
+    "case-un-commission.html",
+)
+for page_name in research_pages:
+    page_path = ROOT / page_name
+    if not page_path.is_file():
+        errors.append(f"missing research desk page: {page_name}")
+        continue
+    page_html = page_path.read_text(encoding="utf-8")
+    if not re.search(r"<title>[^<]+</title>", page_html, re.I):
+        errors.append(f"missing page title: {page_name}")
+    if 'class="research-nav"' not in page_html:
+        errors.append(f"research page missing shared navigation: {page_name}")
+    page_parser = SiteParser()
+    page_parser.feed(page_html)
+    page_parser.close()
+    for fragment in page_parser.fragments:
+        if fragment and fragment not in page_parser.ids:
+            errors.append(f"{page_name} has a broken same-page link #{fragment}")
+    for local_ref in page_parser.local_refs:
+        if not local_ref:
+            continue
+        target = (ROOT / local_ref).resolve()
+        if ROOT.resolve() not in target.parents and target != ROOT.resolve():
+            errors.append(f"{page_name} path escapes project root: {local_ref}")
+        elif not target.is_file():
+            errors.append(f"{page_name} references a missing local file: {local_ref}")
+    if page_parser.new_tab_without_safe_rel:
+        errors.append(f"{page_name} has unsafe new-tab links: " + ", ".join(page_parser.new_tab_without_safe_rel))
+    if page_parser.unlabelled_buttons:
+        errors.extend(f"{page_name}: {message}" for message in page_parser.unlabelled_buttons)
+
+visual_js_path = ROOT / "js" / "visual-evidence.js"
+if not visual_js_path.is_file():
+    errors.append("missing visual evidence filtering script: js/visual-evidence.js")
+else:
+    visual_js = visual_js_path.read_text(encoding="utf-8")
+    for marker in ("visual-query", "visual-kind", "visual-topic", "aria-live", "addEventListener('input', filter)"):
+        if marker not in visual_js and marker not in (ROOT / "visual-evidence.html").read_text(encoding="utf-8"):
+            errors.append(f"visual evidence filtering is missing required control/logic: {marker}")
+
+if (ROOT / "visual-evidence.html").is_file():
+    visual_html = (ROOT / "visual-evidence.html").read_text(encoding="utf-8")
+    if re.search(r"<iframe|autoplay=1", visual_html, re.I):
+        errors.append("visual evidence index must not embed or autoplay source media")
+    for required in ("case-engineers-building.html", "case-hind-rajab.html", "case-rescue-workers.html", "case-high-rise-destruction.html", "case-school-shelters.html", "case-aid-distribution.html", "case-un-commission.html"):
+        if required not in visual_html:
+            errors.append(f"visual evidence index is missing a related case file link: {required}")
+
+if (ROOT / "legal-record.html").is_file():
+    legal_html = (ROOT / "legal-record.html").read_text(encoding="utf-8")
+    for required in ("An arrest warrant", "not a conviction", "final judgment on the merits", "case-un-commission.html"):
+        if required.lower() not in legal_html.lower():
+            errors.append(f"legal record is missing legal-status distinction: {required}")
+
 if errors:
     print("Site validation failed:")
     for error in errors:
