@@ -538,7 +538,7 @@ else:
 
 for page_name, page_html in (
     ("field notes", story_html if story_html_path.is_file() else ""),
-    ("evidence archive", archive_html if archive_html_path.is_file() else ""),
+    ("evidence archive", archive_html if ARCHIVE_HTML_FILE.is_file() else ""),
     ("methodology", methodology_html if methodology_html_path.is_file() else ""),
 ):
     if 'class="research-nav"' not in page_html:
