@@ -54,6 +54,20 @@ assert.equal(new Set(topicButtons).size, topicButtons.length, 'Topic shortcuts m
 for (const category of topicButtons.filter(Boolean)) {
   assert.ok(archive.includes('data-category="' + category + '"'), 'Topic shortcut must match an existing category: ' + category);
 }
+assert.match(archive, /class="archive-intro-stage"/, 'Archive should start with the immersive reference-led opening.');
+assert.match(archive, /class="archive-story-rail"/, 'Archive should include the red vertical story rail.');
+assert.match(archive, /id="archive-curation"/, 'Archive should include the three-collection visual panel.');
+for (const collection of ['The photograph', 'The document', 'The network']) {
+  assert.ok(archive.includes(collection), 'Visual archive should present the ' + collection.toLowerCase() + ' collection.');
+}
+assert.match(archive, /Context images are not presented as proof of a specific incident|These are contextual images, not incident-specific proof/i, 'Archive should clearly distinguish contextual images from incident-specific evidence.');
+assert.match(archive, /not copies of real evidence/i, 'Generated document-stack art should not be mistaken for source documents.');
+assert.doesNotMatch(archive, /<iframe|autoplay=1/i, 'Archive opening must not embed or autoplay distressing source media.');
+assert.match(archive, /assets\/hero\/child-receiving-a-meal\.jpg/, 'Archive visual showcase should use an existing local image.');
+assert.match(css, /archive-intro-stage/, 'Archive stylesheet should include the immersive stage.');
+assert.match(css, /archive-collection-grid/, 'Archive stylesheet should include the three-column collection layout.');
+assert.match(css, /@media\(max-width:900px\)/, 'Archive layout should collapse for narrower screens.');
+assert.match(css, /prefers-reduced-motion:\s*reduce/, 'Archive motion should respect reduced-motion settings.');
 assert.match(archive, /id="case-directory"/, 'Archive should expose a dedicated dossier directory.');
 for (const file of caseFiles) {
   assert.ok(archive.includes('href="' + file + '"'), 'Archive should link to case file: ' + file);
