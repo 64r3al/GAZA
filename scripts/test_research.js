@@ -67,7 +67,7 @@ assert.doesNotMatch(archive, /<iframe|autoplay=1/i, 'Archive opening must not em
 assert.match(archive, /assets\/hero\/child-receiving-a-meal\.jpg/, 'Archive visual showcase should use an existing local image.');
 assert.match(archiveStylesheet, /archive-intro-stage/, 'Archive stylesheet should include the immersive stage.');
 assert.match(archiveStylesheet, /archive-collection-grid/, 'Archive stylesheet should include the three-column collection layout.');
-assert.match(css, /@media\(max-width:900px\)/, 'Archive layout should collapse for narrower screens.');
+assert.match(archiveStylesheet, /@media\(max-width:900px\)/, 'Archive layout should collapse for narrower screens.');
 assert.match(archiveStylesheet, /prefers-reduced-motion:\s*reduce/, 'Archive motion should respect reduced-motion settings.');
 assert.match(archive, /id="case-directory"/, 'Archive should expose a dedicated dossier directory.');
 for (const file of caseFiles) {
