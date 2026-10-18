@@ -437,7 +437,7 @@ else:
         errors.append(f"evidence archive needs at least eight case/report records; found {len(archive_cards)}")
     if len(archive_cards) < 18:
         errors.append(f"expanded evidence archive needs at least 18 case/report records; found {len(archive_cards)}")
-    if not re.search(r'<(?:span|strong|b)\\b[^>]*id="archive-total"[^>]*>\\s*18\\s*</(?:span|strong|b)>', archive_html):
+    if not re.search(r'<(span|strong|b)[^>]*id="archive-total"[^>]*>\s*18\s*</(?:span|strong|b)>', archive_html):
         errors.append("evidence archive’s initial record total should match its expanded index")
     record_ids = []
     for index, attributes in enumerate(archive_cards, start=1):
