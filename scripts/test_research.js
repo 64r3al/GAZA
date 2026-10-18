@@ -33,7 +33,9 @@ assert.match(story, /class="research-nav"/, 'Field notes should include shared n
 assert.match(archive, /class="research-nav"/, 'Archive should include shared navigation.');
 assert.match(methodology, /class="research-nav"/, 'Methodology should include shared navigation.');
 for (const page of [story, archive, methodology, legal, visual, ...caseFiles.map(read)]) {
-  const nav = page.match(/<nav class="research-nav"[\\s\\S]*?<\\/nav>/)?.[0] || '';
+  const navStart = page.indexOf('<nav class="research-nav"');
+  const navEnd = page.indexOf('</nav>', navStart);
+  const nav = navStart >= 0 && navEnd >= 0 ? page.slice(navStart, navEnd + '</nav>'.length) : '';
   assert.ok(nav, 'Every research page should include the shared navigation.');
   assert.match(nav, /href="visual-evidence\\.html"/, 'Research navigation should link to visual evidence.');
   assert.match(nav, /href="legal-record\\.html"/, 'Research navigation should link to the legal record.');
