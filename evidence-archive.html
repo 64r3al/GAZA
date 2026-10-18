@@ -26,6 +26,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Cairo:wght@400;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/archive.css">
+  <link rel="stylesheet" href="css/research.css">
   <script src="js/archive.js" defer></script>
 </head>
 <body class="archive-body">
@@ -39,6 +40,15 @@
         <a class="archive-header-link" href="a-hard-pill-to-swallow.html" data-en="Read the field notes ↗" data-ar="اقرأ الملاحظات ↗">Read the field notes ↗</a>
       </div>
     </header>
+
+    <nav class="research-nav" aria-label="Evidence project navigation" data-en-aria="Evidence project navigation" data-ar-aria="التنقّل في مشروع الأدلة">
+      <div class="research-nav-inner">
+        <span class="research-nav-label" data-en="THE RECORD" data-ar="السجل">THE RECORD</span>
+        <a href="a-hard-pill-to-swallow.html" data-en="Field notes" data-ar="ملاحظات ميدانية">Field notes</a>
+        <a href="evidence-archive.html" aria-current="page" data-en="Evidence archive" data-ar="أرشيف الأدلة">Evidence archive</a>
+        <a href="methodology.html" data-en="Methodology" data-ar="المنهجية">Methodology</a>
+      </div>
+    </nav>
 
     <main id="archive-main">
       <section class="archive-hero" aria-labelledby="archive-title">
@@ -63,6 +73,29 @@
           <p data-en="This is a curated index, not an exhaustive database or a court register. The status label describes what the linked reporting says was published, verified, acknowledged or announced. It does not imply that NOOR independently proved the allegations or that a legal case has reached judgment. Humanitarian updates are kept distinct from incident investigations." data-ar="هذا فهرس مختار، وليس قاعدة بيانات شاملة أو سجلاً قضائياً. يصف مؤشر الحالة ما تقوله المصادر المرتبطة بشأن ما نُشر أو جرى التحقق منه أو الإقرار به أو الإعلان عنه. ولا يعني أن نور أثبت الادعاءات بشكل مستقل أو أن قضية قانونية وصلت إلى حكم. وتُفصل التحديثات الإنسانية عن التحقيقات في الوقائع.">This is a curated index, not an exhaustive database or a court register. The status label describes what the linked reporting says was published, verified, acknowledged or announced. It does not imply that NOOR independently proved the allegations or that a legal case has reached judgment. Humanitarian updates are kept distinct from incident investigations.</p>
           <p data-en="Dates describe the incident or reporting window where known; publication dates are shown separately. “Footage linked” means the source contains or links visual/audio material—it is not an endorsement of authenticity beyond the source's own stated method. This archive does not embed graphic footage or autoplay audio." data-ar="تشير التواريخ إلى الواقعة أو فترة الرصد عندما تكون معروفة؛ وتُعرض تواريخ النشر بشكل منفصل. تعني عبارة «مواد مصوّرة مرتبطة» أن المصدر يتضمن أو يربط مادة مرئية أو صوتية، ولا تعني ضمان صحتها بما يتجاوز منهج المصدر المعلن. لا يضمّن هذا الأرشيف مشاهد مصوّرة صادمة ولا يشغّل الصوت تلقائياً.">Dates describe the incident or reporting window where known; publication dates are shown separately. “Footage linked” means the source contains or links visual/audio material—it is not an endorsement of authenticity beyond the source's own stated method. This archive does not embed graphic footage or autoplay audio.</p>
         </div>
+      </section>
+
+      <section class="archive-topic-directory" aria-labelledby="archive-topics-title">
+        <div class="archive-topic-heading">
+          <div>
+            <p class="archive-section-index" data-en="BROWSE BY SUBJECT / 01" data-ar="تصفّح حسب الموضوع / ٠١">BROWSE BY SUBJECT / 01</p>
+            <h2 id="archive-topics-title" data-en="Start with a subject." data-ar="ابدأ بموضوع.">Start with a subject.</h2>
+          </div>
+          <p data-en="Choose a topic to narrow the archive. You can combine it with dates, source type, reporting status and a keyword search below." data-ar="اختر موضوعاً لتضييق نطاق الأرشيف. ويمكنك دمجه مع التواريخ ونوع المصدر وحالة التقرير والبحث بالكلمات أدناه.">Choose a topic to narrow the archive. You can combine it with dates, source type, reporting status and a keyword search below.</p>
+        </div>
+        <div class="archive-topic-buttons" role="group" aria-label="Filter records by topic" data-en-aria="Filter records by topic" data-ar-aria="تصفية السجلات حسب الموضوع">
+          <button class="archive-topic-button" type="button" data-archive-category="" aria-pressed="true" data-en="All topics" data-ar="كل المواضيع">All topics</button>
+          <button class="archive-topic-button" type="button" data-archive-category="child-casualties" aria-pressed="false" data-en="Children & civilian harm" data-ar="الأطفال والأذى المدني">Children &amp; civilian harm</button>
+          <button class="archive-topic-button" type="button" data-archive-category="food-nutrition" aria-pressed="false" data-en="Food & nutrition" data-ar="الغذاء والتغذية">Food &amp; nutrition</button>
+          <button class="archive-topic-button" type="button" data-archive-category="displacement" aria-pressed="false" data-en="Displacement" data-ar="النزوح">Displacement</button>
+          <button class="archive-topic-button" type="button" data-archive-category="detention" aria-pressed="false" data-en="Detention & sexual violence" data-ar="الاحتجاز والعنف الجنسي">Detention &amp; sexual violence</button>
+          <button class="archive-topic-button" type="button" data-archive-category="destruction" aria-pressed="false" data-en="Destruction of buildings" data-ar="تدمير المباني">Destruction of buildings</button>
+          <button class="archive-topic-button" type="button" data-archive-category="aid-access" aria-pressed="false" data-en="Aid access" data-ar="الوصول إلى المساعدات">Aid access</button>
+          <button class="archive-topic-button" type="button" data-archive-category="aid-workers" aria-pressed="false" data-en="Aid workers" data-ar="العاملون في الإغاثة">Aid workers</button>
+          <button class="archive-topic-button" type="button" data-archive-category="schools-shelters" aria-pressed="false" data-en="Schools & shelters" data-ar="المدارس والملاجئ">Schools &amp; shelters</button>
+          <button class="archive-topic-button" type="button" data-archive-category="civilian-harm" aria-pressed="false" data-en="Civilian harm" data-ar="الأذى الذي لحق بالمدنيين">Civilian harm</button>
+        </div>
+        <p class="archive-topic-note" data-en="Topic shortcuts update the existing filters; they do not replace source review. Each record retains its own scope notes and source links." data-ar="تحدّث اختصارات المواضيع عوامل التصفية الحالية، ولا تحل محل مراجعة المصادر. ويحتفظ كل سجل بملاحظات نطاقه وروابط مصادره.">Topic shortcuts update the existing filters; they do not replace source review. Each record retains its own scope notes and source links.</p>
       </section>
 
       <section class="archive-search-section" id="archive-filters" aria-labelledby="filter-title">
@@ -407,7 +440,7 @@
     <footer class="archive-footer">
       <a class="archive-wordmark" href="index.html"><span class="archive-mark" aria-hidden="true">N</span><span>NOOR</span></a>
       <p data-en="Independent awareness project · Source links lead to external publishers · No donations collected here." data-ar="مشروع توعوي مستقل · الروابط تقود إلى المصادر الأصلية الخارجية · لا تُجمع تبرعات هنا.">Independent awareness project · Source links lead to external publishers · No donations collected here.</p>
-      <div><a href="index.html" data-en="Home" data-ar="الرئيسية">Home</a><a href="a-hard-pill-to-swallow.html" data-en="Field notes" data-ar="الملاحظات الميدانية">Field notes</a><a href="https://github.com/64r3al/GAZA" target="_blank" rel="noopener noreferrer" data-en="Project repository ↗" data-ar="مستودع المشروع ↗">Project repository ↗</a></div>
+      <div><a href="index.html" data-en="Home" data-ar="الرئيسية">Home</a><a href="a-hard-pill-to-swallow.html" data-en="Field notes" data-ar="الملاحظات الميدانية">Field notes</a><a href="methodology.html" data-en="Methodology" data-ar="المنهجية">Methodology</a><a href="https://github.com/64r3al/GAZA" target="_blank" rel="noopener noreferrer" data-en="Project repository ↗" data-ar="مستودع المشروع ↗">Project repository ↗</a></div>
     </footer>
   </div>
 </body>
