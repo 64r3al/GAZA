@@ -18,6 +18,7 @@
   const resultCount = document.getElementById('archive-result-count');
   const noResults = document.getElementById('archive-no-results');
   const dateError = document.getElementById('archive-date-error');
+  const topicButtons = Array.from(document.querySelectorAll('[data-archive-category]'));
 
   if (!form || !cardsContainer || !resultCount || !noResults) return;
 
@@ -164,7 +165,21 @@
   });
 
   [categoryInput, locationInput, sourceTypeInput, statusInput, footageInput].forEach((input) => {
-    if (input) input.addEventListener('change', applyFilters);
+    if (!input) return;
+    input.addEventListener('change', () => {
+      if (input === categoryInput) syncTopicButtons();
+      applyFilters();
+    });
+  });
+
+  topicButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      if (categoryInput) categoryInput.value = button.dataset.archiveCategory || '';
+      syncTopicButtons();
+      applyFilters();
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      cardsContainer.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'start' });
+    });
   });
 
   if (sortInput) {
@@ -179,15 +194,24 @@
       form.reset();
       if (queryInput) queryInput.value = '';
       if (sortInput) sortInput.value = 'newest';
+      syncTopicButtons();
       sortCards();
       applyFilters();
       if (queryInput) queryInput.focus();
     });
   }
 
+  function syncTopicButtons() {
+    const selectedCategory = categoryInput ? categoryInput.value : '';
+    topicButtons.forEach((button) => {
+      button.setAttribute('aria-pressed', String((button.dataset.archiveCategory || '') === selectedCategory));
+    });
+  }
+
   // Dates are ISO 8601 in data attributes, so string comparison is chronological.
   // Event windows overlap the requested range; date filtering never treats a
   // publication date as the incident date unless the record explicitly says so.
+  syncTopicButtons();
   sortCards();
   applyFilters();
 
