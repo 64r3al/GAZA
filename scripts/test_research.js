@@ -37,9 +37,9 @@ for (const page of [story, archive, methodology, legal, visual, ...caseFiles.map
   const navEnd = page.indexOf('</nav>', navStart);
   const nav = navStart >= 0 && navEnd >= 0 ? page.slice(navStart, navEnd + '</nav>'.length) : '';
   assert.ok(nav, 'Every research page should include the shared navigation.');
-  assert.match(nav, /href="visual-evidence\\.html"/, 'Research navigation should link to visual evidence.');
-  assert.match(nav, /href="legal-record\\.html"/, 'Research navigation should link to the legal record.');
-  assert.match(nav, /href="methodology\\.html"/, 'Research navigation should link to methodology.');
+  assert.ok(nav.includes('href="visual-evidence.html"'), 'Research navigation should link to visual evidence.');
+  assert.ok(nav.includes('href="legal-record.html"'), 'Research navigation should link to the legal record.');
+  assert.ok(nav.includes('href="methodology.html"'), 'Research navigation should link to methodology.');
 }
 assert.match(methodology, /not affiliated with UNICEF/i, 'Methodology must make independence clear.');
 assert.match(methodology, /An arrest warrant is not a conviction/i, 'Methodology must distinguish warrants from convictions.');
