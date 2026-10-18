@@ -13,6 +13,7 @@ const methodology = read('methodology.html');
 const legal = read('legal-record.html');
 const visual = read('visual-evidence.html');
 const stylesheet = read('css/research.css');
+const archiveStylesheet = read('css/archive.css');
 const script = read('js/research.js');
 const visualScript = read('js/visual-evidence.js');
 execFileSync(process.execPath, ['--check', path.join(root, 'js/visual-evidence.js')]);
@@ -64,10 +65,10 @@ assert.match(archive, /Context images are not presented as proof of a specific i
 assert.match(archive, /not copies of real evidence/i, 'Generated document-stack art should not be mistaken for source documents.');
 assert.doesNotMatch(archive, /<iframe|autoplay=1/i, 'Archive opening must not embed or autoplay distressing source media.');
 assert.match(archive, /assets\/hero\/child-receiving-a-meal\.jpg/, 'Archive visual showcase should use an existing local image.');
-assert.match(css, /archive-intro-stage/, 'Archive stylesheet should include the immersive stage.');
-assert.match(css, /archive-collection-grid/, 'Archive stylesheet should include the three-column collection layout.');
+assert.match(archiveStylesheet, /archive-intro-stage/, 'Archive stylesheet should include the immersive stage.');
+assert.match(archiveStylesheet, /archive-collection-grid/, 'Archive stylesheet should include the three-column collection layout.');
 assert.match(css, /@media\(max-width:900px\)/, 'Archive layout should collapse for narrower screens.');
-assert.match(css, /prefers-reduced-motion:\s*reduce/, 'Archive motion should respect reduced-motion settings.');
+assert.match(archiveStylesheet, /prefers-reduced-motion:\s*reduce/, 'Archive motion should respect reduced-motion settings.');
 assert.match(archive, /id="case-directory"/, 'Archive should expose a dedicated dossier directory.');
 for (const file of caseFiles) {
   assert.ok(archive.includes('href="' + file + '"'), 'Archive should link to case file: ' + file);
