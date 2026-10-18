@@ -31,7 +31,7 @@ def copy_site():
     if OUTPUT.exists():
         shutil.rmtree(OUTPUT)
     OUTPUT.mkdir(parents=True)
-    for filename in ("index.html", "a-hard-pill-to-swallow.html", "evidence-archive.html", "methodology.html", ".nojekyll"):
+    for filename in ("index.html", "a-hard-pill-to-swallow.html", "evidence-archive.html", "methodology.html", "visual-evidence.html", "legal-record.html", "case-engineers-building.html", "case-hind-rajab.html", "case-rescue-workers.html", "case-high-rise-destruction.html", "case-aid-distribution.html", "case-school-shelters.html", "case-mawasi-tent-strike.html", "case-un-commission.html", ".nojekyll"):
         source = ROOT / filename
         if not source.is_file():
             raise SystemExit(f"Required site file is missing: {filename}")
