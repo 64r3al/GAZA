@@ -182,10 +182,21 @@
     updateShareLinks();
   }
 
-  languageButton.addEventListener('click', () => setLanguage(language === 'en' ? 'ar' : 'en'));
+  if (languageButton) languageButton.addEventListener('click', () => setLanguage(language === 'en' ? 'ar' : 'en'));
   try {
-    if (localStorage.getItem('noor-language') === 'ar') setLanguage('ar');
+    if (!document.getElementById('noor-language-select') && localStorage.getItem('noor-language') === 'ar') setLanguage('ar');
   } catch (_) { /* Default to English when storage is unavailable. */ }
+
+  document.addEventListener('noor:languagechange', (event) => {
+    language = event.detail && event.detail.language ? event.detail.language : 'en';
+    updateShareLinks();
+    if (copyButton) copyButton.textContent = window.NOORLocalization.translate('Copy page link', language);
+    if (pauseButton) pauseButton.setAttribute('aria-label', window.NOORLocalization.translate(paused ? 'Play slideshow' : 'Pause slideshow', language));
+    Array.from(dotsContainer.children).forEach((dot, index) => {
+      const labels = { en: 'Show image ', ar: 'عرض الصورة ', fr: 'Afficher l’image ', es: 'Mostrar imagen ', pt: 'Mostrar imagem ', de: 'Bild anzeigen ' };
+      dot.setAttribute('aria-label', (labels[language] || labels.en) + (index + 1));
+    });
+  });
 
   function closeMenu() {
     nav.classList.remove('is-open');
