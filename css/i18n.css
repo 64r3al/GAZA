@@ -37,3 +37,42 @@
  :root[dir="rtl"] .archive-network-status{align-items:flex-start}
 }
 @media(prefers-reduced-motion:reduce){.noor-language-select{scroll-behavior:auto}}
+
+
+/* Six-language layout safeguards. Keep direction at the document level but isolate
+   publisher names, IDs, dates and mixed-script strings so RTL cannot reorder them. */
+:root[lang="fr"],:root[lang="es"],:root[lang="pt"],:root[lang="de"] body{font-family:"DM Sans",system-ui,sans-serif}
+:root[lang="ar"]{font-family:"Cairo","Noto Sans Arabic",Tahoma,sans-serif}
+:root[lang="ar"] body,:root[lang="ar"] button,:root[lang="ar"] input,:root[lang="ar"] select,:root[lang="ar"] textarea{font-family:"Cairo","Noto Sans Arabic",Tahoma,sans-serif}
+:root[dir="rtl"] main,:root[dir="rtl"] section,:root[dir="rtl"] article,:root[dir="rtl"] aside{min-width:0}
+:root[dir="rtl"] h1,:root[dir="rtl"] h2,:root[dir="rtl"] h3,:root[dir="rtl"] p,:root[dir="rtl"] li,:root[dir="rtl"] dd,:root[dir="rtl"] dt,:root[dir="rtl"] figcaption{overflow-wrap:anywhere}
+:root[dir="rtl"] .research-header-actions{direction:rtl;flex-wrap:wrap}
+:root[dir="rtl"] .research-nav-inner{flex-wrap:wrap}
+:root[dir="rtl"] .research-nav a{letter-spacing:0;text-transform:none}
+:root[dir="rtl"] .research-hero h1,:root[dir="rtl"] .research-method-content h2,:root[dir="rtl"] .research-method-card h3{font-family:"Cairo","Noto Sans Arabic",Tahoma,sans-serif;letter-spacing:0;text-transform:none;line-height:1.45}
+:root[dir="rtl"] .research-source-item,:root[dir="rtl"] .research-timeline-item{direction:rtl}
+:root[dir="rtl"] .research-source-item>div,:root[dir="rtl"] .research-timeline-item>div{min-width:0;text-align:start}
+:root[dir="rtl"] .research-source-item a,:root[dir="rtl"] .research-page-link{overflow-wrap:anywhere;line-height:1.8}
+:root[dir="rtl"] .archive-network-heading h1,:root[dir="rtl"] .archive-map-empty-state h2,:root[dir="rtl"] #archive-map-detail-title{font-family:"Cairo","Noto Sans Arabic",Tahoma,sans-serif;font-weight:800;letter-spacing:0;text-transform:none;line-height:1.45}
+:root[dir="rtl"] .archive-network-kicker,:root[dir="rtl"] .archive-network-status,:root[dir="rtl"] .archive-network-hint,:root[dir="rtl"] .archive-network-total,:root[dir="rtl"] .archive-network-legend,:root[dir="rtl"] .archive-network-details-footer{letter-spacing:0}
+:root[dir="rtl"] .archive-network-record-title,:root[dir="rtl"] .archive-network-topic-title{font-family:"Cairo","Noto Sans Arabic",Tahoma,sans-serif;letter-spacing:0}
+:root[dir="rtl"] .archive-network-record-id,:root[dir="rtl"] .archive-network-node-meta{font-family:"Cairo","Noto Sans Arabic",Tahoma,sans-serif;font-size:8px;letter-spacing:0}
+:root[dir="rtl"] .archive-map-detail-meta span,:root[dir="rtl"] .archive-map-detail-index,:root[dir="rtl"] .archive-map-detail-type,:root[dir="rtl"] .archive-map-source-heading{font-family:"Cairo","Noto Sans Arabic",Tahoma,sans-serif;letter-spacing:0}
+:root[dir="rtl"] .archive-map-detail-meta span{direction:rtl}
+:root[dir="rtl"] .archive-network-map-note{direction:rtl;text-align:start}
+:root[dir="rtl"] .archive-network-map-controls{right:auto;left:15px}
+:root[dir="rtl"] .archive-network-scale{direction:ltr}
+:root[dir="rtl"] .archive-map-gesture-list kbd{direction:ltr}
+:root[dir="rtl"] .archive-map-source-links a{unicode-bidi:plaintext;overflow-wrap:anywhere}
+:root[dir="rtl"] .archive-card-facts dd,:root[dir="rtl"] .archive-card-facts dt{unicode-bidi:plaintext}
+:root[dir="rtl"] .research-nav-label{margin-inline-end:0;margin-inline-start:auto}
+:root[dir="rtl"] .archive-network-topic-title{text-anchor:end}
+:root[lang="fr"] .archive-network-record-title,:root[lang="es"] .archive-network-record-title,:root[lang="pt"] .archive-network-record-title,:root[lang="de"] .archive-network-record-title{font-size:11px}
+.noor-language-select option{font-family:system-ui,sans-serif}
+@media(max-width:760px){
+  .research-header{gap:10px;flex-wrap:wrap}
+  .research-header-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .noor-language-wrap{margin-inline-start:0}
+  .noor-language-select{min-width:105px;max-width:100%;font-size:10px}
+  :root[dir="rtl"] .archive-network-map-controls{right:auto;left:8px}
+}
