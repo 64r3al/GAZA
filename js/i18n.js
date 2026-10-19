@@ -171,6 +171,22 @@
     return translations[language].get(normalize(source));
   }
 
+  function addTranslations(catalogRows, options = {}) {
+    (Array.isArray(catalogRows) ? catalogRows : []).forEach((row) => {
+      if (!Array.isArray(row) || row.length < 2) return;
+      const english = normalize(row[0]);
+      if (!english) return;
+      const locales = ['ar', 'fr', 'es', 'pt', 'de'];
+      locales.forEach((locale, index) => {
+        const value = row[index + 1];
+        if (typeof value === 'string' && value.trim()) {
+          translations[locale].set(english, value.trim());
+        }
+      });
+    });
+    if (options.apply !== false) applyLanguage(document.documentElement.lang || 'en', { skipStore: true });
+  }
+
   function applyLanguage(language, options = {}) {
     if (!LANGUAGES.includes(language)) language = 'en';
     const html = document.documentElement;
@@ -219,7 +235,74 @@
       element.setAttribute('content', target);
     });
 
-    const titleText = titles[language][pageTitleIndex()];
+    const pathName = location.pathname.toLowerCase().split('/').pop() || 'index.html';
+    const specificTitles = {
+      'case-engineers-building.html': {
+        en: 'The Engineers’ Building strike | NOOR Case File',
+        ar: 'قصف مبنى المهندسين | ملف نور',
+        fr: 'Frappe contre le bâtiment des ingénieurs | Dossier NOOR',
+        es: 'Ataque contra el edificio de ingenieros | Caso NOOR',
+        pt: 'Ataque ao edifício dos engenheiros | Caso NOOR',
+        de: 'Angriff auf das Ingenieursgebäude | NOOR-Falldossier'
+      },
+      'case-hind-rajab.html': {
+        en: 'Hind Rajab and the rescue response | NOOR Case File',
+        ar: 'هند رجب ومحاولة الإنقاذ | ملف نور',
+        fr: 'Hind Rajab et l’intervention de secours | Dossier NOOR',
+        es: 'Hind Rajab y la respuesta de rescate | Caso NOOR',
+        pt: 'Hind Rajab e a operação de resgate | Caso NOOR',
+        de: 'Hind Rajab und der Rettungseinsatz | NOOR-Falldossier'
+      },
+      'case-rescue-workers.html': {
+        en: 'The Tal as-Sultan rescue convoy | NOOR Case File',
+        ar: 'قافلة الإنقاذ في تل السلطان | ملف نور',
+        fr: 'Le convoi de secours de Tal as-Sultan | Dossier NOOR',
+        es: 'El convoy de rescate de Tal al-Sultán | Caso NOOR',
+        pt: 'O comboio de resgate de Tal as-Sultan | Caso NOOR',
+        de: 'Der Rettungskonvoi von Tal as-Sultan | NOOR-Falldossier'
+      },
+      'case-high-rise-destruction.html': {
+        en: 'Gaza City high-rise destruction | NOOR Case File',
+        ar: 'تدمير المباني الشاهقة في مدينة غزة | ملف نور',
+        fr: 'Destruction des immeubles de grande hauteur à Gaza | Dossier NOOR',
+        es: 'Destrucción de edificios altos en Ciudad de Gaza | Caso NOOR',
+        pt: 'Destruição de edifícios altos na Cidade de Gaza | Caso NOOR',
+        de: 'Zerstörung von Hochhäusern in Gaza-Stadt | NOOR-Falldossier'
+      },
+      'case-aid-distribution.html': {
+        en: 'Shootings near food distribution sites | NOOR Case File',
+        ar: 'إطلاق النار قرب مواقع توزيع الغذاء | ملف نور',
+        fr: 'Tirs près des sites de distribution alimentaire | Dossier NOOR',
+        es: 'Disparos cerca de los puntos de distribución de alimentos | Caso NOOR',
+        pt: 'Disparos perto de locais de distribuição de alimentos | Caso NOOR',
+        de: 'Schüsse in der Nähe von Lebensmittelausgabestellen | NOOR-Falldossier'
+      },
+      'case-school-shelters.html': {
+        en: 'Attacks on schools used as shelters | NOOR Case File',
+        ar: 'الهجمات على المدارس المستخدمة كملاجئ | ملف نور',
+        fr: 'Attaques contre des écoles servant d’abris | Dossier NOOR',
+        es: 'Ataques contra escuelas utilizadas como refugios | Caso NOOR',
+        pt: 'Ataques a escolas usadas como abrigos | Caso NOOR',
+        de: 'Angriffe auf als Notunterkünfte genutzte Schulen | NOOR-Falldossier'
+      },
+      'case-mawasi-tent-strike.html': {
+        en: 'The Mawasi tent strike | NOOR Case File',
+        ar: 'قصف الخيمة في المواصي | ملف نور',
+        fr: 'La frappe contre une tente à Mawasi | Dossier NOOR',
+        es: 'El ataque contra una tienda en Mawasi | Caso NOOR',
+        pt: 'O ataque à tenda em Mawasi | Caso NOOR',
+        de: 'Der Angriff auf ein Zelt in Mawasi | NOOR-Falldossier'
+      },
+      'case-un-commission.html': {
+        en: 'UN Commission report | NOOR Case File',
+        ar: 'تقرير لجنة التحقيق التابعة للأمم المتحدة | ملف نور',
+        fr: 'Rapport de la Commission d’enquête de l’ONU | Dossier NOOR',
+        es: 'Informe de la Comisión de Investigación de la ONU | Caso NOOR',
+        pt: 'Relatório da Comissão de Inquérito da ONU | Caso NOOR',
+        de: 'Bericht der UN-Untersuchungskommission | NOOR-Falldossier'
+      }
+    };
+    const titleText = specificTitles[pathName] ? specificTitles[pathName][language] : titles[language][pageTitleIndex()];
     if (titleText) document.title = titleText;
     const select = document.getElementById('noor-language-select');
     if (select && select.value !== language) select.value = language;
@@ -244,7 +327,9 @@
 
   window.NOORLocalization = {
     languages: LANGUAGES.slice(),
+    names: { ...NAMES },
     setLanguage: applyLanguage,
+    addTranslations,
     getLanguage: () => document.documentElement.lang || 'en',
     translate: (source, language = document.documentElement.lang || 'en') => lookup(source, language) || source
   };
