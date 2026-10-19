@@ -478,11 +478,19 @@
       if (item.node.hasAttribute('aria-pressed')) item.node.setAttribute('aria-pressed', String(selected));
     });
     const date = record.start ? record.start + (record.end && record.end !== record.start ? ' → ' + record.end : '') : 'Dates not listed';
+    const statusLabels = {
+      'reported-figures': 'REPORTED FIGURES',
+      humanitarian: 'HUMANITARIAN',
+      'un-verified': 'UN-VERIFIED',
+      'ngo-findings': 'NGO FINDINGS',
+      'independent-analysis': 'INDEPENDENT ANALYSIS',
+      probe: 'PROBE'
+    };
     const meta = [
       record.categoryLabel,
       date,
       record.location.replace(/-/g, ' '),
-      record.status.replace(/-/g, ' ')
+      tr(statusLabels[record.status] || record.status.replace(/-/g, ' '))
     ];
     const caseLinks = record.links.filter((link) => /^case-[^#]+\.html(?:#.*)?$/.test(link.href) || link.href.startsWith('case-'));
     const actions = [{ href: '#' + record.el.id, label: tr('OPEN FULL RECORD ↓'), external: false }];
@@ -513,7 +521,14 @@
     }];
     highlightTopicRelationships(hub);
     setPanel(hub.label, 'TOPIC HUB / ' + String(hub.count).padStart(2, '0'), 'SUBJECT CLUSTER', [
-      hub.count + ' records', visible.length + ' visible after filters'
+      getLang() === 'ar' ? 'السجلات ضمن الموضوع: ' + hub.count : tr('RECORDS') + ': ' + hub.count,
+      getLang() === 'ar' ? 'الظاهر بعد التصفية: ' + visible.length : ({
+        en: visible.length + ' visible after filters',
+        fr: visible.length + ' visibles après filtrage',
+        es: visible.length + ' visibles tras los filtros',
+        pt: visible.length + ' visíveis após os filtros',
+        de: visible.length + ' nach Filtern sichtbar'
+      }[getLang()] || visible.length + ' visible after filters')
     ], tr('This hub groups archive records under the same subject. Connections show how the records are classified, not proof of legal responsibility.'), actions, []);
     applyFilters();
   }
