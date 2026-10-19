@@ -57,7 +57,11 @@
     if (option.value) categoryNames.set(option.value, option);
   });
 
-  const getLang = () => document.documentElement.lang === 'ar' ? 'ar' : 'en';
+  const getLang = () => document.documentElement.lang || 'en';
+  const isRtl = () => document.documentElement.dir === 'rtl';
+  const tr = (key, fallback = key) => window.NOORLocalization
+    ? window.NOORLocalization.translate(key, getLang())
+    : fallback;
   const txt = (element) => (element ? element.textContent : '').trim();
   const attrText = (element, lang = getLang()) => {
     if (!element) return '';
@@ -229,15 +233,15 @@
     const g = svgEl('g', {
       class: 'archive-network-node archive-network-node-center',
       'data-node-id': 'archive-root',
-      role: 'button', tabindex: '0', 'aria-label': 'NOOR central evidence archive'
+      role: 'button', tabindex: '0', 'aria-label': tr('NOOR central evidence archive')
     });
     g.appendChild(svgEl('circle', { cx: CENTER.x, cy: CENTER.y, r: 84, class: 'archive-network-center-glow' }));
     g.appendChild(svgEl('circle', { cx: CENTER.x, cy: CENTER.y, r: 75, class: 'archive-network-center-ring' }));
     g.appendChild(svgEl('circle', { cx: CENTER.x, cy: CENTER.y, r: 66, class: 'archive-network-center-inner' }));
     g.appendChild(svgEl('path', { d: 'M ' + (CENTER.x - 38) + ' ' + (CENTER.y - 35) + ' h 76', class: 'archive-network-center-rule' }));
     appendText(g, CENTER.x, CENTER.y - 12, 'NOOR', 'archive-network-center-title', { 'text-anchor': 'middle' });
-    appendText(g, CENTER.x, CENTER.y + 10, 'EVIDENCE MAP', 'archive-network-center-label', { 'text-anchor': 'middle' });
-    appendText(g, CENTER.x, CENTER.y + 35, records.length + ' SOURCE RECORDS', 'archive-network-center-count', { 'text-anchor': 'middle' });
+    appendText(g, CENTER.x, CENTER.y + 10, tr('EVIDENCE MAP'), 'archive-network-center-label', { 'text-anchor': 'middle', direction: isRtl() ? 'rtl' : 'ltr', 'unicode-bidi': 'plaintext' });
+    appendText(g, CENTER.x, CENTER.y + 35, tr('SOURCE RECORDS') + ' / ' + records.length, 'archive-network-center-count', { 'text-anchor': 'middle', direction: isRtl() ? 'rtl' : 'ltr', 'unicode-bidi': 'plaintext' });
     return g;
   }
 
@@ -249,10 +253,19 @@
       role: 'button', tabindex: '0', 'aria-pressed': 'false', 'aria-label': hub.label + ' topic hub'
     });
     g.appendChild(svgEl('rect', { x: 0, y: 0, width: HUB_W, height: HUB_H, rx: 3, class: 'archive-network-topic-card' }));
-    g.appendChild(svgEl('circle', { cx: 14, cy: 16, r: 3, class: 'archive-network-topic-dot' }));
-    const lines = wrapWords(hub.label.toUpperCase(), 18, 2);
-    lines.forEach((line, i) => appendText(g, 26, 19 + i * 14, line, 'archive-network-topic-title'));
-    appendText(g, 13, HUB_H - 12, 'TOPIC NODE / ' + String(hub.count).padStart(2, '0') + ' RECORD' + (hub.count === 1 ? '' : 'S'), 'archive-network-node-meta');
+    const rtl = isRtl();
+    g.appendChild(svgEl('circle', { cx: rtl ? HUB_W - 14 : 14, cy: 16, r: 3, class: 'archive-network-topic-dot' }));
+    const topicLabel = rtl ? hub.label : hub.label.toLocaleUpperCase(getLang());
+    const lines = wrapWords(topicLabel, rtl ? 16 : 18, 2);
+    lines.forEach((line, i) => appendText(g, rtl ? HUB_W - 12 : 26, 19 + i * 15, line, 'archive-network-topic-title', {
+      'text-anchor': rtl ? 'end' : 'start',
+      direction: rtl ? 'rtl' : 'ltr',
+      'unicode-bidi': 'plaintext'
+    }));
+    const topicMeta = tr('TOPIC NODE') + ' / ' + String(hub.count).padStart(2, '0') + ' ' + tr(hub.count === 1 ? 'RECORD' : 'RECORDS');
+    appendText(g, rtl ? HUB_W - 12 : 13, HUB_H - 10, topicMeta, 'archive-network-node-meta', {
+      'text-anchor': rtl ? 'end' : 'start', direction: rtl ? 'rtl' : 'ltr', 'unicode-bidi': 'plaintext'
+    });
     hub.node = g;
     return g;
   }
@@ -269,11 +282,16 @@
     });
     g.appendChild(svgEl('rect', { x: 0, y: 0, width: RECORD_W, height: RECORD_H, rx: 2, class: 'archive-network-record-card' }));
     g.appendChild(svgEl('rect', { x: 0, y: 0, width: 4, height: RECORD_H, class: 'archive-network-record-stripe' }));
-    appendText(g, 12, 16, 'SOURCE RECORD / ' + String(record.index).padStart(3, '0'), 'archive-network-record-id');
-    const lines = wrapWords(record.title, 29, 2);
-    lines.forEach((line, i) => appendText(g, 12, 38 + i * 14, line, 'archive-network-record-title'));
-    const dateLabel = record.start ? record.start.slice(0, 4) + (record.end && record.end.slice(0, 4) !== record.start.slice(0, 4) ? '–' + record.end.slice(0, 4) : '') : 'DATE NOT LISTED';
-    appendText(g, 12, RECORD_H - 8, dateLabel + '  /  ' + record.status.toUpperCase().replace(/-/g, ' ').slice(0, 20), 'archive-network-node-meta');
+    const rtl = isRtl();
+    const labelX = rtl ? RECORD_W - 12 : 12;
+    const anchor = rtl ? 'end' : 'start';
+    const directionAttrs = { 'text-anchor': anchor, direction: rtl ? 'rtl' : 'ltr', 'unicode-bidi': 'plaintext' };
+    appendText(g, labelX, 16, tr('SOURCE RECORD') + ' / ' + String(record.index).padStart(3, '0'), 'archive-network-record-id', directionAttrs);
+    const lines = wrapWords(record.title, rtl ? 21 : 29, 2);
+    lines.forEach((line, i) => appendText(g, labelX, 38 + i * 15, line, 'archive-network-record-title', directionAttrs));
+    const dateLabel = record.start ? record.start.slice(0, 4) + (record.end && record.end.slice(0, 4) !== record.start.slice(0, 4) ? '–' + record.end.slice(0, 4) : '') : tr('Date not listed');
+    const statusLabel = tr(record.status.replace(/-/g, ' ').replace(/\b\w/g, (letter) => letter.toUpperCase()));
+    appendText(g, labelX, RECORD_H - 8, dateLabel + '  /  ' + statusLabel.slice(0, 24), 'archive-network-node-meta', directionAttrs);
     record.node = g;
     return g;
   }
@@ -444,7 +462,7 @@
     if (!sources.length) {
       const p = document.createElement('p');
       p.className = 'archive-map-no-sources';
-      p.textContent = getLang() === 'ar' ? 'لا توجد روابط مصدر إضافية ضمن هذا المحور.' : 'No additional source links are attached to this topic hub.';
+      p.textContent = tr('No additional source links are attached to this topic hub.');
       sourceLinks.appendChild(p);
     } else {
       sources.forEach((link) => appendDetailLink(sourceLinks, link));
@@ -467,7 +485,7 @@
       record.status.replace(/-/g, ' ')
     ];
     const caseLinks = record.links.filter((link) => /^case-[^#]+\.html(?:#.*)?$/.test(link.href) || link.href.startsWith('case-'));
-    const actions = [{ href: '#' + record.el.id, label: getLang() === 'ar' ? 'افتح السجل الكامل ↓' : 'OPEN FULL RECORD ↓', external: false }];
+    const actions = [{ href: '#' + record.el.id, label: tr('OPEN FULL RECORD ↓'), external: false }];
     caseLinks.forEach((link) => actions.push(link));
     highlightRecordRelationships(record);
     setPanel(record.title, 'SOURCE RECORD / ' + String(record.index).padStart(3, '0'), 'ARCHIVE SOURCE RECORD', meta, record.summary, actions, record.links.filter((link) => link.external).slice(0, 5));
@@ -490,15 +508,13 @@
     const visible = hub.records.filter((record) => !record.el.hidden);
     const actions = [{
       href: '#archive-filters',
-      label: getLang() === 'ar' ? 'افتح عوامل التصفية ↓' : 'OPEN ARCHIVE FILTERS ↓',
+      label: tr('OPEN ARCHIVE FILTERS ↓'),
       external: false
     }];
     highlightTopicRelationships(hub);
     setPanel(hub.label, 'TOPIC HUB / ' + String(hub.count).padStart(2, '0'), 'SUBJECT CLUSTER', [
       hub.count + ' records', visible.length + ' visible after filters'
-    ], getLang() === 'ar'
-      ? 'يجمع هذا المحور سجلات الأرشيف ذات الموضوع نفسه. تُعرض الروابط لتوضيح صلات التصنيف، لا لإثبات المسؤولية القانونية.'
-      : 'This hub groups archive records under the same subject. Connections show how the records are classified, not proof of legal responsibility.', actions, []);
+    ], tr('This hub groups archive records under the same subject. Connections show how the records are classified, not proof of legal responsibility.'), actions, []);
     applyFilters();
   }
 
@@ -558,10 +574,15 @@
       const hub = categories.find((h) => h.id === path.getAttribute('data-to'));
       path.classList.toggle('is-muted-edge', Boolean(mapTopic && hub && mapTopic !== hub.key));
     });
-    const resultText = getLang() === 'ar'
-      ? 'السجلات الظاهرة: ' + matched + ' من ' + records.length + ' · المحاور: ' + categories.length
-      : '<strong>' + matched + '</strong> / ' + records.length + ' RECORDS VISIBLE <i>·</i> ' + categories.length + ' TOPIC HUBS';
-    resultLabel.innerHTML = resultText;
+    const countText = {
+      en: matched + ' / ' + records.length + ' RECORDS VISIBLE · ' + categories.length + ' TOPIC HUBS',
+      ar: 'السجلات الظاهرة: ' + matched + ' من ' + records.length + ' · المحاور: ' + categories.length,
+      fr: matched + ' / ' + records.length + ' DOSSIERS VISIBLES · ' + categories.length + ' THÈMES',
+      es: matched + ' / ' + records.length + ' REGISTROS VISIBLES · ' + categories.length + ' TEMAS',
+      pt: matched + ' / ' + records.length + ' REGISTOS VISÍVEIS · ' + categories.length + ' TEMAS',
+      de: matched + ' / ' + records.length + ' EINTRÄGE SICHTBAR · ' + categories.length + ' THEMEN'
+    };
+    resultLabel.textContent = countText[getLang()] || countText.en;
     if (!records.some((r) => r.key === selectedKey && r.matches) &&
         !categories.some((h) => h.id === selectedKey && (!mapTopic || h.key === mapTopic))) {
       if (selectedKey.startsWith('record:')) resetDetails();
@@ -780,18 +801,16 @@
     }
   });
 
-  const languageButton = document.getElementById('archive-language');
-  if (languageButton) {
-    languageButton.addEventListener('click', () => {
-      window.setTimeout(() => {
-        createGraph();
-        const q = queryInput.value;
-        queryInput.placeholder = queryInput.getAttribute('data-' + getLang() + '-placeholder') || queryInput.placeholder;
-        queryInput.value = q;
-        applyFilters();
-      }, 0);
-    });
-  }
+  document.addEventListener('noor:languagechange', () => {
+    const q = queryInput.value;
+    const topic = topicInput.value;
+    createGraph();
+    queryInput.value = q;
+    topicInput.value = topic;
+    queryInput.placeholder = queryInput.getAttribute('data-' + getLang() + '-placeholder') ||
+      tr('Search names, subjects or sources');
+    applyFilters();
+  });
 
   let resizeTimer = null;
   window.addEventListener('resize', () => {
