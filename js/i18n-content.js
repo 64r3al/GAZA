@@ -185,6 +185,746 @@
     ["A childhood should not be measured by what a child has survived.","لا ينبغي قياس الطفولة بما اضطر الطفل إلى النجاة منه.","L’enfance ne devrait pas se mesurer à ce qu’un enfant a dû survivre.","La infancia no debería medirse por aquello que un niño ha tenido que sobrevivir.","A infância não deve ser medida pelo que uma criança teve de sobreviver.","Kindheit sollte nicht daran gemessen werden, was ein Kind überleben musste."]
   ];
 
+  // Additional cross-page and research-desk translations, kept in one shared catalog.
+  rows.push(...[
+  [
+    "Explore the record.",
+    "استكشف السجل.",
+    "Explorer les sources.",
+    "Explora los registros.",
+    "Explore os registos.",
+    "Die Quellen erkunden."
+  ],
+  [
+    "Move through the evidence as a connected network. Every node points back to a source record; every line marks a topic or cross-reference—not a claim of guilt.",
+    "تنقّل بين الأدلة كشبكة مترابطة. تشير كل عقدة إلى سجل مصدر، ويمثل كل خط موضوعاً أو إحالة متقاطعة، لا ادعاءً بالإدانة.",
+    "Parcourez les éléments comme un réseau connecté. Chaque nœud renvoie à une source ; chaque ligne indique un thème ou un renvoi, et non une accusation de culpabilité.",
+    "Recorre las pruebas como una red conectada. Cada nodo remite a una fuente; cada línea indica un tema o una referencia cruzada, no una afirmación de culpabilidad.",
+    "Percorra as provas como uma rede ligada. Cada nó remete para uma fonte; cada linha indica um tema ou uma referência cruzada, não uma alegação de culpa.",
+    "Erkunden Sie die Belege als vernetztes Gefüge. Jeder Knoten verweist auf eine Quelle; jede Linie kennzeichnet ein Thema oder einen Querverweis, keine Schuldzuweisung."
+  ],
+  [
+    "INTERACTIVE SOURCE MAP / 002",
+    "خريطة المصادر التفاعلية / ٠٠٢",
+    "CARTE INTERACTIVE DES SOURCES / 002",
+    "MAPA INTERACTIVO DE FUENTES / 002",
+    "MAPA INTERATIVO DE FONTES / 002",
+    "INTERAKTIVE QUELLENKARTE / 002"
+  ],
+  [
+    "FIND A NODE",
+    "ابحث عن عقدة",
+    "RECHERCHER UN NŒUD",
+    "BUSCAR UN NODO",
+    "PROCURAR UM NÓ",
+    "KNOTEN SUCHEN"
+  ],
+  [
+    "Search names, subjects or sources",
+    "ابحث عن أسماء أو موضوعات أو مصادر",
+    "Rechercher des noms, sujets ou sources",
+    "Buscar nombres, temas o fuentes",
+    "Pesquisar nomes, temas ou fontes",
+    "Namen, Themen oder Quellen suchen"
+  ],
+  [
+    "TOPIC LAYER",
+    "طبقة الموضوع",
+    "COUCHE THÉMATIQUE",
+    "CAPA TEMÁTICA",
+    "CAMADA TEMÁTICA",
+    "THEMENEBENE"
+  ],
+  [
+    "All topics",
+    "كل الموضوعات",
+    "Tous les thèmes",
+    "Todos los temas",
+    "Todos os temas",
+    "Alle Themen"
+  ],
+  [
+    "Child casualties",
+    "ضحايا من الأطفال",
+    "Enfants tués ou blessés",
+    "Niños víctimas",
+    "Crianças vítimas",
+    "Kinder als Opfer"
+  ],
+  [
+    "Civilian harm",
+    "الأذى اللاحق بالمدنيين",
+    "Atteintes aux civils",
+    "Daños a civiles",
+    "Danos a civis",
+    "Schäden an Zivilpersonen"
+  ],
+  [
+    "Aid and rescue workers",
+    "عمال الإغاثة والإنقاذ",
+    "Humanitaires et secouristes",
+    "Personal humanitario y de rescate",
+    "Trabalhadores humanitários e de salvamento",
+    "Hilfs- und Rettungskräfte"
+  ],
+  [
+    "Schools and shelters",
+    "المدارس والملاجئ",
+    "Écoles et abris",
+    "Escuelas y refugios",
+    "Escolas e abrigos",
+    "Schulen und Schutzunterkünfte"
+  ],
+  [
+    "Access to food and aid",
+    "الوصول إلى الغذاء والمساعدات",
+    "Accès à la nourriture et à l’aide",
+    "Acceso a alimentos y ayuda",
+    "Acesso a alimentos e ajuda",
+    "Zugang zu Nahrung und Hilfe"
+  ],
+  [
+    "Detention / sexual violence",
+    "الاحتجاز / العنف الجنسي",
+    "Détention / violences sexuelles",
+    "Detención / violencia sexual",
+    "Detenção / violência sexual",
+    "Haft / sexualisierte Gewalt"
+  ],
+  [
+    "Destruction of buildings",
+    "تدمير المباني",
+    "Destruction de bâtiments",
+    "Destrucción de edificios",
+    "Destruição de edifícios",
+    "Zerstörung von Gebäuden"
+  ],
+  [
+    "Food / nutrition",
+    "الغذاء / التغذية",
+    "Alimentation / nutrition",
+    "Alimentación / nutrición",
+    "Alimentação / nutrição",
+    "Nahrung / Ernährung"
+  ],
+  [
+    "Displacement / unsafe shelter",
+    "النزوح / المأوى غير الآمن",
+    "Déplacement / abris dangereux",
+    "Desplazamiento / refugio inseguro",
+    "Deslocação / abrigo inseguro",
+    "Vertreibung / unsichere Unterkunft"
+  ],
+  [
+    "FIT MAP",
+    "ملاءمة الخريطة",
+    "AJUSTER LA CARTE",
+    "AJUSTAR MAPA",
+    "AJUSTAR MAPA",
+    "KARTE EINPASSEN"
+  ],
+  [
+    "CLEAR",
+    "مسح",
+    "EFFACER",
+    "BORRAR",
+    "LIMPAR",
+    "ZURÜCKSETZEN"
+  ],
+  [
+    "SELECT A NODE",
+    "اختر عقدة",
+    "SÉLECTIONNEZ UN NŒUD",
+    "SELECCIONA UN NODO",
+    "SELECIONE UM NÓ",
+    "KNOTEN AUSWÄHLEN"
+  ],
+  [
+    "DRAG TO PAN · SCROLL TO ZOOM · SELECT TO INSPECT",
+    "اسحب للتحريك · مرّر للتكبير · اختر للفحص",
+    "GLISSER POUR DÉPLACER · DÉFILER POUR ZOOMER · SÉLECTIONNER POUR EXAMINER",
+    "ARRASTRA PARA MOVER · DESPLAZA PARA AMPLIAR · SELECCIONA PARA EXAMINAR",
+    "ARRASTE PARA MOVER · DESLIZE PARA AMPLIAR · SELECIONE PARA EXAMINAR",
+    "ZIEHEN ZUM VERSCHIEBEN · SCROLLEN ZUM ZOOMEN · AUSWÄHLEN ZUM PRÜFEN"
+  ],
+  [
+    "Topic hub",
+    "محور موضوع",
+    "Pôle thématique",
+    "Nodo temático",
+    "Núcleo temático",
+    "Themenknoten"
+  ],
+  [
+    "Source record",
+    "سجل المصدر",
+    "Notice source",
+    "Registro fuente",
+    "Registo de fonte",
+    "Quellenbeleg"
+  ],
+  [
+    "Related by topic / source",
+    "مرتبط حسب الموضوع / المصدر",
+    "Lié par thème ou source",
+    "Relacionado por tema o fuente",
+    "Relacionado por tema ou fonte",
+    "Nach Thema oder Quelle verknüpft"
+  ],
+  [
+    "Select a node.",
+    "اختر عقدة.",
+    "Sélectionnez un nœud.",
+    "Selecciona un nodo.",
+    "Selecione um nó.",
+    "Wählen Sie einen Knoten."
+  ],
+  [
+    "Choose a topic hub to isolate its records, or select an individual record to inspect its source links, reporting dates and scope.",
+    "اختر محوراً موضوعياً لعرض سجلاته، أو اختر سجلاً لفحص روابط مصادره وتواريخ التقارير ونطاقها.",
+    "Choisissez un pôle thématique pour isoler ses notices, ou sélectionnez une notice pour consulter ses sources, ses dates et son périmètre.",
+    "Elige un nodo temático para filtrar sus registros o selecciona uno para consultar sus fuentes, fechas y alcance.",
+    "Escolha um núcleo temático para filtrar os registos ou selecione um registo para consultar fontes, datas e âmbito.",
+    "Wählen Sie einen Themenknoten, um dessen Belege einzugrenzen, oder einen einzelnen Beleg, um Quellen, Datumsangaben und Umfang zu prüfen."
+  ],
+  [
+    "Pan around the network",
+    "حرّك الخريطة داخل الشبكة",
+    "Déplacer le réseau",
+    "Desplazarse por la red",
+    "Mover-se pela rede",
+    "Netzwerk verschieben"
+  ],
+  [
+    "Zoom into clusters",
+    "كبّر مجموعات العقد",
+    "Zoomer sur les groupes",
+    "Ampliar los grupos",
+    "Ampliar os grupos",
+    "Gruppen vergrößern"
+  ],
+  [
+    "Refit the entire map",
+    "إظهار الخريطة كاملة",
+    "Réajuster toute la carte",
+    "Ajustar todo el mapa",
+    "Enquadrar todo o mapa",
+    "Gesamte Karte einpassen"
+  ],
+  [
+    "SOURCE TRAIL",
+    "مسار المصادر",
+    "PISTE DES SOURCES",
+    "RASTRO DE FUENTES",
+    "RASTO DE FONTES",
+    "QUELLENPFAD"
+  ],
+  [
+    "NOOR / RESEARCH DESK",
+    "نور / مكتب البحث",
+    "NOOR / BUREAU DE RECHERCHE",
+    "NOOR / MESA DE INVESTIGACIÓN",
+    "NOOR / NÚCLEO DE INVESTIGAÇÃO",
+    "NOOR / RECHERCHETEAM"
+  ],
+  [
+    "SOURCE METHOD ↗",
+    "منهجية المصادر ↗",
+    "MÉTHODE DES SOURCES ↗",
+    "MÉTODO DE FUENTES ↗",
+    "MÉTODO DAS FONTES ↗",
+    "QUELLENMETHODE ↗"
+  ],
+  [
+    "The Photograph",
+    "الصورة",
+    "La photographie",
+    "La fotografía",
+    "A fotografia",
+    "Das Foto"
+  ],
+  [
+    "The Document",
+    "الوثيقة",
+    "Le document",
+    "El documento",
+    "O documento",
+    "Das Dokument"
+  ],
+  [
+    "The Network",
+    "شبكة المصادر",
+    "Le réseau",
+    "La red",
+    "A rede",
+    "Das Netzwerk"
+  ],
+  [
+    "See what the source actually published.",
+    "اطّلع على ما نشره المصدر فعلياً.",
+    "Consultez ce que la source a réellement publié.",
+    "Consulta lo que publicó realmente la fuente.",
+    "Veja o que a fonte publicou de facto.",
+    "Sehen Sie, was die Quelle tatsächlich veröffentlicht hat."
+  ],
+  [
+    "A catalogue of source-linked video reports, visual investigations, reconstructions and primary documents. Every item names its publisher and describes the material’s stated role. NOOR does not host a raw-footage dump: links lead to the original publisher so context, captions and provenance stay attached.",
+    "فهرس لتقارير الفيديو والتحقيقات المرئية وإعادة بناء الأحداث والوثائق الأصلية المرتبطة بمصادرها. يذكر كل عنصر ناشره ودور المادة كما وصفه المصدر. لا يستضيف نور تجميعة لقطات خام؛ بل تقود الروابط إلى الناشر الأصلي للحفاظ على السياق والتعليقات ومصدر المادة.",
+    "Un catalogue de reportages vidéo, d’enquêtes visuelles, de reconstitutions et de documents primaires reliés à leurs sources. Chaque élément nomme son éditeur et précise le rôle annoncé du contenu. NOOR n’héberge pas de dépôt de séquences brutes : les liens renvoient à l’éditeur d’origine pour préserver le contexte, les légendes et la provenance.",
+    "Un catálogo de reportajes en vídeo, investigaciones visuales, reconstrucciones y documentos primarios enlazados a sus fuentes. Cada elemento identifica al editor y explica la función declarada del material. NOOR no aloja un volcado de imágenes sin contexto: los enlaces llevan al editor original para conservar el contexto, los pies de foto y la procedencia.",
+    "Um catálogo de reportagens em vídeo, investigações visuais, reconstruções e documentos primários ligados às respetivas fontes. Cada item identifica o editor e descreve a função declarada do material. A NOOR não aloja um despejo de imagens brutas: as ligações remetem para o editor original, preservando o contexto, as legendas e a proveniência.",
+    "Ein Katalog mit verlinkten Videoberichten, visuellen Untersuchungen, Rekonstruktionen und Primärdokumenten. Jeder Eintrag nennt den Herausgeber und erläutert die angegebene Funktion des Materials. NOOR hostet keine Sammlung roher Aufnahmen; die Links führen zum Originalanbieter, damit Kontext, Bildunterschriften und Herkunft erhalten bleiben."
+  ],
+  [
+    "Content warning: some publishers include distressing descriptions, imagery or audio. Review the source’s content notes before opening or playing. A video may document only a moment or angle; it does not by itself establish the whole sequence or legal responsibility.",
+    "تحذير محتوى: قد تتضمن بعض المصادر أوصافاً أو صوراً أو أصواتاً مزعجة. راجع تنبيهات المحتوى لدى المصدر قبل الفتح أو التشغيل. قد يوثّق الفيديو لحظة أو زاوية فقط، ولا يثبت وحده التسلسل الكامل أو المسؤولية القانونية.",
+    "Avertissement : certaines sources contiennent des descriptions, images ou sons éprouvants. Consultez leurs avertissements avant d’ouvrir ou de lire le contenu. Une vidéo peut ne montrer qu’un instant ou un angle ; elle ne suffit pas à établir toute la séquence ni une responsabilité juridique.",
+    "Aviso de contenido: algunas fuentes incluyen descripciones, imágenes o audio perturbadores. Lee las advertencias de la fuente antes de abrir o reproducir el material. Un vídeo puede documentar un instante o un ángulo; por sí solo no demuestra toda la secuencia ni la responsabilidad jurídica.",
+    "Aviso de conteúdo: algumas fontes incluem descrições, imagens ou áudio perturbadores. Consulte os avisos da fonte antes de abrir ou reproduzir o material. Um vídeo pode documentar apenas um momento ou ângulo; por si só, não estabelece toda a sequência nem a responsabilidade jurídica.",
+    "Inhaltshinweis: Manche Anbieter zeigen belastende Beschreibungen, Bilder oder Audioinhalte. Lesen Sie vor dem Öffnen oder Abspielen die Hinweise der Quelle. Ein Video dokumentiert möglicherweise nur einen Moment oder Blickwinkel und belegt allein weder den gesamten Ablauf noch rechtliche Verantwortung."
+  ],
+  [
+    "01 / FIND MATERIAL",
+    "٠١ / البحث عن المواد",
+    "01 / RECHERCHER",
+    "01 / BUSCAR MATERIAL",
+    "01 / PROCURAR MATERIAL",
+    "01 / MATERIAL FINDEN"
+  ],
+  [
+    "Filter the source index.",
+    "Filترة فهرس المصادر.",
+    "Filtrer l’index des sources.",
+    "Filtra el índice de fuentes.",
+    "Filtrar o índice de fontes.",
+    "Quellenindex filtern."
+  ],
+  [
+    "Search publishers, subjects or notes",
+    "ابحث عن الناشرين أو الموضوعات أو الملاحظات",
+    "Rechercher des éditeurs, sujets ou notes",
+    "Buscar editores, temas o notas",
+    "Pesquisar editores, temas ou notas",
+    "Herausgeber, Themen oder Hinweise suchen"
+  ],
+  [
+    "Material type",
+    "نوع المادة",
+    "Type de matériel",
+    "Tipo de material",
+    "Tipo de material",
+    "Materialtyp"
+  ],
+  [
+    "All types",
+    "كل الأنواع",
+    "Tous les types",
+    "Todos los tipos",
+    "Todos os tipos",
+    "Alle Typen"
+  ],
+  [
+    "Video report / original post",
+    "تقرير فيديو / منشور أصلي",
+    "Reportage vidéo / publication d’origine",
+    "Reportaje en vídeo / publicación original",
+    "Reportagem em vídeo / publicação original",
+    "Videobericht / Originalbeitrag"
+  ],
+  [
+    "Reconstruction",
+    "إعادة بناء الأحداث",
+    "Reconstitution",
+    "Reconstrucción",
+    "Reconstrução",
+    "Rekonstruktion"
+  ],
+  [
+    "Visual or audio analysis",
+    "تحليل مرئي أو صوتي",
+    "Analyse visuelle ou audio",
+    "Análisis visual o de audio",
+    "Análise visual ou áudio",
+    "Bild- oder Audioanalyse"
+  ],
+  [
+    "Document / report",
+    "وثيقة / تقرير",
+    "Document / rapport",
+    "Documento / informe",
+    "Documento / relatório",
+    "Dokument / Bericht"
+  ],
+  [
+    "Subject",
+    "الموضوع",
+    "Sujet",
+    "Tema",
+    "Tema",
+    "Thema"
+  ],
+  [
+    "All subjects",
+    "كل الموضوعات",
+    "Tous les sujets",
+    "Todos los temas",
+    "Todos os temas",
+    "Alle Themen"
+  ],
+  [
+    "Civilian harm",
+    "الأذى اللاحق بالمدنيين",
+    "Atteintes aux civils",
+    "Daños a civiles",
+    "Danos a civis",
+    "Schäden an Zivilpersonen"
+  ],
+  [
+    "Aid workers",
+    "عمال الإغاثة",
+    "Humanitaires",
+    "Personal humanitario",
+    "Trabalhadores humanitários",
+    "Hilfskräfte"
+  ],
+  [
+    "Destruction",
+    "التدمير",
+    "Destruction",
+    "Destrucción",
+    "Destruição",
+    "Zerstörung"
+  ],
+  [
+    "Schools & shelters",
+    "المدارس والملاجئ",
+    "Écoles et abris",
+    "Escuelas y refugios",
+    "Escolas e abrigos",
+    "Schulen und Schutzunterkünfte"
+  ],
+  [
+    "Aid access",
+    "الوصول إلى المساعدات",
+    "Accès à l’aide",
+    "Acceso a la ayuda",
+    "Acesso à ajuda",
+    "Zugang zu Hilfe"
+  ],
+  [
+    "Clear filters",
+    "مسح عوامل التصفية",
+    "Effacer les filtres",
+    "Borrar filtros",
+    "Limpar filtros",
+    "Filter löschen"
+  ],
+  [
+    "source entry",
+    "عنصر مصدر",
+    "notice source",
+    "registro fuente",
+    "registo de fonte",
+    "Quelleneintrag"
+  ],
+  [
+    "source entries",
+    "عناصر مصادر",
+    "notices sources",
+    "registros fuente",
+    "registos de fonte",
+    "Quelleneinträge"
+  ],
+  [
+    "No entries match those filters. Clear a filter to broaden the results.",
+    "لا توجد عناصر تطابق عوامل التصفية. امسح أحد المرشحات لتوسيع النتائج.",
+    "Aucun élément ne correspond à ces filtres. Effacez un filtre pour élargir les résultats.",
+    "Ningún elemento coincide con estos filtros. Borra un filtro para ampliar los resultados.",
+    "Nenhum item corresponde a estes filtros. Limpe um filtro para alargar os resultados.",
+    "Keine Einträge passen zu diesen Filtern. Entfernen Sie einen Filter, um mehr Ergebnisse zu erhalten."
+  ],
+  [
+    "The legal record is not one single case.",
+    "السجل القانوني ليس قضية واحدة.",
+    "Le dossier juridique ne constitue pas une seule affaire.",
+    "El registro jurídico no es un único caso.",
+    "O registo jurídico não é um único processo.",
+    "Die Rechtsdokumentation ist kein einzelner Fall."
+  ],
+  [
+    "Court proceedings, international inquiries, human-rights investigations and government responses are different types of records. This index separates their status and links readers to the original institutions.",
+    "الإجراءات القضائية والتحقيقات الدولية وتحقيقات حقوق الإنسان وردود الحكومات أنواع مختلفة من السجلات. يفصل هذا الفهرس بين أوضاعها ويربط القارئ بالمؤسسات الأصلية.",
+    "Les procédures judiciaires, enquêtes internationales, investigations sur les droits humains et réponses gouvernementales sont des types de documents distincts. Cet index différencie leur statut et renvoie aux institutions d’origine.",
+    "Los procedimientos judiciales, las investigaciones internacionales, las investigaciones sobre derechos humanos y las respuestas gubernamentales son tipos de registros distintos. Este índice separa sus estados y enlaza con las instituciones originales.",
+    "Os processos judiciais, inquéritos internacionais, investigações de direitos humanos e respostas governamentais são tipos distintos de registo. Este índice distingue o seu estatuto e liga às instituições originais.",
+    "Gerichtsverfahren, internationale Untersuchungen, Menschenrechtsrecherchen und Stellungnahmen von Regierungen sind unterschiedliche Arten von Quellen. Dieser Index trennt ihren Status und verlinkt auf die ursprünglichen Institutionen."
+  ],
+  [
+    "PROCEEDINGS / FINDINGS / STATUS DISTINCTIONS",
+    "إجراءات / نتائج / تمييز الحالات",
+    "PROCÉDURES / CONCLUSIONS / DISTINCTIONS DE STATUT",
+    "PROCEDIMIENTOS / CONCLUSIONES / DISTINCIÓN DE ESTADOS",
+    "PROCESSOS / CONCLUSÕES / DISTINÇÕES DE ESTATUTO",
+    "VERFAHREN / FESTSTELLUNGEN / STATUSUNTERSCHIEDE"
+  ],
+  [
+    "Read status precisely. An arrest warrant is not a conviction. Provisional measures are not a final judgment on the merits. A commission’s finding should be attributed to that commission, and an NGO’s legal assessment is not a court ruling.",
+    "اقرأ الحالة بدقة. مذكرة التوقيف ليست إدانة. والتدابير المؤقتة ليست حكماً نهائياً في موضوع القضية. تُنسب نتائج اللجان إلى اللجنة التي أصدرتها، ولا يُعد التقييم القانوني لمنظمة غير حكومية حكماً قضائياً.",
+    "Lisez attentivement le statut. Un mandat d’arrêt n’est pas une condamnation. Des mesures provisoires ne constituent pas un jugement définitif au fond. Une conclusion doit être attribuée à la commission qui l’a formulée, et l’analyse juridique d’une ONG n’est pas une décision de justice.",
+    "Lee el estado con precisión. Una orden de detención no es una condena. Las medidas provisionales no son una sentencia definitiva sobre el fondo. Las conclusiones deben atribuirse a la comisión que las emitió, y la valoración jurídica de una ONG no es un fallo judicial.",
+    "Leia o estatuto com precisão. Um mandado de detenção não é uma condenação. Medidas provisórias não são uma decisão final sobre o mérito. As conclusões devem ser atribuídas à comissão que as formulou, e a avaliação jurídica de uma ONG não é uma decisão judicial.",
+    "Achten Sie genau auf den Status. Ein Haftbefehl ist keine Verurteilung. Vorläufige Maßnahmen sind kein endgültiges Sachurteil. Feststellungen müssen der jeweiligen Kommission zugeschrieben werden; die rechtliche Bewertung einer NGO ist kein Gerichtsurteil."
+  ],
+  [
+    "01 / INTERNATIONAL COURT OF JUSTICE",
+    "٠١ / محكمة العدل الدولية",
+    "01 / COUR INTERNATIONALE DE JUSTICE",
+    "01 / CORTE INTERNACIONAL DE JUSTICIA",
+    "01 / TRIBUNAL INTERNACIONAL DE JUSTIÇA",
+    "01 / INTERNATIONALER GERICHTSHOF"
+  ],
+  [
+    "South Africa v. Israel",
+    "جنوب أفريقيا ضد إسرائيل",
+    "Afrique du Sud c. Israël",
+    "Sudáfrica contra Israel",
+    "África do Sul contra Israel",
+    "Südafrika gegen Israel"
+  ],
+  [
+    "Inter-State proceedings under the Genocide Convention. The official docket contains the application, orders and subsequent procedural developments.",
+    "إجراءات بين دولتين بموجب اتفاقية منع الإبادة الجماعية. يتضمن السجل الرسمي الطلب والأوامر والتطورات الإجرائية اللاحقة.",
+    "Procédure entre États au titre de la Convention sur le génocide. Le dossier officiel contient la requête, les ordonnances et les évolutions procédurales ultérieures.",
+    "Procedimiento entre Estados en virtud de la Convención sobre el Genocidio. El expediente oficial contiene la solicitud, las órdenes y los avances procesales posteriores.",
+    "Processo entre Estados ao abrigo da Convenção sobre o Genocídio. O processo oficial contém o pedido, as ordens e os desenvolvimentos processuais posteriores.",
+    "Zwischenstaatliches Verfahren nach der Völkermordkonvention. Die offizielle Akte enthält den Antrag, Anordnungen und spätere Verfahrensentwicklungen."
+  ],
+  [
+    "Read each order for its exact terms. Provisional measures and risk assessments must not be described as a final judgment on the merits. Procedural status can change, so use the Court’s current docket.",
+    "اقرأ نص كل أمر بدقة. لا ينبغي وصف التدابير المؤقتة وتقييمات المخاطر بأنها حكم نهائي في الموضوع. قد يتغير الوضع الإجرائي؛ لذا راجع السجل الحالي للمحكمة.",
+    "Lisez chaque ordonnance dans ses termes exacts. Les mesures provisoires et évaluations des risques ne doivent pas être présentées comme un jugement définitif au fond. Le statut peut évoluer : consultez le dossier actuel de la Cour.",
+    "Lee cada orden en sus términos exactos. Las medidas provisionales y las evaluaciones de riesgo no deben describirse como una sentencia definitiva sobre el fondo. El estado procesal puede cambiar; consulta el expediente actualizado del Tribunal.",
+    "Leia cada ordem nos seus termos exatos. Medidas provisórias e avaliações de risco não devem ser descritas como uma decisão final sobre o mérito. O estado processual pode mudar; consulte o processo atualizado do Tribunal.",
+    "Lesen Sie jede Anordnung genau. Vorläufige Maßnahmen und Risikobewertungen dürfen nicht als endgültiges Sachurteil dargestellt werden. Der Verfahrensstand kann sich ändern; prüfen Sie daher die aktuelle Gerichtsakte."
+  ],
+  [
+    "02 / INTERNATIONAL CRIMINAL COURT",
+    "٠٢ / المحكمة الجنائية الدولية",
+    "02 / COUR PÉNALE INTERNATIONALE",
+    "02 / CORTE PENAL INTERNACIONAL",
+    "02 / TRIBUNAL PENAL INTERNACIONAL",
+    "02 / INTERNATIONALER STRAFGERICHTSHOF"
+  ],
+  [
+    "Situation in Palestine and arrest warrants",
+    "الحالة في فلسطين ومذكرات التوقيف",
+    "Situation en Palestine et mandats d’arrêt",
+    "Situación en Palestina y órdenes de detención",
+    "Situação na Palestina e mandados de detenção",
+    "Situation in Palästina und Haftbefehle"
+  ],
+  [
+    "A warrant reflects a legal threshold at that stage; it is not a conviction after trial. Consult the Court’s own page for the allegations, reasoning and any subsequent procedural developments.",
+    "تعكس مذكرة التوقيف عتبة قانونية في تلك المرحلة، وليست إدانة بعد المحاكمة. راجع صفحة المحكمة نفسها للاطلاع على الادعاءات والأسباب وأي تطورات إجرائية لاحقة.",
+    "Un mandat correspond à un seuil juridique à ce stade ; il ne constitue pas une condamnation après procès. Consultez la page de la Cour pour les accusations, le raisonnement et les évolutions ultérieures.",
+    "Una orden refleja el umbral jurídico de esa fase; no es una condena tras un juicio. Consulta la página del Tribunal para ver las acusaciones, los fundamentos y las novedades procesales.",
+    "Um mandado corresponde a um limiar jurídico nessa fase; não constitui uma condenação após julgamento. Consulte a página do Tribunal para conhecer as alegações, os fundamentos e os desenvolvimentos posteriores.",
+    "Ein Haftbefehl entspricht einer rechtlichen Schwelle in dieser Verfahrensphase und ist keine Verurteilung nach einem Prozess. Die Website des Gerichtshofs enthält Vorwürfe, Begründung und weitere Verfahrensschritte."
+  ],
+  [
+    "03 / UN COMMISSION OF INQUIRY",
+    "٠٣ / لجنة التحقيق التابعة للأمم المتحدة",
+    "03 / COMMISSION D’ENQUÊTE DE L’ONU",
+    "03 / COMISIÓN DE INVESTIGACIÓN DE LA ONU",
+    "03 / COMISSÃO DE INQUÉRITO DA ONU",
+    "03 / UN-UNTERSUCHUNGSKOMMISSION"
+  ],
+  [
+    "Report under the Genocide Convention",
+    "تقرير بموجب اتفاقية منع الإبادة الجماعية",
+    "Rapport au titre de la Convention sur le génocide",
+    "Informe en virtud de la Convención sobre el Genocidio",
+    "Relatório ao abrigo da Convenção sobre o Genocídio",
+    "Bericht nach der Völkermordkonvention"
+  ],
+  [
+    "The UN Independent International Commission of Inquiry published a report on 16 September 2025. It concluded that Israeli authorities and security forces had committed four of the five acts defined in the Convention and found reasonable grounds for the required specific intent.",
+    "نشرت لجنة التحقيق الدولية المستقلة التابعة للأمم المتحدة تقريراً في 16 سبتمبر 2025. وخلصت إلى أن السلطات والقوات الإسرائيلية ارتكبت أربعة من الأفعال الخمسة المحددة في الاتفاقية، ووجدت أسباباً معقولة لوجود القصد الخاص المطلوب.",
+    "La Commission d’enquête internationale indépendante de l’ONU a publié un rapport le 16 septembre 2025. Elle a conclu que les autorités et forces de sécurité israéliennes avaient commis quatre des cinq actes définis par la Convention et a estimé qu’il existait des motifs raisonnables de conclure à l’intention spécifique requise.",
+    "La Comisión Internacional Independiente de Investigación de la ONU publicó un informe el 16 de septiembre de 2025. Concluyó que las autoridades y fuerzas de seguridad israelíes habían cometido cuatro de los cinco actos definidos en la Convención y encontró motivos razonables para determinar la intención específica exigida.",
+    "A Comissão Internacional Independente de Inquérito da ONU publicou um relatório em 16 de setembro de 2025. Concluiu que as autoridades e forças de segurança israelitas tinham cometido quatro dos cinco atos definidos na Convenção e encontrou motivos razoáveis para considerar existente a intenção específica exigida.",
+    "Die unabhängige internationale Untersuchungskommission der UN veröffentlichte am 16. September 2025 einen Bericht. Sie kam zu dem Schluss, dass israelische Behörden und Sicherheitskräfte vier der fünf in der Konvention definierten Handlungen begangen hätten, und sah hinreichende Gründe für die erforderliche besondere Absicht."
+  ],
+  [
+    "The Government of Israel rejected the report and challenged its mandate, methods and conclusions. Both the original report and the government response are linked here so readers can assess the language and reasoning directly. This file attributes each position to its issuer; it does not present a summary as a substitute for the complete documents.",
+    "رفضت حكومة إسرائيل التقرير وطعنت في ولايته وأساليبه واستنتاجاته. أُدرج رابط التقرير الأصلي ورد الحكومة كي يتمكن القارئ من تقييم النص والاستدلال مباشرة. وينسب هذا الملف كل موقف إلى الجهة التي أصدرته، ولا يجعل الملخص بديلاً عن الوثائق الكاملة.",
+    "Le gouvernement israélien a rejeté le rapport et contesté son mandat, ses méthodes et ses conclusions. Les liens vers le rapport original et la réponse du gouvernement permettent d’examiner directement leurs formulations et raisonnements. Ce dossier attribue chaque position à son auteur et ne remplace pas les documents complets par un résumé.",
+    "El Gobierno de Israel rechazó el informe y cuestionó su mandato, sus métodos y sus conclusiones. Se enlazan tanto el informe original como la respuesta del Gobierno para que el lector evalúe directamente sus palabras y razonamientos. Este expediente atribuye cada postura a quien la emitió y no sustituye los documentos completos por un resumen.",
+    "O Governo de Israel rejeitou o relatório e contestou o seu mandato, métodos e conclusões. Tanto o relatório original como a resposta do Governo estão ligados para permitir que os leitores avaliem diretamente a linguagem e os argumentos. Este dossier atribui cada posição ao respetivo autor e não substitui os documentos integrais por um resumo.",
+    "Die israelische Regierung wies den Bericht zurück und stellte Mandat, Methoden und Schlussfolgerungen infrage. Sowohl der Originalbericht als auch die Stellungnahme der Regierung sind verlinkt, damit Leser Formulierungen und Argumentation direkt prüfen können. Dieses Dossier schreibt jede Position ihrem Urheber zu und ersetzt die vollständigen Dokumente nicht durch eine Zusammenfassung."
+  ],
+  [
+    "04 / HUMAN-RIGHTS INVESTIGATIONS",
+    "٠٤ / تحقيقات حقوق الإنسان",
+    "04 / ENQUÊTES SUR LES DROITS HUMAINS",
+    "04 / INVESTIGACIONES DE DERECHOS HUMANOS",
+    "04 / INVESTIGAÇÕES DE DIREITOS HUMANOS",
+    "04 / MENSCHENRECHTSRECHERCHEN"
+  ],
+  [
+    "Investigative findings and attributed legal assessments",
+    "نتائج التحقيقات والتقييمات القانونية المنسوبة إلى مصادرها",
+    "Constats d’enquête et appréciations juridiques attribuées",
+    "Hallazgos de investigación y valoraciones jurídicas atribuidas",
+    "Conclusões de investigações e avaliações jurídicas atribuídas",
+    "Ermittlungsergebnisse und zugeschriebene rechtliche Bewertungen"
+  ],
+  [
+    "Human Rights Watch and Amnesty International have published investigations that describe their evidence and sometimes characterize conduct as possible or apparent war crimes. These are the organisations’ assessments. They matter as documented findings, but do not become court judgments because an archive cites them.",
+    "نشرت هيومن رايتس ووتش ومنظمة العفو الدولية تحقيقات تعرضان فيها أدلتهما، وتصفان أحياناً أفعالاً بأنها قد تشكل جرائم حرب أو تبدو كذلك. هذه تقييمات المنظمتين؛ وهي نتائج موثقة مهمة، لكنها لا تتحول إلى أحكام قضائية لمجرد أن أرشيفاً استشهد بها.",
+    "Human Rights Watch et Amnesty International ont publié des enquêtes présentant leurs éléments et qualifiant parfois des actes de crimes de guerre possibles ou apparents. Il s’agit de leurs évaluations. Ces constats documentés sont importants, mais ne deviennent pas des décisions judiciaires parce qu’un archive les cite.",
+    "Human Rights Watch y Amnistía Internacional han publicado investigaciones que describen sus pruebas y califican en ocasiones determinadas conductas como posibles o aparentes crímenes de guerra. Son valoraciones de esas organizaciones; constituyen hallazgos documentados importantes, pero no se convierten en sentencias porque un archivo las cite.",
+    "A Human Rights Watch e a Amnistia Internacional publicaram investigações que descrevem as suas provas e, por vezes, caracterizam condutas como possíveis ou aparentes crimes de guerra. São avaliações das organizações; constituem conclusões documentadas importantes, mas não se tornam decisões judiciais por serem citadas num arquivo.",
+    "Human Rights Watch und Amnesty International veröffentlichten Untersuchungen, in denen sie Belege darlegen und Handlungen mitunter als mögliche oder mutmaßliche Kriegsverbrechen einstufen. Dies sind Bewertungen der Organisationen. Sie sind als dokumentierte Feststellungen relevant, werden aber nicht allein dadurch zu Gerichtsurteilen, dass ein Archiv sie zitiert."
+  ],
+  [
+    "05 / HUMANITARIAN REPORTS",
+    "٠٥ / تقارير إنسانية",
+    "05 / RAPPORTS HUMANITAIRES",
+    "05 / INFORMES HUMANITARIOS",
+    "05 / RELATÓRIOS HUMANITÁRIOS",
+    "05 / HUMANITÄRE BERICHTE"
+  ],
+  [
+    "Conditions are not a verdict.",
+    "الظروف الإنسانية ليست حكماً قضائياً.",
+    "Les conditions ne sont pas un verdict.",
+    "Las condiciones no son un veredicto.",
+    "As condições não são uma decisão judicial.",
+    "Humanitäre Lageberichte sind keine Urteile."
+  ],
+  [
+    "UN humanitarian situation reports and Secretary-General reports have different purposes from courts and incident-specific investigations. They can document conditions, reported impacts or verified incidents within a defined mandate; do not silently convert them into findings of criminal liability.",
+    "تختلف تقارير الوضع الإنساني للأمم المتحدة وتقارير الأمين العام في غايتها عن المحاكم والتحقيقات المتعلقة بوقائع محددة. قد توثق الظروف أو الآثار المُبلّغ عنها أو الحوادث المتحقق منها ضمن ولاية محددة؛ ولا ينبغي تحويلها ضمناً إلى نتائج تثبت المسؤولية الجنائية.",
+    "Les rapports de situation humanitaire de l’ONU et ceux du Secrétaire général ont une fonction différente de celle des tribunaux et des enquêtes portant sur un incident précis. Ils peuvent documenter des conditions, des conséquences signalées ou des incidents vérifiés dans le cadre de leur mandat ; ne les transformez pas implicitement en conclusions de responsabilité pénale.",
+    "Los informes de situación humanitaria de la ONU y los informes del Secretario General tienen una finalidad distinta de la de los tribunales y las investigaciones sobre incidentes concretos. Pueden documentar condiciones, efectos comunicados o incidentes verificados dentro de un mandato definido; no deben convertirse implícitamente en conclusiones de responsabilidad penal.",
+    "Os relatórios de situação humanitária da ONU e os relatórios do Secretário-Geral têm uma finalidade diferente da dos tribunais e das investigações de incidentes específicos. Podem documentar condições, impactos reportados ou incidentes verificados dentro de um mandato definido; não devem ser transformados implicitamente em conclusões de responsabilidade criminal.",
+    "UN-Lageberichte zur humanitären Situation und Berichte des Generalsekretärs verfolgen andere Zwecke als Gerichte und Untersuchungen einzelner Vorfälle. Sie können Bedingungen, gemeldete Auswirkungen oder verifizierte Vorfälle innerhalb eines festgelegten Mandats dokumentieren; daraus dürfen nicht stillschweigend Feststellungen strafrechtlicher Verantwortung gemacht werden."
+  ],
+  [
+    "CASE FILE / CIVILIAN HARM · REVIEWED 18 OCT 2026",
+    "ملف قضية / أذى مدني · تمت المراجعة في 18 أكتوبر 2026",
+    "DOSSIER / ATTEINTES AUX CIVILS · RÉVISÉ LE 18 OCT. 2026",
+    "EXPEDIENTE / DAÑOS A CIVILES · REVISADO EL 18 OCT. 2026",
+    "DOSSIER / DANOS A CIVIS · REVISTO EM 18 OUT. 2026",
+    "FALLAKTE / SCHÄDEN AN ZIVILPERSONEN · GEPRÜFT AM 18.10.2026"
+  ],
+  [
+    "What the linked record supports—and where it stops.",
+    "ما الذي يدعمه السجل المرتبط وما حدوده.",
+    "Ce que la source permet d’établir — et ses limites.",
+    "Qué respalda el registro enlazado y cuáles son sus límites.",
+    "O que o registo associado sustenta — e quais são os seus limites.",
+    "Was der verknüpfte Beleg stützt – und wo seine Grenzen liegen."
+  ],
+  [
+    "A chronology, not a verdict.",
+    "تسلسل زمني لا حكم قضائي.",
+    "Une chronologie, pas un verdict.",
+    "Una cronología, no un veredicto.",
+    "Uma cronologia, não uma decisão judicial.",
+    "Eine Chronologie, kein Urteil."
+  ],
+  [
+    "Event dates and publication dates are separated. Each entry describes what a named source reported or published.",
+    "تُفصل تواريخ الوقائع عن تواريخ النشر. ويصف كل إدخال ما أبلغ عنه مصدر محدد أو نشره.",
+    "Les dates des événements sont distinguées des dates de publication. Chaque entrée décrit ce qu’une source nommée a rapporté ou publié.",
+    "Las fechas de los hechos se distinguen de las fechas de publicación. Cada entrada describe lo que una fuente identificada informó o publicó.",
+    "As datas dos acontecimentos são separadas das datas de publicação. Cada entrada descreve o que uma fonte identificada relatou ou publicou.",
+    "Ereignis- und Veröffentlichungsdaten werden getrennt. Jeder Eintrag beschreibt, was eine benannte Quelle berichtet oder veröffentlicht hat."
+  ],
+  [
+    "Read the original sources below before quoting a number, legal characterization or disputed account. This page summarizes and attributes; it does not independently re-investigate the incident.",
+    "اقرأ المصادر الأصلية أدناه قبل اقتباس رقم أو توصيف قانوني أو رواية متنازع عليها. تلخص هذه الصفحة المعلومات وتنسبها إلى مصادرها؛ ولا تعيد التحقيق في الواقعة بصورة مستقلة.",
+    "Lisez les sources originales ci-dessous avant de citer un chiffre, une qualification juridique ou un récit contesté. Cette page résume et attribue les informations ; elle ne réenquête pas indépendamment sur l’incident.",
+    "Lee las fuentes originales antes de citar cifras, calificaciones jurídicas o relatos controvertidos. Esta página resume y atribuye la información; no vuelve a investigar el incidente de forma independiente.",
+    "Leia as fontes originais abaixo antes de citar um número, uma caracterização jurídica ou um relato contestado. Esta página resume e atribui a informação; não re-investiga o incidente de forma independente.",
+    "Lesen Sie die unten verlinkten Originalquellen, bevor Sie Zahlen, rechtliche Einordnungen oder umstrittene Darstellungen zitieren. Diese Seite fasst Angaben zusammen und ordnet sie Quellen zu; sie untersucht den Vorfall nicht eigenständig neu."
+  ],
+  [
+    "Open the original material.",
+    "افتح المادة الأصلية.",
+    "Consulter la source originale.",
+    "Abrir el material original.",
+    "Abrir o material original.",
+    "Originalmaterial öffnen."
+  ],
+  [
+    "External sources open in a new tab. A publisher link is a route to review, not an endorsement of every claim on the page.",
+    "تُفتح المصادر الخارجية في علامة تبويب جديدة. والرابط إلى الناشر يتيح المراجعة، ولا يعني تأييد كل ادعاء في الصفحة.",
+    "Les sources externes s’ouvrent dans un nouvel onglet. Un lien vers un éditeur permet de consulter la source ; il ne valide pas toutes les affirmations de la page.",
+    "Las fuentes externas se abren en una pestaña nueva. Un enlace al editor permite revisar la fuente, pero no respalda todas las afirmaciones de la página.",
+    "As fontes externas abrem num novo separador. Uma ligação para o editor permite consultar a fonte, mas não significa que todas as afirmações da página sejam endossadas.",
+    "Externe Quellen öffnen sich in einem neuen Tab. Ein Verweis auf einen Herausgeber ermöglicht die Prüfung der Quelle, bestätigt aber nicht automatisch alle Angaben auf der Seite."
+  ],
+  [
+    "Follow related evidence.",
+    "تابع الأدلة ذات الصلة.",
+    "Suivre les sources associées.",
+    "Seguir las pruebas relacionadas.",
+    "Seguir as provas relacionadas.",
+    "Verknüpfte Belege verfolgen."
+  ],
+  [
+    "SOURCE TRAIL",
+    "مسار المصادر",
+    "PISTE DES SOURCES",
+    "RASTRO DE FUENTES",
+    "RASTO DE FONTES",
+    "QUELLENPFAD"
+  ],
+  [
+    "CONNECTED RECORDS",
+    "سجلات مترابطة",
+    "DOSSIERS ASSOCIÉS",
+    "REGISTROS RELACIONADOS",
+    "REGISTOS RELACIONADOS",
+    "VERKNÜPFTE BELEGE"
+  ],
+  [
+    "Related case: Hind Rajab ↗",
+    "القضية ذات الصلة: هند رجب ↗",
+    "Dossier associé : Hind Rajab ↗",
+    "Caso relacionado: Hind Rajab ↗",
+    "Caso relacionado: Hind Rajab ↗",
+    "Verknüpfter Fall: Hind Rajab ↗"
+  ],
+  [
+    "Related case: rescue convoy ↗",
+    "القضية ذات الصلة: قافلة الإنقاذ ↗",
+    "Dossier associé : convoi de secours ↗",
+    "Caso relacionado: convoy de rescate ↗",
+    "Caso relacionado: coluna de salvamento ↗",
+    "Verknüpfter Fall: Rettungskonvoi ↗"
+  ],
+  [
+    "How source status is labelled ↗",
+    "كيفية تصنيف حالة المصدر ↗",
+    "Comment le statut des sources est indiqué ↗",
+    "Cómo se etiqueta el estado de la fuente ↗",
+    "Como é identificado o estado da fonte ↗",
+    "Wie der Quellenstatus gekennzeichnet wird ↗"
+  ],
+  [
+    "Figures, dates and findings stay attributed to their publishers. The summary is a guide to the source, not a substitute for reading it.",
+    "تظل الأرقام والتواريخ والنتائج منسوبة إلى ناشريها. والملخص دليل إلى المصدر، لا بديل عن قراءته.",
+    "Les chiffres, dates et conclusions restent attribués à leurs éditeurs. Le résumé guide vers la source, sans remplacer sa lecture.",
+    "Las cifras, fechas y conclusiones siguen atribuidas a sus editores. El resumen orienta hacia la fuente, pero no sustituye su lectura.",
+    "Os números, datas e conclusões continuam atribuídos aos respetivos editores. O resumo orienta para a fonte, mas não substitui a sua leitura.",
+    "Zahlen, Daten und Feststellungen bleiben ihren Herausgebern zugeschrieben. Die Zusammenfassung dient als Wegweiser zur Quelle und ersetzt nicht deren Lektüre."
+  ]
+]);
+  
   // Expose the dictionary before i18n.js initializes. This avoids a race
   // where the saved locale is rendered before the long-form translations exist.
   window.NOORTranslationRows = rows;
