@@ -215,9 +215,11 @@
   sortCards();
   applyFilters();
 
-  try {
-    if (localStorage.getItem('noor-language') === 'ar') setLanguage('ar');
-  } catch (_) {
-    /* Default to English when storage is unavailable. */
+  if (languageButton) {
+    try {
+      if (localStorage.getItem('noor-language') === 'ar') setLanguage('ar');
+    } catch (_) {
+      /* Default to English when storage is unavailable. */
+    }
   }
 })();
