@@ -4,7 +4,7 @@
   const LANGUAGES = ['en', 'ar', 'fr', 'es', 'pt', 'de'];
   const NAMES = { en: 'English', ar: 'العربية', fr: 'Français', es: 'Español', pt: 'Português', de: 'Deutsch' };
   const RTL = new Set(['ar']);
-  const normalize = (value) => String(value == null ? '' : value).replace(/\s+/g, ' ').trim();
+  const normalize = (value) => String(value == null ? '' : value).normalize('NFC').replace(/\s+/g, ' ').trim();
   const rows = [
     ['Skip to content','Passer au contenu','Saltar al contenido','Ir para o conteúdo','Zum Inhalt springen'],
     ['Skip to story','Passer à l’article','Saltar al reportaje','Saltar para a reportagem','Zum Bericht springen'],
@@ -147,6 +147,27 @@
     translations.de.set(normalize(english), de);
   });
 
+  function addTranslations(extraRows) {
+    if (!Array.isArray(extraRows)) return;
+    extraRows.forEach((row) => {
+      if (!Array.isArray(row) || row.length < 2) return;
+      const english = normalize(row[0]);
+      if (!english) return;
+      translations.en.set(english, row[0]);
+      LANGUAGES.slice(1).forEach((language, index) => {
+        const value = row[index + 1];
+        if (typeof value === 'string' && value.trim()) {
+          translations[language].set(english, value.trim());
+        }
+      });
+    });
+  }
+
+  // The long-form dictionary is loaded immediately before this runtime.
+  // Register it before applying the saved language so no untranslated pass
+  // races against a later dictionary load.
+  if (Array.isArray(window.NOORTranslationRows)) addTranslations(window.NOORTranslationRows);
+
   const titles = {
     en: ['NOOR — A light for every child','A hard pill to swallow | NOOR Field Notes','Gaza Evidence Archive | NOOR Field Notes','Evidence methodology | NOOR','Visual evidence index | NOOR','Legal record | NOOR','NOOR Case File'],
     ar: ['نور — ضوء لكل طفل','حقيقة يصعب تقبّلها | ملاحظات نور الميدانية','أرشيف الأدلة في غزة | ملاحظات نور الميدانية','منهجية الأدلة | نور','فهرس الأدلة المرئية | نور','السجل القانوني | نور','ملف قضية | نور'],
@@ -244,6 +265,8 @@
 
   window.NOORLocalization = {
     languages: LANGUAGES.slice(),
+    languageNames: { ...NAMES },
+    addTranslations,
     setLanguage: applyLanguage,
     getLanguage: () => document.documentElement.lang || 'en',
     translate: (source, language = document.documentElement.lang || 'en') => lookup(source, language) || source
