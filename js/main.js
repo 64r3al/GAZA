@@ -175,9 +175,9 @@
       element.alt = element.getAttribute('data-' + language + '-alt');
     });
     languageButton.setAttribute('aria-label', language === 'en' ? 'Switch language to Arabic' : 'حوّل اللغة إلى الإنجليزية');
-    menuButton.setAttribute('aria-label', language === 'en' ? (nav.classList.contains('is-open') ? 'Close navigation' : 'Open navigation') : (nav.classList.contains('is-open') ? 'إغلاق القائمة' : 'فتح القائمة'));
+    menuButton.setAttribute('aria-label', translateUi(nav.classList.contains('is-open') ? 'Close navigation' : 'Open navigation'));
     pauseButton.setAttribute('aria-label', translateUi(feedback.en[paused ? 'play' : 'pause']));
-    Array.from(dotsContainer.children).forEach((dot, index) => { dot.setAttribute('aria-label', language === 'en' ? 'Show image ' + (index + 1) : 'عرض الصورة ' + (index + 1)); });
+    Array.from(dotsContainer.children).forEach((dot, index) => { dot.setAttribute('aria-label', translateUi('Show image') + ' ' + (index + 1)); });
     copyButton.textContent = copyLabel[language];
     document.querySelectorAll('.footer-bottom p').forEach((paragraph) => {
       paragraph.textContent = paragraph.textContent.replace(/2026/g, String(currentYear));
@@ -210,13 +210,13 @@
   function closeMenu() {
     nav.classList.remove('is-open');
     menuButton.setAttribute('aria-expanded', 'false');
-    menuButton.setAttribute('aria-label', language === 'en' ? 'Open navigation' : 'فتح القائمة');
+    menuButton.setAttribute('aria-label', translateUi('Open navigation'));
   }
 
   menuButton.addEventListener('click', () => {
     const isOpen = nav.classList.toggle('is-open');
     menuButton.setAttribute('aria-expanded', String(isOpen));
-    menuButton.setAttribute('aria-label', language === 'en' ? (isOpen ? 'Close navigation' : 'Open navigation') : (isOpen ? 'إغلاق القائمة' : 'فتح القائمة'));
+    menuButton.setAttribute('aria-label', translateUi(isOpen ? 'Close navigation' : 'Open navigation'));
   });
   nav.addEventListener('click', (event) => {
     if (event.target.closest('a')) closeMenu();
