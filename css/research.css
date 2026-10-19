@@ -398,3 +398,16 @@
 @media(prefers-reduced-motion:reduce){.archive-cinema-feature,.archive-feature-image img,.archive-cinema-cta,.archive-entry-stack,.archive-entry-card{transition:none!important}}
 
 .archive-cinema-count .archive-fact-number{display:inline-block;margin:0;color:#fff0e3;font:400 22px/1 "Anton","Arial Narrow",sans-serif}
+
+/* The second reference is a full-width charcoal stage around one rounded black archive panel. */
+.archive-explore-board{width:100%;margin:0;padding:clamp(52px,7vw,100px) clamp(16px,7vw,100px);box-sizing:border-box;border:0;border-radius:0;background:#2b2c30;box-shadow:none}
+.archive-explore-panel.archive-entry-triad{width:min(100%,1320px);margin:0 auto;min-height:min(75svh,760px);box-sizing:border-box}
+.archive-explore-rail{top:42px;bottom:58px;left:17px;width:21px}
+.archive-explore-panel .archive-entry-card{min-height:0}
+.archive-explore-panel .archive-explore-footer{align-self:end}
+@media(max-width:640px){
+ .archive-explore-board{padding:36px 10px 42px}
+ .archive-explore-panel.archive-entry-triad{min-height:0;padding-left:23px}
+ .archive-explore-rail{top:27px;bottom:58px;left:4px;width:16px}
+ .archive-explore-panel .archive-entry-card{min-height:0}
+}
