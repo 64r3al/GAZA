@@ -15,7 +15,9 @@ const visual = read('visual-evidence.html');
 const stylesheet = read('css/research.css');
 const script = read('js/research.js');
 const visualScript = read('js/visual-evidence.js');
+const archiveMapScript = read('js/archive-map.js');
 execFileSync(process.execPath, ['--check', path.join(root, 'js/visual-evidence.js')]);
+execFileSync(process.execPath, ['--check', path.join(root, 'js/archive-map.js')]);
 const archiveScript = read('js/archive.js');
 const builder = read('scripts/build_site.py');
 const caseFiles = [
@@ -54,15 +56,23 @@ assert.equal(new Set(topicButtons).size, topicButtons.length, 'Topic shortcuts m
 for (const category of topicButtons.filter(Boolean)) {
   assert.ok(archive.includes('data-category="' + category + '"'), 'Topic shortcut must match an existing category: ' + category);
 }
-assert.ok(archive.includes('class="archive-cinema"'), 'Archive should have the cinematic evidence-wall landing composition.');
-assert.ok(archive.includes('class="archive-cinema-rail"'), 'Archive should include the red vertical return rail.');
-assert.ok(archive.includes('archive-entry-triad'), 'Archive should provide the three-part visual index.');
-assert.ok(archive.includes('archive-entry-stack-doc'), 'Archive should include the layered document visual.');
-assert.ok(archive.includes('archive-entry-stack-network'), 'Archive should include the network visual.');
-assert.ok(archive.includes('class="archive-cinema-feature"'), 'Archive should link to the visual evidence feature.');
-assert.match(stylesheet, /\.archive-cinema-center/, 'Archive cinematic hero styles must be present.');
-assert.match(stylesheet, /\.archive-entry-triad/, 'Three-column index styles must be present.');
-assert.match(stylesheet, /@media\(max-width:640px\)/, 'Archive design must include mobile composition rules.');
+assert.ok(archive.includes('id="archive-network-explorer"'), 'Archive should provide the interactive network explorer.');
+assert.ok(archive.includes('id="archive-network-viewport"'), 'Network explorer should have an interactive viewport.');
+assert.ok(archive.includes('id="archive-network-svg"'), 'Network explorer should render an SVG network.');
+assert.ok(archive.includes('id="archive-network-world"'), 'Network map should have a transformable world layer.');
+assert.ok(archive.includes('id="archive-map-query"'), 'Network explorer should provide node search.');
+assert.ok(archive.includes('id="archive-map-topic"'), 'Network explorer should filter by topic.');
+assert.ok(archive.includes('id="archive-map-fit"'), 'Network explorer should provide a fit-to-map control.');
+assert.ok(archive.includes('id="archive-total"'), 'Existing live archive record total must remain available.');
+assert.match(archiveMapScript, /pointerdown/, 'Network map should support pointer-driven panning.');
+assert.match(archiveMapScript, /addEventListener\('wheel'/, 'Network map should support wheel zoom.');
+assert.match(archiveMapScript, /ArrowLeft|ArrowRight|ArrowUp|ArrowDown/, 'Network map should support keyboard panning.');
+assert.match(archiveMapScript, /aria-pressed/, 'Network nodes should expose selected state accessibly.');
+assert.match(archiveMapScript, /caseLinks/, 'Selected records should expose connected case files.');
+assert.match(stylesheet, /\.archive-network-viewport/, 'Network map viewport styles should be present.');
+assert.match(stylesheet, /\.archive-network-edge-ring/, 'Network map should style its spider-web connections.');
+assert.match(stylesheet, /\.archive-network-details/, 'Network map should provide a source details panel.');
+assert.match(stylesheet, /@media\(max-width:760px\)/, 'Network map should include mobile layouts.');
 assert.match(archive, /id="case-directory"/, 'Archive should expose a dedicated dossier directory.');
 for (const file of caseFiles) {
   assert.ok(archive.includes('href="' + file + '"'), 'Archive should link to case file: ' + file);
