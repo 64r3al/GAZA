@@ -572,10 +572,13 @@
     const current = drag;
     drag = null;
     viewport.classList.remove('is-dragging');
-    if (!current.moved && current.node) onNodeActivate(current.node);
-    if (current.moved) {
+    if (!current.moved && current.node) {
       suppressClick = true;
-      window.setTimeout(() => { suppressClick = false; }, 80);
+      onNodeActivate(current.node);
+      window.setTimeout(() => { suppressClick = false; }, 120);
+    } else if (current.moved) {
+      suppressClick = true;
+      window.setTimeout(() => { suppressClick = false; }, 120);
     }
     if (viewport.hasPointerCapture(event.pointerId)) viewport.releasePointerCapture(event.pointerId);
   }
