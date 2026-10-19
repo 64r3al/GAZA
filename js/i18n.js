@@ -4,7 +4,7 @@
   const LANGUAGES = ['en', 'ar', 'fr', 'es', 'pt', 'de'];
   const NAMES = { en: 'English', ar: 'العربية', fr: 'Français', es: 'Español', pt: 'Português', de: 'Deutsch' };
   const RTL = new Set(['ar']);
-  const normalize = (value) => String(value == null ? '' : value).replace(/\s+/g, ' ').trim();
+  const normalize = (value) => String(value == null ? '' : value).replace(/\s+/g, ' ').trim().toLocaleLowerCase();
   const rows = [
     ['Skip to content','Passer au contenu','Saltar al contenido','Ir para o conteúdo','Zum Inhalt springen'],
     ['Skip to story','Passer à l’article','Saltar al reportaje','Saltar para a reportagem','Zum Bericht springen'],
@@ -226,7 +226,7 @@
     ];
     attributeMap.forEach(([attribute, originalAttribute]) => {
       document.querySelectorAll('[' + attribute + ']').forEach((element) => {
-        const explicitEnglish = element.getAttribute('data-en-' + attribute);
+        const explicitEnglish = element.getAttribute('data-en-' + attribute) || (attribute === 'aria-label' ? element.getAttribute('data-en-aria') : null);
         if (!element.hasAttribute(originalAttribute)) {
           element.setAttribute(originalAttribute, explicitEnglish != null ? explicitEnglish : element.getAttribute(attribute));
         }
