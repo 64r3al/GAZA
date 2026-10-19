@@ -216,8 +216,12 @@
   applyFilters();
 
   try {
-    if (localStorage.getItem('noor-language') === 'ar') setLanguage('ar');
+    if (!document.getElementById('noor-language-select') && localStorage.getItem('noor-language') === 'ar') setLanguage('ar');
   } catch (_) {
     /* Default to English when storage is unavailable. */
   }
+  document.addEventListener('noor:languagechange', (event) => {
+    language = event.detail && event.detail.language ? event.detail.language : 'en';
+    applyFilters();
+  });
 })();
