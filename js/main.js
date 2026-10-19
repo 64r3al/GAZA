@@ -332,9 +332,7 @@
   // Build fresh, correctly encoded share URLs for the current page and language.
   function updateShareLinks() {
     const pageUrl = getShareableUrl();
-    const shareText = language === 'en'
-      ? 'NOOR — a light for every child. Learn more and find official ways to help.'
-      : 'نور لكل طفل — تعرّف على طرق المساعدة الرسمية.';
+    const shareText = translateUi('NOOR — a light for every child. Learn more and find official ways to help.');
 
     const whatsappUrl = new URL('https://wa.me/');
     whatsappUrl.searchParams.set('text', shareText + ' ' + pageUrl);
