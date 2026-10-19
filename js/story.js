@@ -27,9 +27,11 @@
     try { localStorage.setItem('noor-language', language); } catch (_) { /* Storage can be disabled. */ }
   }
 
-  if (languageButton) languageButton.addEventListener('click', () => setLanguage(root.lang === 'en' ? 'ar' : 'en'));
+  if (languageButton && !document.querySelector('[data-noor-language-select]')) {
+    languageButton.addEventListener('click', () => setLanguage(root.lang === 'en' ? 'ar' : 'en'));
+  }
   try {
-    if (localStorage.getItem('noor-language') === 'ar') setLanguage('ar');
+    if (!document.querySelector('[data-noor-language-select]') && localStorage.getItem('noor-language') === 'ar') setLanguage('ar');
   } catch (_) { /* Default to English when storage is unavailable. */ }
 
   const reveals = Array.from(document.querySelectorAll('.story-reveal'));
