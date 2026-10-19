@@ -34,7 +34,7 @@
   const CENTER = { x: 1100, y: 800 };
   const HUB_RADIUS = 330;
   const RECORD_W = 226;
-  const RECORD_H = 100;
+  const RECORD_H = 122;
   const HUB_W = 170;
   const HUB_H = 70;
   const MIN_ZOOM = 0.28;
@@ -57,7 +57,9 @@
     if (option.value) categoryNames.set(option.value, option);
   });
 
-  const getLang = () => document.documentElement.lang === 'ar' ? 'ar' : 'en';
+  const getLang = () => document.documentElement.lang || 'en';
+  const isRTL = () => getLang() === 'ar';
+  const tr = (value) => window.NOORLocalization ? window.NOORLocalization.translate(value, getLang()) : value;
   const txt = (element) => (element ? element.textContent : '').trim();
   const attrText = (element, lang = getLang()) => {
     if (!element) return '';
@@ -132,13 +134,22 @@
     parent.appendChild(svgEl('text', { x, y, class: className, ...attrs }, value));
   }
 
-  function wrapWords(value, maxChars, maxLines = 2) {
-    const words = String(value || '').split(/\s+/).filter(Boolean);
+  function wrapWords(value, maxChars, maxLines = 3) {
+    const rawWords = String(value || '').split(/\s+/).filter(Boolean);
+    const words = [];
+    rawWords.forEach((word) => {
+      const chars = Array.from(word);
+      if (chars.length <= maxChars) {
+        words.push(word);
+        return;
+      }
+      for (let i = 0; i < chars.length; i += maxChars) words.push(chars.slice(i, i + maxChars).join(''));
+    });
     const lines = [];
     let line = '';
     words.forEach((word) => {
       const next = line ? line + ' ' + word : word;
-      if (next.length > maxChars && line) {
+      if (Array.from(next).length > maxChars && line) {
         lines.push(line);
         line = word;
       } else {
@@ -148,8 +159,10 @@
     if (line) lines.push(line);
     if (lines.length > maxLines) {
       lines.length = maxLines;
-      const last = lines[maxLines - 1];
-      lines[maxLines - 1] = last.length > maxChars - 1 ? last.slice(0, maxChars - 2) + '…' : last + '…';
+      const last = Array.from(lines[maxLines - 1]);
+      if (last.length >= maxChars) last[maxChars - 1] = '…';
+      else last.push('…');
+      lines[maxLines - 1] = last.join('');
     }
     return lines;
   }
@@ -229,15 +242,63 @@
     const g = svgEl('g', {
       class: 'archive-network-node archive-network-node-center',
       'data-node-id': 'archive-root',
-      role: 'button', tabindex: '0', 'aria-label': 'NOOR central evidence archive'
+      role: 'button', tabindex: '0', 'aria-label': tr('NOOR central evidence archive')
     });
     g.appendChild(svgEl('circle', { cx: CENTER.x, cy: CENTER.y, r: 84, class: 'archive-network-center-glow' }));
     g.appendChild(svgEl('circle', { cx: CENTER.x, cy: CENTER.y, r: 75, class: 'archive-network-center-ring' }));
     g.appendChild(svgEl('circle', { cx: CENTER.x, cy: CENTER.y, r: 66, class: 'archive-network-center-inner' }));
     g.appendChild(svgEl('path', { d: 'M ' + (CENTER.x - 38) + ' ' + (CENTER.y - 35) + ' h 76', class: 'archive-network-center-rule' }));
     appendText(g, CENTER.x, CENTER.y - 12, 'NOOR', 'archive-network-center-title', { 'text-anchor': 'middle' });
-    appendText(g, CENTER.x, CENTER.y + 10, 'EVIDENCE MAP', 'archive-network-center-label', { 'text-anchor': 'middle' });
-    appendText(g, CENTER.x, CENTER.y + 35, records.length + ' SOURCE RECORDS', 'archive-network-center-count', { 'text-anchor': 'middle' });
+    appendText(g, CENTER.x, CENTER.y + 10, tr('EVIDENCE MAP'), 'archive-network-center-label', { 'text-anchor': 'middle' });
+    appendText(g, CENTER.x, CENTER.y + 35, records.length + ' ' + tr('SOURCE RECORDS'), 'archive-network-center-count', { 'text-anchor': 'middle' });
+    return g;
+  }
+
+  function createCategoryNode(hub) {
+    const rtl = isRTL();
+    const g = svgEl('g', {
+      class: 'archive-network-node archive-network-node-topic',
+      transform: 'translate(' + (hub.x - HUB_W / 2) + ' ' + (hub.y - HUB_H / 2) + ')',
+      'data-node-id': hub.id, 'data-node-type': 'topic', 'data-topic': hub.key,
+      role: 'button', tabindex: '0', 'aria-pressed': 'false', 'aria-label': hub.label + ' ' + tr('Topic hub')
+    });
+    g.appendChild(svgEl('rect', { x: 0, y: 0, width: HUB_W, height: HUB_H, rx: 3, class: 'archive-network-topic-card' }));
+    g.appendChild(svgEl('circle', { cx: rtl ? HUB_W - 14 : 14, cy: 16, r: 3, class: 'archive-network-topic-dot' }));
+    const label = rtl || getLang() !== 'en' ? hub.label : hub.label.toUpperCase();
+    const lines = wrapWords(label, rtl ? 20 : 18, 2);
+    const titleX = rtl ? HUB_W - 13 : 26;
+    const titleAttrs = rtl
+      ? { 'text-anchor': 'end', direction: 'rtl', 'unicode-bidi': 'plaintext' }
+      : { 'text-anchor': 'start', direction: 'ltr' };
+    lines.forEach((line, i) => appendText(g, titleX, 19 + i * 14, line, 'archive-network-topic-title', titleAttrs));
+    appendText(g, 13, HUB_H - 12, tr('TOPIC NODE') + ' / ' + String(hub.count).padStart(2, '0') + ' ' + tr(hub.count === 1 ? 'RECORD' : 'RECORDS'), 'archive-network-node-meta', { direction: 'ltr', 'unicode-bidi': 'isolate' });
+    hub.node = g;
+    return g;
+  }
+
+  function createRecordNode(record, position) {
+    record.x = position.x;
+    record.y = position.y;
+    const rtl = isRTL();
+    const g = svgEl('g', {
+      class: 'archive-network-node archive-network-node-record',
+      transform: 'translate(' + (record.x - RECORD_W / 2) + ' ' + (record.y - RECORD_H / 2) + ')',
+      'data-node-id': record.key, 'data-node-type': 'record', 'data-topic': record.category,
+      role: 'button', tabindex: '0', 'aria-pressed': 'false', 'aria-label': record.title
+    });
+    g.appendChild(svgEl('rect', { x: 0, y: 0, width: RECORD_W, height: RECORD_H, rx: 2, class: 'archive-network-record-card' }));
+    g.appendChild(svgEl('rect', { x: 0, y: 0, width: 4, height: RECORD_H, class: 'archive-network-record-stripe' }));
+    appendText(g, 12, 16, tr('SOURCE RECORD') + ' / ' + String(record.index).padStart(3, '0'), 'archive-network-record-id', { direction: 'ltr', 'unicode-bidi': 'isolate' });
+    const titleX = rtl ? RECORD_W - 12 : 12;
+    const titleAttrs = rtl
+      ? { 'text-anchor': 'end', direction: 'rtl', 'unicode-bidi': 'plaintext' }
+      : { 'text-anchor': 'start', direction: 'ltr' };
+    const lines = wrapWords(record.title, rtl ? 26 : 29, 3);
+    lines.forEach((line, i) => appendText(g, titleX, 37 + i * 16, line, 'archive-network-record-title', titleAttrs));
+    const dateLabel = record.start ? record.start.slice(0, 4) + (record.end && record.end.slice(0, 4) !== record.start.slice(0, 4) ? '–' + record.end.slice(0, 4) : '') : tr('DATE NOT LISTED');
+    const statusLabel = tr(record.status.toUpperCase().replace(/-/g, ' '));
+    appendText(g, 12, RECORD_H - 8, dateLabel + '  /  ' + statusLabel.slice(0, 24), 'archive-network-node-meta', { direction: 'ltr', 'unicode-bidi': 'isolate' });
+    record.node = g;
     return g;
   }
 
@@ -780,18 +841,14 @@
     }
   });
 
-  const languageButton = document.getElementById('archive-language');
-  if (languageButton) {
-    languageButton.addEventListener('click', () => {
-      window.setTimeout(() => {
-        createGraph();
-        const q = queryInput.value;
-        queryInput.placeholder = queryInput.getAttribute('data-' + getLang() + '-placeholder') || queryInput.placeholder;
-        queryInput.value = q;
-        applyFilters();
-      }, 0);
-    });
-  }
+  document.addEventListener('noor:languagechange', () => {
+    const query = queryInput.value;
+    const topic = topicInput.value;
+    createGraph();
+    queryInput.value = query;
+    topicInput.value = topic;
+    applyFilters();
+  });
 
   let resizeTimer = null;
   window.addEventListener('resize', () => {
