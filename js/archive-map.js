@@ -369,10 +369,44 @@
     zoomAt(scale * 1.22, { x: VIEW_W / 2, y: VIEW_H / 2 });
   }
 
+  function clearRelationshipHighlights() {
+    world.querySelectorAll('.is-active-edge').forEach((path) => path.classList.remove('is-active-edge'));
+    world.querySelectorAll('.archive-network-node-record.is-related').forEach((node) => node.classList.remove('is-related'));
+  }
+
+  function highlightRecordRelationships(record) {
+    clearRelationshipHighlights();
+    world.querySelectorAll('[data-record-link]').forEach((path) => {
+      if (path.getAttribute('data-record-link') === record.key) path.classList.add('is-active-edge');
+    });
+    const hub = categories.find((item) => item.key === record.category);
+    if (hub) {
+      const rootEdge = world.querySelector('.archive-network-edge-root[data-to="' + hub.id + '"]');
+      if (rootEdge) rootEdge.classList.add('is-active-edge');
+      hub.records.forEach((related) => {
+        if (related.node && related.key !== record.key) related.node.classList.add('is-related');
+      });
+    }
+  }
+
+  function highlightTopicRelationships(hub) {
+    clearRelationshipHighlights();
+    const rootEdge = world.querySelector('.archive-network-edge-root[data-to="' + hub.id + '"]');
+    if (rootEdge) rootEdge.classList.add('is-active-edge');
+    world.querySelectorAll('[data-record-link]').forEach((path) => {
+      const record = records.find((item) => item.key === path.getAttribute('data-record-link'));
+      if (record && record.category === hub.key) path.classList.add('is-active-edge');
+    });
+    hub.records.forEach((record) => {
+      if (record.node) record.node.classList.add('is-related');
+    });
+  }
+
   function resetDetails() {
     selectedKey = '';
     selectedPanel.hidden = true;
     emptyPanel.hidden = false;
+    clearRelationshipHighlights();
     allNodes.forEach((item) => {
       if (item.node && item.node.hasAttribute('aria-pressed')) item.node.setAttribute('aria-pressed', 'false');
       if (item.node) item.node.classList.remove('is-selected');
@@ -435,6 +469,7 @@
     const caseLinks = record.links.filter((link) => /^case-[^#]+\.html(?:#.*)?$/.test(link.href) || link.href.startsWith('case-'));
     const actions = [{ href: '#' + record.el.id, label: getLang() === 'ar' ? 'افتح السجل الكامل ↓' : 'OPEN FULL RECORD ↓', external: false }];
     caseLinks.forEach((link) => actions.push(link));
+    highlightRecordRelationships(record);
     setPanel(record.title, 'SOURCE RECORD / ' + String(record.index).padStart(3, '0'), 'ARCHIVE SOURCE RECORD', meta, record.summary, actions, record.links.filter((link) => link.external).slice(0, 5));
   }
 
@@ -458,6 +493,7 @@
       label: getLang() === 'ar' ? 'افتح عوامل التصفية ↓' : 'OPEN ARCHIVE FILTERS ↓',
       external: false
     }];
+    highlightTopicRelationships(hub);
     setPanel(hub.label, 'TOPIC HUB / ' + String(hub.count).padStart(2, '0'), 'SUBJECT CLUSTER', [
       hub.count + ' records', visible.length + ' visible after filters'
     ], getLang() === 'ar'
