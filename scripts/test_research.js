@@ -54,12 +54,12 @@ assert.equal(new Set(topicButtons).size, topicButtons.length, 'Topic shortcuts m
 for (const category of topicButtons.filter(Boolean)) {
   assert.ok(archive.includes('data-category="' + category + '"'), 'Topic shortcut must match an existing category: ' + category);
 }
-assert.match(archive, /class="archive-cinema"/, 'Archive should have the cinematic evidence-wall landing composition.');
-assert.match(archive, /class="archive-cinema-rail"/, 'Archive should include the red vertical return rail.');
-assert.match(archive, /class="archive-entry-triad"/, 'Archive should provide the three-part visual index.');
-assert.match(archive, /class="archive-entry-stack-doc"/, 'Archive should include the layered document visual.');
-assert.match(archive, /class="archive-entry-stack-network"/, 'Archive should include the network visual.');
-assert.match(archive, /class="archive-cinema-feature"/, 'Archive should link to the visual evidence feature.');
+assert.ok(archive.includes('class="archive-cinema"'), 'Archive should have the cinematic evidence-wall landing composition.');
+assert.ok(archive.includes('class="archive-cinema-rail"'), 'Archive should include the red vertical return rail.');
+assert.ok(archive.includes('class="archive-entry-triad"'), 'Archive should provide the three-part visual index.');
+assert.ok(archive.includes('class="archive-entry-stack-doc"'), 'Archive should include the layered document visual.');
+assert.ok(archive.includes('class="archive-entry-stack-network"'), 'Archive should include the network visual.');
+assert.ok(archive.includes('class="archive-cinema-feature"'), 'Archive should link to the visual evidence feature.');
 assert.match(stylesheet, /\.archive-cinema-center/, 'Archive cinematic hero styles must be present.');
 assert.match(stylesheet, /\.archive-entry-triad/, 'Three-column index styles must be present.');
 assert.match(stylesheet, /@media\(max-width:640px\)/, 'Archive design must include mobile composition rules.');
