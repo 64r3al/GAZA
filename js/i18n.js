@@ -12,9 +12,9 @@
     .replace(/[\u200e\u200f\u202a-\u202e\u2066-\u2069]/g, '')
     .replace(/\s+/g, ' ').trim();
 
-  function addTranslations(rows) {
-    if (!Array.isArray(rows)) return;
-    rows.forEach((row) => {
+  function addTranslations(extraRows) {
+    if (!Array.isArray(extraRows)) return;
+    extraRows.forEach((row) => {
       if (!Array.isArray(row) || row.length < 6) return;
       const [english, arabic, french, spanish, portuguese, german] = row;
       const source = normalize(english);
