@@ -23,6 +23,8 @@ jobs:
         run: node --check js/story.js
       - name: Check archive JavaScript syntax
         run: node --check js/archive.js
+      - name: Check map layout JavaScript syntax
+        run: node --check js/archive-map-layout.js
       - name: Check interactive map JavaScript syntax
         run: node --check js/archive-map.js
       - name: Check research JavaScript syntax
