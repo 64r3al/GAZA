@@ -29,6 +29,8 @@ jobs:
         run: node --check js/story.js
       - name: Validate archive JavaScript syntax
         run: node --check js/archive.js
+      - name: Validate map layout JavaScript syntax
+        run: node --check js/archive-map-layout.js
       - name: Validate interactive map JavaScript syntax
         run: node --check js/archive-map.js
       - name: Validate research JavaScript syntax
