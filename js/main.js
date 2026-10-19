@@ -273,14 +273,14 @@
   function updatePauseButton() {
     pauseButton.textContent = paused ? '▶' : 'Ⅱ';
     pauseButton.setAttribute('aria-pressed', String(paused));
-    pauseButton.setAttribute('aria-label', feedback[language][paused ? 'play' : 'pause']);
+    pauseButton.setAttribute('aria-label', localized(paused ? 'Play slideshow' : 'Pause slideshow', language === 'ar' ? (paused ? 'تشغيل عرض الصور' : 'إيقاف عرض الصور مؤقتاً') : (paused ? 'Play slideshow' : 'Pause slideshow')));
   }
 
   slides.forEach((_, index) => {
     const dot = document.createElement('button');
     dot.type = 'button';
     dot.className = 'carousel-dot';
-    dot.setAttribute('aria-label', language === 'en' ? 'Show image ' + (index + 1) : 'عرض الصورة ' + (index + 1));
+    dot.setAttribute('aria-label', ({ en: 'Show image', ar: 'عرض الصورة', fr: 'Afficher l’image', es: 'Mostrar imagen', pt: 'Mostrar imagem', de: 'Bild anzeigen' }[language] || 'Show image') + ' ' + (index + 1));
     dot.addEventListener('click', () => { showSlide(index); startCarousel(); });
     dotsContainer.appendChild(dot);
   });
@@ -327,9 +327,14 @@
   // Build fresh, correctly encoded share URLs for the current page and language.
   function updateShareLinks() {
     const pageUrl = getShareableUrl();
-    const shareText = language === 'en'
-      ? 'NOOR — a light for every child. Learn more and find official ways to help.'
-      : 'نور لكل طفل — تعرّف على طرق المساعدة الرسمية.';
+    const shareText = ({
+      en: 'NOOR — a light for every child. Learn more and find official ways to help.',
+      ar: 'نور لكل طفل — تعرّف على طرق المساعدة الرسمية.',
+      fr: 'NOOR — une lumière pour chaque enfant. Découvrez les moyens officiels d’aider.',
+      es: 'NOOR — una luz para cada niño. Conoce las formas oficiales de ayudar.',
+      pt: 'NOOR — uma luz para cada criança. Conheça formas oficiais de ajudar.',
+      de: 'NOOR — ein Licht für jedes Kind. Erfahren Sie, wie Sie offiziell helfen können.'
+    })[language] || 'NOOR — a light for every child. Learn more and find official ways to help.';
 
     const whatsappUrl = new URL('https://wa.me/');
     whatsappUrl.searchParams.set('text', shareText + ' ' + pageUrl);
@@ -375,7 +380,7 @@
         temporaryInput.remove();
       }
       if (!successful) throw new Error('Clipboard copy command failed');
-      shareStatus.textContent = feedback[language].copied;
+      shareStatus.textContent = localized('Link copied.', language === 'ar' ? 'تم نسخ الرابط.' : 'Link copied.');
     } catch (_) {
       shareStatus.textContent = localized('Copy was unavailable. Copy the page address from your browser.', language === 'ar' ? 'تعذّر النسخ. انسخ عنوان الصفحة من المتصفح.' : 'Copy was unavailable. Copy the page address from your browser.');
     }
