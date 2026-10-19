@@ -26,6 +26,10 @@
   let focusInsideHero = false;
   let paused = reduceMotion.matches;
 
+  function translateUi(source) {
+    return window.NOORLocalization ? window.NOORLocalization.translate(source, language) : source;
+  }
+
   // Motion is progressive enhancement: content stays visible if scripts fail,
   // IntersectionObserver is unavailable, or the visitor prefers reduced motion.
   let revealObserver = null;
@@ -172,7 +176,7 @@
     });
     languageButton.setAttribute('aria-label', language === 'en' ? 'Switch language to Arabic' : 'حوّل اللغة إلى الإنجليزية');
     menuButton.setAttribute('aria-label', language === 'en' ? (nav.classList.contains('is-open') ? 'Close navigation' : 'Open navigation') : (nav.classList.contains('is-open') ? 'إغلاق القائمة' : 'فتح القائمة'));
-    pauseButton.setAttribute('aria-label', feedback[language][paused ? 'play' : 'pause']);
+    pauseButton.setAttribute('aria-label', translateUi(feedback.en[paused ? 'play' : 'pause']));
     Array.from(dotsContainer.children).forEach((dot, index) => { dot.setAttribute('aria-label', language === 'en' ? 'Show image ' + (index + 1) : 'عرض الصورة ' + (index + 1)); });
     copyButton.textContent = copyLabel[language];
     document.querySelectorAll('.footer-bottom p').forEach((paragraph) => {
@@ -353,7 +357,7 @@
       if (navigator.clipboard && window.isSecureContext) {
         try {
           await navigator.clipboard.writeText(currentUrl);
-          shareStatus.textContent = feedback[language].copied;
+          shareStatus.textContent = translateUi(feedback.en.copied);
           return;
         } catch (_) {
           // Fall through to the compatibility copy method if permission is denied.
@@ -378,7 +382,7 @@
       if (!successful) throw new Error('Clipboard copy command failed');
       shareStatus.textContent = feedback[language].copied;
     } catch (_) {
-      shareStatus.textContent = feedback[language].failed;
+      shareStatus.textContent = translateUi(feedback.en.failed);
     }
   }
   copyButton.addEventListener('click', copyPageLink);
