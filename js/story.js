@@ -2,35 +2,13 @@
   'use strict';
 
   const root = document.documentElement;
-  const languageButton = document.getElementById('story-language');
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-  function setLanguage(nextLanguage) {
-    const language = nextLanguage === 'ar' ? 'ar' : 'en';
-    root.lang = language;
-    root.dir = language === 'ar' ? 'rtl' : 'ltr';
-    document.querySelectorAll('[data-en][data-ar]').forEach((element) => {
-      element.textContent = element.getAttribute('data-' + language);
-    });
-    document.querySelectorAll('[data-en-alt][data-ar-alt]').forEach((element) => {
-      element.alt = element.getAttribute('data-' + language + '-alt');
-    });
-    document.querySelectorAll('[data-en-aria][data-ar-aria]').forEach((element) => {
-      element.setAttribute('aria-label', element.getAttribute('data-' + language + '-aria'));
-    });
-    if (languageButton) {
-      languageButton.setAttribute('aria-label', language === 'en' ? 'Switch language to Arabic' : 'حوّل اللغة إلى الإنجليزية');
-    }
-    document.title = language === 'en'
-      ? 'A hard pill to swallow | NOOR Field Notes'
-      : 'حقيقة يصعب تقبّلها | ملاحظات نور الميدانية';
-    try { localStorage.setItem('noor-language', language); } catch (_) { /* Storage can be disabled. */ }
-  }
-
-  if (languageButton) languageButton.addEventListener('click', () => setLanguage(root.lang === 'en' ? 'ar' : 'en'));
-  try {
-    if (localStorage.getItem('noor-language') === 'ar') setLanguage('ar');
-  } catch (_) { /* Default to English when storage is unavailable. */ }
+  // Shared i18n.js owns language, text, title, persistence and direction.
+  // Story-specific behavior only listens for the completed locale change.
+  document.addEventListener('noor:languagechange', (event) => {
+    if (event.detail && event.detail.language) root.dataset.locale = event.detail.language;
+  });
 
   const reveals = Array.from(document.querySelectorAll('.story-reveal'));
   if (reveals.length && !reduceMotion.matches && 'IntersectionObserver' in window) {
