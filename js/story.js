@@ -2,35 +2,164 @@
   'use strict';
 
   const root = document.documentElement;
-  const languageButton = document.getElementById('story-language');
+  const languageSelect = document.getElementById('story-language');
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const supportedLanguages = ['en', 'ar', 'fr', 'es', 'pt', 'de'];
+
+  const languageMeta = {
+    en: {
+      dir: 'ltr',
+      title: 'A hard pill to swallow | NOOR Field Notes',
+      selectLabel: 'Select language',
+      locale: 'en_US',
+      description: 'Documented accounts and dated humanitarian reporting about the lives children are trying to live in Gaza: loss, family responsibility, education, shelter, and survival.'
+    },
+    ar: {
+      dir: 'rtl',
+      title: 'حقيقة يصعب تقبّلها | ملاحظات نور الميدانية',
+      selectLabel: 'اختر اللغة',
+      locale: 'ar',
+      description: 'شهادات موثقة وتقارير إنسانية مؤرخة عن حياة الأطفال في غزة: الفقدان ومسؤوليات الأسرة والتعليم والمأوى والبقاء.'
+    },
+    fr: {
+      dir: 'ltr',
+      title: 'Une vérité difficile à accepter | Notes de terrain NOOR',
+      selectLabel: 'Choisir la langue',
+      locale: 'fr_FR',
+      description: 'Témoignages documentés et rapports humanitaires datés sur la vie des enfants à Gaza : pertes, responsabilités familiales, éducation, abri et survie.'
+    },
+    es: {
+      dir: 'ltr',
+      title: 'Una verdad difícil de aceptar | Notas de campo de NOOR',
+      selectLabel: 'Seleccionar idioma',
+      locale: 'es_ES',
+      description: 'Testimonios documentados e informes humanitarios fechados sobre la vida de los niños en Gaza: pérdidas, responsabilidades familiares, educación, refugio y supervivencia.'
+    },
+    pt: {
+      dir: 'ltr',
+      title: 'Uma verdade difícil de aceitar | Notas de campo NOOR',
+      selectLabel: 'Selecionar idioma',
+      locale: 'pt_PT',
+      description: 'Relatos documentados e relatórios humanitários datados sobre a vida das crianças em Gaza: perdas, responsabilidades familiares, educação, abrigo e sobrevivência.'
+    },
+    de: {
+      dir: 'ltr',
+      title: 'Eine bittere Wahrheit | NOOR-Feldnotizen',
+      selectLabel: 'Sprache auswählen',
+      locale: 'de_DE',
+      description: 'Dokumentierte Berichte und datierte humanitäre Meldungen über das Leben von Kindern in Gaza: Verlust, familiäre Verantwortung, Bildung, Unterkunft und Überleben.'
+    }
+  };
+
+  const dynamicMessages = {
+    fr: {
+      'Video loaded below': 'La vidéo a été chargée ci-dessous',
+      'Open original post on X': 'Ouvrir la publication originale sur X',
+      'Loading original X post…': 'Chargement de la publication originale sur X…',
+      'Original X post loaded above': 'La publication originale sur X a été chargée ci-dessus',
+      'Embed unavailable — use the source link below': 'Intégration indisponible — utilisez le lien source ci-dessous',
+      'Documentary video': 'Vidéo documentaire'
+    },
+    es: {
+      'Video loaded below': 'El vídeo se ha cargado a continuación',
+      'Open original post on X': 'Abrir la publicación original en X',
+      'Loading original X post…': 'Cargando la publicación original en X…',
+      'Original X post loaded above': 'La publicación original de X se ha cargado arriba',
+      'Embed unavailable — use the source link below': 'Inserción no disponible: usa el enlace a la fuente de abajo',
+      'Documentary video': 'Vídeo documental'
+    },
+    pt: {
+      'Video loaded below': 'O vídeo foi carregado abaixo',
+      'Open original post on X': 'Abrir a publicação original no X',
+      'Loading original X post…': 'A carregar a publicação original no X…',
+      'Original X post loaded above': 'A publicação original no X foi carregada acima',
+      'Embed unavailable — use the source link below': 'Não foi possível incorporar — usa a ligação para a fonte abaixo',
+      'Documentary video': 'Vídeo documental'
+    },
+    de: {
+      'Video loaded below': 'Video unten geladen',
+      'Open original post on X': 'Originalbeitrag auf X öffnen',
+      'Loading original X post…': 'Originalbeitrag auf X wird geladen…',
+      'Original X post loaded above': 'Originalbeitrag auf X wurde oben geladen',
+      'Embed unavailable — use the source link below': 'Einbettung nicht verfügbar – nutzen Sie den Quellenlink unten',
+      'Documentary video': 'Dokumentarvideo'
+    }
+  };
+
+  function textForLocale(english, arabic, language = root.lang) {
+    if (language === 'ar') return arabic || english || '';
+    if (language === 'en') return english || arabic || '';
+    const translated = window.NOOR_STORY_TRANSLATIONS &&
+      window.NOOR_STORY_TRANSLATIONS[language] &&
+      window.NOOR_STORY_TRANSLATIONS[language][english];
+    return translated || (dynamicMessages[language] && dynamicMessages[language][english]) || english || arabic || '';
+  }
+
+  function setElementLocalization(element, english, arabic) {
+    element.setAttribute('data-en', english);
+    element.setAttribute('data-ar', arabic);
+    element.textContent = textForLocale(english, arabic);
+  }
 
   function setLanguage(nextLanguage) {
-    const language = nextLanguage === 'ar' ? 'ar' : 'en';
+    const language = supportedLanguages.includes(nextLanguage) ? nextLanguage : 'en';
+    const settings = languageMeta[language];
     root.lang = language;
-    root.dir = language === 'ar' ? 'rtl' : 'ltr';
+    root.dir = settings.dir;
+
     document.querySelectorAll('[data-en][data-ar]').forEach((element) => {
-      element.textContent = element.getAttribute('data-' + language);
+      element.textContent = textForLocale(
+        element.getAttribute('data-en'),
+        element.getAttribute('data-ar'),
+        language
+      );
     });
+
     document.querySelectorAll('[data-en-alt][data-ar-alt]').forEach((element) => {
-      element.alt = element.getAttribute('data-' + language + '-alt');
+      element.alt = textForLocale(
+        element.getAttribute('data-en-alt'),
+        element.getAttribute('data-ar-alt'),
+        language
+      );
     });
+
     document.querySelectorAll('[data-en-aria][data-ar-aria]').forEach((element) => {
-      element.setAttribute('aria-label', element.getAttribute('data-' + language + '-aria'));
+      element.setAttribute('aria-label', textForLocale(
+        element.getAttribute('data-en-aria'),
+        element.getAttribute('data-ar-aria'),
+        language
+      ));
     });
-    if (languageButton) {
-      languageButton.setAttribute('aria-label', language === 'en' ? 'Switch language to Arabic' : 'حوّل اللغة إلى الإنجليزية');
+
+    if (languageSelect) {
+      languageSelect.value = language;
+      languageSelect.setAttribute('aria-label', settings.selectLabel);
     }
-    document.title = language === 'en'
-      ? 'A hard pill to swallow | NOOR Field Notes'
-      : 'حقيقة يصعب تقبّلها | ملاحظات نور الميدانية';
+
+    document.title = settings.title;
+    const metadata = [
+      ['meta[name="description"]', settings.description],
+      ['meta[property="og:description"]', settings.description],
+      ['meta[name="twitter:description"]', settings.description],
+      ['meta[property="og:locale"]', settings.locale],
+      ['meta[property="og:title"]', settings.title],
+      ['meta[name="twitter:title"]', settings.title]
+    ];
+    metadata.forEach(([selector, value]) => {
+      const element = document.querySelector(selector);
+      if (element) element.setAttribute('content', value);
+    });
+
     try { localStorage.setItem('noor-language', language); } catch (_) { /* Storage can be disabled. */ }
   }
 
-  if (languageButton) languageButton.addEventListener('click', () => setLanguage(root.lang === 'en' ? 'ar' : 'en'));
+  if (languageSelect) languageSelect.addEventListener('change', () => setLanguage(languageSelect.value));
   try {
-    if (localStorage.getItem('noor-language') === 'ar') setLanguage('ar');
-  } catch (_) { /* Default to English when storage is unavailable. */ }
+    const savedLanguage = localStorage.getItem('noor-language');
+    setLanguage(supportedLanguages.includes(savedLanguage) ? savedLanguage : 'en');
+  } catch (_) {
+    setLanguage('en');
+  }
 
   const reveals = Array.from(document.querySelectorAll('.story-reveal'));
   if (reveals.length && !reduceMotion.matches && 'IntersectionObserver' in window) {
@@ -107,7 +236,7 @@
 
     const label = document.createElement('div');
     label.className = 'story-pixel-entry__label';
-    label.textContent = root.lang === 'ar' ? 'نور // ملاحظات ميدانية 001' : 'NOOR // FIELD NOTES 001';
+    label.textContent = ({ ar: 'نور // ملاحظات ميدانية 001', fr: 'NOOR // NOTES DE TERRAIN 001', es: 'NOOR // NOTAS DE CAMPO 001', pt: 'NOOR // NOTAS DE CAMPO 001', de: 'NOOR // FELDNOTIZEN 001' })[root.lang] || 'NOOR // FIELD NOTES 001';
 
     const columns = Math.min(48, Math.max(10, Math.ceil(window.innerWidth / 44)));
     const rows = Math.min(28, Math.max(8, Math.ceil(window.innerHeight / Math.max(1, window.innerWidth / columns))));
@@ -151,9 +280,7 @@
       player.appendChild(iframe);
       player.hidden = false;
       loadButton.disabled = true;
-      loadButton.setAttribute('data-en', 'Video loaded below');
-      loadButton.setAttribute('data-ar', 'تم تحميل الفيديو أدناه');
-      loadButton.textContent = root.lang === 'ar' ? 'تم تحميل الفيديو أدناه' : 'Video loaded below';
+      setElementLocalization(loadButton, 'Video loaded below', 'تم تحميل الفيديو أدناه');
     });
   });
 
@@ -205,25 +332,25 @@
       blockquote.setAttribute('data-theme', 'dark');
       const link = document.createElement('a');
       link.href = postUrl;
-      link.textContent = root.lang === 'ar' ? 'افتح المنشور الأصلي على إكس' : 'Open original post on X';
+      link.setAttribute('data-en', 'Open original post on X');
+      link.setAttribute('data-ar', 'افتح المنشور الأصلي على إكس');
+      link.textContent = textForLocale('Open original post on X', 'افتح المنشور الأصلي على إكس');
       blockquote.appendChild(link);
       player.replaceChildren(blockquote);
       player.hidden = false;
       loadButton.disabled = true;
-      loadButton.textContent = root.lang === 'ar' ? 'جارٍ تحميل منشور إكس...' : 'Loading original X post…';
+      setElementLocalization(loadButton, 'Loading original X post…', 'جارٍ تحميل منشور إكس...');
 
       try {
         const twttr = await loadXWidgets();
         await twttr.widgets.load(player);
         if (player.querySelector('iframe')) {
-          loadButton.setAttribute('data-en', 'Original X post loaded above');
-          loadButton.setAttribute('data-ar', 'تم تحميل منشور إكس الأصلي أعلاه');
-          loadButton.textContent = root.lang === 'ar' ? 'تم تحميل منشور إكس الأصلي أعلاه' : 'Original X post loaded above';
+          setElementLocalization(loadButton, 'Original X post loaded above', 'تم تحميل منشور إكس الأصلي أعلاه');
         } else {
           player.hidden = true;
           player.replaceChildren();
           loadButton.disabled = false;
-          loadButton.textContent = root.lang === 'ar' ? 'تعذّر التضمين؛ افتح المصدر أدناه' : 'Embed unavailable — use the source link below';
+          setElementLocalization(loadButton, 'Embed unavailable — use the source link below', 'تعذّر التضمين؛ افتح المصدر أدناه');
         }
       } catch (_) {
         player.hidden = true;
