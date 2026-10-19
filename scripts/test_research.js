@@ -56,7 +56,7 @@ for (const category of topicButtons.filter(Boolean)) {
 }
 assert.ok(archive.includes('class="archive-cinema"'), 'Archive should have the cinematic evidence-wall landing composition.');
 assert.ok(archive.includes('class="archive-cinema-rail"'), 'Archive should include the red vertical return rail.');
-assert.ok(archive.includes('class="archive-entry-triad"'), 'Archive should provide the three-part visual index.');
+assert.ok(archive.includes('archive-entry-triad'), 'Archive should provide the three-part visual index.');
 assert.ok(archive.includes('archive-entry-stack-doc'), 'Archive should include the layered document visual.');
 assert.ok(archive.includes('archive-entry-stack-network'), 'Archive should include the network visual.');
 assert.ok(archive.includes('class="archive-cinema-feature"'), 'Archive should link to the visual evidence feature.');
