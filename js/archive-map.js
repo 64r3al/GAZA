@@ -221,8 +221,10 @@
         const collideWith = (b, isRecord, j) => {
           const dx = a.x - b.x;
           const dy = a.y - b.y;
-          const overlapX = (boxA.w + b.w) / 2 + margin - Math.abs(dx);
-          const overlapY = (boxA.h + b.h) / 2 + margin - Math.abs(dy);
+          const bW = isRecord ? RECORD_W : b.w;
+          const bH = isRecord ? RECORD_H : b.h;
+          const overlapX = (boxA.w + bW) / 2 + margin - Math.abs(dx);
+          const overlapY = (boxA.h + bH) / 2 + margin - Math.abs(dy);
           if (overlapX <= 0 || overlapY <= 0) return;
 
           if (overlapX <= overlapY) {
@@ -260,8 +262,10 @@
       for (let i = 0; i < records.length; i += 1) {
         const a = records[i];
         const resolveAgainst = (b, isRecord, j) => {
-          const overlapX = (RECORD_W + b.w) / 2 + margin - Math.abs(a.x - b.x);
-          const overlapY = (RECORD_H + b.h) / 2 + margin - Math.abs(a.y - b.y);
+          const bW = isRecord ? RECORD_W : b.w;
+          const bH = isRecord ? RECORD_H : b.h;
+          const overlapX = (RECORD_W + bW) / 2 + margin - Math.abs(a.x - b.x);
+          const overlapY = (RECORD_H + bH) / 2 + margin - Math.abs(a.y - b.y);
           if (overlapX <= 0 || overlapY <= 0) return;
           collisions += 1;
           if (overlapX <= overlapY) {
