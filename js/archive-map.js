@@ -550,6 +550,7 @@
 
   viewport.addEventListener('pointerdown', (event) => {
     if (event.button !== 0 && event.pointerType !== 'touch') return;
+    if (event.target.closest('button, a, input, select, label')) return;
     drag = { pointerId: event.pointerId, clientX: event.clientX, clientY: event.clientY, tx, ty, moved: false, node: event.target.closest('[data-node-id]') };
     movedDuringDrag = false;
     viewport.classList.add('is-dragging');
