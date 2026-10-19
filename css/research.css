@@ -588,3 +588,18 @@
  .archive-body .research-nav{top:auto;left:auto;right:auto;width:calc(100% - 20px);margin:0 auto 9px}
  .archive-body .research-nav-inner{min-height:28px}
 }
+
+/* Collision-free map refinements: stronger legibility and explicit selected paths */
+.archive-network-record-title{font-size:12.5px}
+.archive-network-record-id{font-size:8px;letter-spacing:.65px}
+.archive-network-node-meta{font-size:7.5px}
+.archive-network-topic-title{font-size:14px}
+.archive-network-edge.is-active-edge{stroke:#e87461;stroke-width:2.3;stroke-dasharray:none;opacity:1;filter:drop-shadow(0 0 2px #b84032aa)}
+.archive-network-node-record.is-related .archive-network-record-card{stroke:#9c6a5c;stroke-width:1.5}
+.archive-network-node-record.is-related .archive-network-record-stripe{fill:#d46b57}
+.archive-network-details{position:relative}
+.archive-network-map-note{max-width:1320px}
+@media(max-width:760px){
+ .archive-network-record-title{font-size:12px}
+ .archive-network-topic-title{font-size:13.5px}
+}
