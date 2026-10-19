@@ -19,7 +19,16 @@
       card.hidden = !matches;
       if (matches) visible++;
     });
-    count.textContent = visible + (visible === 1 ? ' source entry' : ' source entries');
+    const locale = document.documentElement.lang || 'en';
+    const countTemplates = {
+      en: (n) => n + (n === 1 ? ' source entry' : ' source entries'),
+      ar: (n) => n + (n === 1 ? ' عنصر مصدر' : ' عناصر مصدر'),
+      fr: (n) => n + (n === 1 ? ' élément source' : ' éléments sources'),
+      es: (n) => n + (n === 1 ? ' entrada de fuente' : ' entradas de fuentes'),
+      pt: (n) => n + (n === 1 ? ' registo de fonte' : ' registos de fontes'),
+      de: (n) => n + (n === 1 ? ' Quelleneintrag' : ' Quelleneinträge')
+    };
+    count.textContent = (countTemplates[locale] || countTemplates.en)(visible);
     empty.hidden = visible !== 0;
   }
   [query, kind, topic].forEach((control) => control.addEventListener('input', filter));
@@ -30,5 +39,6 @@
     filter();
     query.focus();
   });
+  document.addEventListener('noor:languagechange', filter);
   filter();
 })();
