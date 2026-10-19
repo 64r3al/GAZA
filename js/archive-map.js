@@ -66,7 +66,7 @@
       recordsVisible: '{visible} / {total} RECORDS VISIBLE · {topics} TOPIC HUBS',
       centralAria: 'NOOR central evidence archive', topicAria: 'topic hub', selectNode: 'Select a node.',
       topicHelp: 'This hub groups archive records under the same subject. Connections show how the records are classified, not proof of legal responsibility.',
-      locationUnknown: 'LOCATION NOT LISTED', noResults: 'No records match these filters.'
+      locationUnknown: 'LOCATION NOT LISTED', noResults: 'No records match these filters.', noSources: 'No additional source links are attached to this topic hub.', visibleAfterFilters: 'visible after filters'
     },
     ar: {
       evidenceMap: 'خريطة الأدلة', sourceRecords: 'سجلات المصادر', sourceRecord: 'سجل المصدر',
@@ -76,7 +76,7 @@
       recordsVisible: '{visible} من {total} سجل ظاهر · {topics} محاور موضوعية',
       centralAria: 'أرشيف نور المركزي للأدلة', topicAria: 'محور موضوعي', selectNode: 'اختر عقدة.',
       topicHelp: 'يجمع هذا المحور سجلات الأرشيف ذات الموضوع نفسه. توضّح الروابط تصنيف السجلات ولا تثبت المسؤولية القانونية.',
-      locationUnknown: 'الموقع غير مذكور', noResults: 'لا توجد سجلات تطابق عوامل التصفية.'
+      locationUnknown: 'الموقع غير مذكور', noResults: 'لا توجد سجلات تطابق عوامل التصفية.', noSources: 'لا توجد روابط مصادر إضافية مرفقة بهذا المحور.', visibleAfterFilters: 'مرئية بعد التصفية'
     },
     fr: {
       evidenceMap: 'CARTE DES PREUVES', sourceRecords: 'SOURCES ARCHIVÉES', sourceRecord: 'SOURCE',
@@ -86,7 +86,7 @@
       recordsVisible: '{visible} / {total} DOSSIERS VISIBLES · {topics} THÈMES',
       centralAria: 'Archives centrales de preuves NOOR', topicAria: 'thème', selectNode: 'Sélectionnez un nœud.',
       topicHelp: 'Ce thème regroupe les dossiers sur un même sujet. Les liens montrent le classement des sources, pas une preuve de responsabilité juridique.',
-      locationUnknown: 'LIEU NON INDIQUÉ', noResults: 'Aucun dossier ne correspond à ces filtres.'
+      locationUnknown: 'LIEU NON INDIQUÉ', noResults: 'Aucun dossier ne correspond à ces filtres.', noSources: 'Aucun autre lien source n’est associé à ce thème.', visibleAfterFilters: 'visibles après filtrage'
     },
     es: {
       evidenceMap: 'MAPA DE EVIDENCIAS', sourceRecords: 'REGISTROS FUENTE', sourceRecord: 'REGISTRO FUENTE',
@@ -96,7 +96,7 @@
       recordsVisible: '{visible} / {total} REGISTROS VISIBLES · {topics} TEMAS',
       centralAria: 'Archivo central de evidencias de NOOR', topicAria: 'tema', selectNode: 'Selecciona un nodo.',
       topicHelp: 'Este grupo reúne registros sobre el mismo tema. Los enlaces muestran cómo se clasifican las fuentes, no prueban responsabilidad jurídica.',
-      locationUnknown: 'UBICACIÓN NO INDICADA', noResults: 'Ningún registro coincide con estos filtros.'
+      locationUnknown: 'UBICACIÓN NO INDICADA', noResults: 'Ningún registro coincide con estos filtros.', noSources: 'Este tema no tiene enlaces de fuentes adicionales.', visibleAfterFilters: 'visibles tras aplicar filtros'
     },
     pt: {
       evidenceMap: 'MAPA DE EVIDÊNCIAS', sourceRecords: 'REGISTOS DE ORIGEM', sourceRecord: 'REGISTO DE ORIGEM',
@@ -106,7 +106,7 @@
       recordsVisible: '{visible} / {total} REGISTOS VISÍVEIS · {topics} TEMAS',
       centralAria: 'Arquivo central de evidências da NOOR', topicAria: 'tema', selectNode: 'Selecione um nó.',
       topicHelp: 'Este grupo reúne registos sobre o mesmo tema. As ligações mostram a classificação das fontes, não provam responsabilidade jurídica.',
-      locationUnknown: 'LOCAL NÃO INDICADO', noResults: 'Nenhum registo corresponde a estes filtros.'
+      locationUnknown: 'LOCAL NÃO INDICADO', noResults: 'Nenhum registo corresponde a estes filtros.', noSources: 'Este tema não tem ligações adicionais a fontes.', visibleAfterFilters: 'visíveis após filtrar'
     },
     de: {
       evidenceMap: 'BELEGKARTE', sourceRecords: 'QUELLENBELEGE', sourceRecord: 'QUELLENBELEG',
@@ -116,7 +116,7 @@
       recordsVisible: '{visible} / {total} EINTRÄGE SICHTBAR · {topics} THEMEN',
       centralAria: 'Zentrales NOOR-Belegarchiv', topicAria: 'Themenknoten', selectNode: 'Knoten auswählen.',
       topicHelp: 'Dieser Knoten gruppiert Archivbelege zum selben Thema. Die Verbindungen zeigen die Klassifizierung der Quellen, keinen Beweis rechtlicher Verantwortung.',
-      locationUnknown: 'ORT NICHT ANGEGEBEN', noResults: 'Keine Einträge entsprechen diesen Filtern.'
+      locationUnknown: 'ORT NICHT ANGEGEBEN', noResults: 'Keine Einträge entsprechen diesen Filtern.', noSources: 'Mit diesem Themenknoten sind keine weiteren Quellenlinks verknüpft.', visibleAfterFilters: 'nach Filterung sichtbar'
     }
   };
   const getLang = () => window.NOORLocalization
@@ -536,7 +536,7 @@
     if (!sources.length) {
       const p = document.createElement('p');
       p.className = 'archive-map-no-sources';
-      p.textContent = getLang() === 'ar' ? 'لا توجد روابط مصدر إضافية ضمن هذا المحور.' : 'No additional source links are attached to this topic hub.';
+      p.textContent = mapCopy('noSources');
       sourceLinks.appendChild(p);
     } else {
       sources.forEach((link) => appendDetailLink(sourceLinks, link));
@@ -588,7 +588,7 @@
     highlightTopicRelationships(hub);
     setPanel(hub.label, mapCopy('topicNode') + ' / ' + String(hub.count).padStart(2, '0'), mapCopy('subjectCluster'), [
       String(hub.count) + ' ' + mapCopy(hub.count === 1 ? 'record' : 'records'),
-      String(visible.length) + ' ' + translateValue('visible after filters')
+      String(visible.length) + ' ' + mapCopy('visibleAfterFilters')
     ], mapCopy('topicHelp'), actions, []);
     applyFilters();
   }
