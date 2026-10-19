@@ -57,7 +57,76 @@
     if (option.value) categoryNames.set(option.value, option);
   });
 
-  const getLang = () => document.documentElement.lang === 'ar' ? 'ar' : 'en';
+  const MAP_COPY = {
+    en: {
+      evidenceMap: 'EVIDENCE MAP', sourceRecords: 'SOURCE RECORDS', sourceRecord: 'SOURCE RECORD',
+      topicNode: 'TOPIC NODE', record: 'RECORD', records: 'RECORDS', dateNotListed: 'DATE NOT LISTED',
+      archiveSourceRecord: 'ARCHIVE SOURCE RECORD', subjectCluster: 'SUBJECT CLUSTER',
+      openFullRecord: 'OPEN FULL RECORD ↓', openArchiveFilters: 'OPEN ARCHIVE FILTERS ↓',
+      recordsVisible: '{visible} / {total} RECORDS VISIBLE · {topics} TOPIC HUBS',
+      centralAria: 'NOOR central evidence archive', topicAria: 'topic hub', selectNode: 'Select a node.',
+      topicHelp: 'This hub groups archive records under the same subject. Connections show how the records are classified, not proof of legal responsibility.',
+      locationUnknown: 'LOCATION NOT LISTED', noResults: 'No records match these filters.'
+    },
+    ar: {
+      evidenceMap: 'خريطة الأدلة', sourceRecords: 'سجلات المصادر', sourceRecord: 'سجل المصدر',
+      topicNode: 'محور موضوعي', record: 'سجل', records: 'سجلات', dateNotListed: 'التاريخ غير مذكور',
+      archiveSourceRecord: 'سجل مصدر من الأرشيف', subjectCluster: 'مجموعة موضوعية',
+      openFullRecord: 'افتح السجل الكامل ↓', openArchiveFilters: 'افتح عوامل التصفية ↓',
+      recordsVisible: '{visible} من {total} سجل ظاهر · {topics} محاور موضوعية',
+      centralAria: 'أرشيف نور المركزي للأدلة', topicAria: 'محور موضوعي', selectNode: 'اختر عقدة.',
+      topicHelp: 'يجمع هذا المحور سجلات الأرشيف ذات الموضوع نفسه. توضّح الروابط تصنيف السجلات ولا تثبت المسؤولية القانونية.',
+      locationUnknown: 'الموقع غير مذكور', noResults: 'لا توجد سجلات تطابق عوامل التصفية.'
+    },
+    fr: {
+      evidenceMap: 'CARTE DES PREUVES', sourceRecords: 'SOURCES ARCHIVÉES', sourceRecord: 'SOURCE',
+      topicNode: 'THÈME', record: 'DOSSIER', records: 'DOSSIERS', dateNotListed: 'DATE NON INDIQUÉE',
+      archiveSourceRecord: 'SOURCE DE L’ARCHIVE', subjectCluster: 'GROUPE THÉMATIQUE',
+      openFullRecord: 'OUVRIR LE DOSSIER COMPLET ↓', openArchiveFilters: 'OUVRIR LES FILTRES ↓',
+      recordsVisible: '{visible} / {total} DOSSIERS VISIBLES · {topics} THÈMES',
+      centralAria: 'Archives centrales de preuves NOOR', topicAria: 'thème', selectNode: 'Sélectionnez un nœud.',
+      topicHelp: 'Ce thème regroupe les dossiers sur un même sujet. Les liens montrent le classement des sources, pas une preuve de responsabilité juridique.',
+      locationUnknown: 'LIEU NON INDIQUÉ', noResults: 'Aucun dossier ne correspond à ces filtres.'
+    },
+    es: {
+      evidenceMap: 'MAPA DE EVIDENCIAS', sourceRecords: 'REGISTROS FUENTE', sourceRecord: 'REGISTRO FUENTE',
+      topicNode: 'TEMA', record: 'REGISTRO', records: 'REGISTROS', dateNotListed: 'FECHA NO INDICADA',
+      archiveSourceRecord: 'REGISTRO DEL ARCHIVO', subjectCluster: 'GRUPO TEMÁTICO',
+      openFullRecord: 'ABRIR REGISTRO COMPLETO ↓', openArchiveFilters: 'ABRIR FILTROS DEL ARCHIVO ↓',
+      recordsVisible: '{visible} / {total} REGISTROS VISIBLES · {topics} TEMAS',
+      centralAria: 'Archivo central de evidencias de NOOR', topicAria: 'tema', selectNode: 'Selecciona un nodo.',
+      topicHelp: 'Este grupo reúne registros sobre el mismo tema. Los enlaces muestran cómo se clasifican las fuentes, no prueban responsabilidad jurídica.',
+      locationUnknown: 'UBICACIÓN NO INDICADA', noResults: 'Ningún registro coincide con estos filtros.'
+    },
+    pt: {
+      evidenceMap: 'MAPA DE EVIDÊNCIAS', sourceRecords: 'REGISTOS DE ORIGEM', sourceRecord: 'REGISTO DE ORIGEM',
+      topicNode: 'TEMA', record: 'REGISTO', records: 'REGISTOS', dateNotListed: 'DATA NÃO INDICADA',
+      archiveSourceRecord: 'REGISTO DO ARQUIVO', subjectCluster: 'GRUPO TEMÁTICO',
+      openFullRecord: 'ABRIR REGISTO COMPLETO ↓', openArchiveFilters: 'ABRIR FILTROS DO ARQUIVO ↓',
+      recordsVisible: '{visible} / {total} REGISTOS VISÍVEIS · {topics} TEMAS',
+      centralAria: 'Arquivo central de evidências da NOOR', topicAria: 'tema', selectNode: 'Selecione um nó.',
+      topicHelp: 'Este grupo reúne registos sobre o mesmo tema. As ligações mostram a classificação das fontes, não provam responsabilidade jurídica.',
+      locationUnknown: 'LOCAL NÃO INDICADO', noResults: 'Nenhum registo corresponde a estes filtros.'
+    },
+    de: {
+      evidenceMap: 'BELEGKARTE', sourceRecords: 'QUELLENBELEGE', sourceRecord: 'QUELLENBELEG',
+      topicNode: 'THEMA', record: 'EINTRAG', records: 'EINTRÄGE', dateNotListed: 'DATUM NICHT ANGEGEBEN',
+      archiveSourceRecord: 'ARCHIVQUELLE', subjectCluster: 'THEMENGRUPPE',
+      openFullRecord: 'VOLLSTÄNDIGEN EINTRAG ÖFFNEN ↓', openArchiveFilters: 'ARCHIVFILTER ÖFFNEN ↓',
+      recordsVisible: '{visible} / {total} EINTRÄGE SICHTBAR · {topics} THEMEN',
+      centralAria: 'Zentrales NOOR-Belegarchiv', topicAria: 'Themenknoten', selectNode: 'Knoten auswählen.',
+      topicHelp: 'Dieser Knoten gruppiert Archivbelege zum selben Thema. Die Verbindungen zeigen die Klassifizierung der Quellen, keinen Beweis rechtlicher Verantwortung.',
+      locationUnknown: 'ORT NICHT ANGEGEBEN', noResults: 'Keine Einträge entsprechen diesen Filtern.'
+    }
+  };
+  const getLang = () => window.NOORLocalization
+    ? window.NOORLocalization.getLanguage()
+    : (['en', 'ar', 'fr', 'es', 'pt', 'de'].includes(document.documentElement.lang) ? document.documentElement.lang : 'en');
+  const mapCopy = (key) => (MAP_COPY[getLang()] && MAP_COPY[getLang()][key]) || MAP_COPY.en[key] || key;
+  const translateValue = (value) => window.NOORLocalization
+    ? window.NOORLocalization.translate(value, getLang())
+    : value;
+  const isRtl = () => getLang() === 'ar';
   const txt = (element) => (element ? element.textContent : '').trim();
   const attrText = (element, lang = getLang()) => {
     if (!element) return '';
