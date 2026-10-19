@@ -1,0 +1,39 @@
+/* Shared localization controls and robust Arabic RTL typography. */
+.noor-language-select{box-sizing:border-box;appearance:auto;display:inline-block;min-width:112px;max-width:100%;min-height:32px;padding:5px 27px 5px 10px;border:1px solid rgba(190,174,157,.48);border-radius:2px;background-color:#0c0d0c;color:#f0e9df;font:600 11px/1.4 "DM Sans","Cairo",sans-serif;letter-spacing:0;text-transform:none;cursor:pointer;direction:ltr}
+.noor-language-select:focus-visible{outline:2px solid #d45c4a;outline-offset:3px}
+.noor-language-wrap{display:inline-flex;align-items:center;max-width:100%;margin-inline-start:10px}
+.noor-sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+.research-header-actions .noor-language-wrap{margin-inline-start:12px}
+.site-header .noor-language-select{min-width:112px}
+.archive-header .noor-language-select,.story-header .noor-language-select,.research-header .noor-language-select{min-height:30px}
+:root[lang="ar"],:root[lang="ar"] body{font-family:"Cairo","Noto Sans Arabic",Tahoma,sans-serif}
+:root[dir="rtl"] body{direction:rtl}
+:root[dir="rtl"] input,:root[dir="rtl"] textarea,:root[dir="rtl"] select{direction:rtl;text-align:start}
+:root[dir="rtl"] input[type="date"],:root[dir="rtl"] input[type="number"],:root[dir="rtl"] input[type="search"]{direction:rtl}
+:root[dir="rtl"] .noor-language-select{direction:ltr;text-align:left;padding-left:10px;padding-right:27px}
+:root[dir="rtl"] .site-header .header-inner,:root[dir="rtl"] .archive-header,:root[dir="rtl"] .story-header,:root[dir="rtl"] .research-header{font-family:"Cairo","Noto Sans Arabic",Tahoma,sans-serif}
+:root[dir="rtl"] .nav,:root[dir="rtl"] .research-nav-inner{direction:rtl}
+:root[dir="rtl"] .research-nav-label{margin-inline-end:auto;margin-inline-start:12px}
+:root[dir="rtl"] .archive-network-heading,:root[dir="rtl"] .archive-network-details,:root[dir="rtl"] .archive-network-tools,:root[dir="rtl"] .archive-map-empty-state,:root[dir="rtl"] .archive-map-detail-summary{text-align:right}
+:root[dir="rtl"] .archive-network-kicker{letter-spacing:0}
+:root[dir="rtl"] .archive-network-heading>p:last-child,:root[dir="rtl"] .archive-map-empty-state>p,:root[dir="rtl"] .archive-map-detail-summary{line-height:1.95}
+:root[dir="rtl"] .archive-network-status{direction:rtl}
+:root[dir="rtl"] .archive-network-hint{text-align:left}
+:root[dir="rtl"] .archive-network-legend{direction:rtl}
+:root[dir="rtl"] .archive-network-details-footer{direction:rtl}
+:root[dir="rtl"] .archive-map-detail-actions .archive-map-action-link{direction:rtl}
+:root[dir="rtl"] .archive-map-source-links a{text-align:right;unicode-bidi:plaintext}
+:root[dir="rtl"] .archive-map-gesture-list>span{direction:rtl}
+:root[dir="rtl"] .archive-network-record-title,:root[dir="rtl"] .archive-network-topic-title{font-family:"Cairo","Noto Sans Arabic",Tahoma,sans-serif}
+:root[dir="rtl"] .research-method-content p,:root[dir="rtl"] .research-hero-deck,:root[dir="rtl"] .research-caution,:root[dir="rtl"] .story-deck,:root[dir="rtl"] .section-intro{line-height:1.95}
+:root[dir="rtl"] .archive-card,:root[dir="rtl"] .research-method-card,:root[dir="rtl"] .research-status-row{direction:rtl;text-align:start}
+:root[dir="rtl"] .archive-card h3,:root[dir="rtl"] .archive-card-summary,:root[dir="rtl"] .archive-card-source,:root[dir="rtl"] .archive-card-related{text-align:start;unicode-bidi:plaintext}
+:root[dir="rtl"] .archive-network-map-note{text-align:start;line-height:1.9}
+:root[dir="rtl"] .story-language,:root[dir="rtl"] .archive-language,:root[dir="rtl"] .research-language{font-family:"Cairo",sans-serif}
+:root[dir="rtl"] .hero-content,:root[dir="rtl"] .site-footer,:root[dir="rtl"] .story-content{direction:rtl}
+@media(max-width:760px){
+ .noor-language-select{min-width:97px;min-height:30px;font-size:10px}
+ .noor-language-wrap{margin-inline-start:5px}
+ :root[dir="rtl"] .archive-network-status{align-items:flex-start}
+}
+@media(prefers-reduced-motion:reduce){.noor-language-select{scroll-behavior:auto}}
