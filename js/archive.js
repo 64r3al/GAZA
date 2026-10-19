@@ -143,9 +143,15 @@
         ? 'No matching records'
         : 'لا توجد سجلات مطابقة';
     } else {
-      resultCount.textContent = language === 'en'
-        ? 'Showing ' + visibleCount + ' of ' + cards.length + ' records'
-        : 'عرض ' + visibleCount + ' من أصل ' + cards.length + ' سجلات';
+      const countTemplates = {
+        en: (shown, total) => 'Showing ' + shown + ' of ' + total + ' records',
+        ar: (shown, total) => 'عرض ' + shown + ' من أصل ' + total + ' سجلات',
+        fr: (shown, total) => shown + ' dossiers affichés sur ' + total,
+        es: (shown, total) => shown + ' de ' + total + ' registros visibles',
+        pt: (shown, total) => shown + ' de ' + total + ' registos visíveis',
+        de: (shown, total) => shown + ' von ' + total + ' Einträgen sichtbar'
+      };
+      resultCount.textContent = (countTemplates[language] || countTemplates.en)(visibleCount, cards.length);
     }
   }
 
