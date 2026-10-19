@@ -36,6 +36,10 @@
       .trim();
   }
 
+  function translateArchiveText(source) {
+    return window.NOORLocalization ? window.NOORLocalization.translate(source, root.lang || 'en') : source;
+  }
+
   function setLanguage(nextLanguage) {
     language = nextLanguage === 'ar' ? 'ar' : 'en';
     root.lang = language;
@@ -135,17 +139,13 @@
 
     noResults.hidden = visibleCount > 0 || invalidRange;
     if (invalidRange) {
-      resultCount.textContent = language === 'en'
-        ? 'Invalid date range — start date must be on or before end date.'
-        : 'نطاق التاريخ غير صالح — يجب أن يكون تاريخ البداية في يوم النهاية أو قبله.';
+      resultCount.textContent = translateArchiveText('Invalid date range — start date must be on or before end date.');
     } else if (visibleCount === 0) {
-      resultCount.textContent = language === 'en'
-        ? 'No matching records'
-        : 'لا توجد سجلات مطابقة';
+      resultCount.textContent = translateArchiveText('No matching records');
     } else {
-      resultCount.textContent = language === 'en'
-        ? 'Showing ' + visibleCount + ' of ' + cards.length + ' records'
-        : 'عرض ' + visibleCount + ' من أصل ' + cards.length + ' سجلات';
+      resultCount.textContent = translateArchiveText('Showing {visible} of {total} records')
+        .replace('{visible}', String(visibleCount))
+        .replace('{total}', String(cards.length));
     }
   }
 
@@ -214,6 +214,12 @@
   syncTopicButtons();
   sortCards();
   applyFilters();
+
+  document.addEventListener('noor:languagechange', (event) => {
+    language = event.detail && event.detail.language || root.lang || 'en';
+    syncTopicButtons();
+    applyFilters();
+  });
 
   if (languageButton) {
     try {
