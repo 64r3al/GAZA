@@ -4,6 +4,9 @@
   const root = document.documentElement;
   const languageButton = document.getElementById('story-language');
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const tr = (source) => window.NOORLocalization
+    ? window.NOORLocalization.translate(source, root.lang || 'en')
+    : source;
 
   function setLanguage(nextLanguage) {
     const language = nextLanguage === 'ar' ? 'ar' : 'en';
@@ -107,7 +110,7 @@
 
     const label = document.createElement('div');
     label.className = 'story-pixel-entry__label';
-    label.textContent = root.lang === 'ar' ? 'نور // ملاحظات ميدانية 001' : 'NOOR // FIELD NOTES 001';
+    label.textContent = tr('NOOR // FIELD NOTES 001');
 
     const columns = Math.min(48, Math.max(10, Math.ceil(window.innerWidth / 44)));
     const rows = Math.min(28, Math.max(8, Math.ceil(window.innerHeight / Math.max(1, window.innerWidth / columns))));
@@ -153,7 +156,7 @@
       loadButton.disabled = true;
       loadButton.setAttribute('data-en', 'Video loaded below');
       loadButton.setAttribute('data-ar', 'تم تحميل الفيديو أدناه');
-      loadButton.textContent = root.lang === 'ar' ? 'تم تحميل الفيديو أدناه' : 'Video loaded below';
+      loadButton.textContent = tr('Video loaded below');
     });
   });
 
@@ -205,12 +208,12 @@
       blockquote.setAttribute('data-theme', 'dark');
       const link = document.createElement('a');
       link.href = postUrl;
-      link.textContent = root.lang === 'ar' ? 'افتح المنشور الأصلي على إكس' : 'Open original post on X';
+      link.textContent = tr('Open original post on X');
       blockquote.appendChild(link);
       player.replaceChildren(blockquote);
       player.hidden = false;
       loadButton.disabled = true;
-      loadButton.textContent = root.lang === 'ar' ? 'جارٍ تحميل منشور إكس...' : 'Loading original X post…';
+      loadButton.textContent = tr('Loading original X post…');
 
       try {
         const twttr = await loadXWidgets();
@@ -218,12 +221,12 @@
         if (player.querySelector('iframe')) {
           loadButton.setAttribute('data-en', 'Original X post loaded above');
           loadButton.setAttribute('data-ar', 'تم تحميل منشور إكس الأصلي أعلاه');
-          loadButton.textContent = root.lang === 'ar' ? 'تم تحميل منشور إكس الأصلي أعلاه' : 'Original X post loaded above';
+          loadButton.textContent = tr('Original X post loaded above');
         } else {
           player.hidden = true;
           player.replaceChildren();
           loadButton.disabled = false;
-          loadButton.textContent = root.lang === 'ar' ? 'تعذّر التضمين؛ افتح المصدر أدناه' : 'Embed unavailable — use the source link below';
+          loadButton.textContent = tr('Embed unavailable — use the source link below');
         }
       } catch (_) {
         player.hidden = true;
