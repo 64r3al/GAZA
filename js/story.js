@@ -356,7 +356,7 @@
         player.hidden = true;
         player.replaceChildren();
         loadButton.disabled = false;
-        loadButton.textContent = root.lang === 'ar' ? 'تعذّر التضمين؛ افتح المصدر أدناه' : 'Embed unavailable — use the source link below';
+        setElementLocalization(loadButton, 'Embed unavailable — use the source link below', 'تعذّر التضمين؛ افتح المصدر أدناه');
       }
     });
   });
