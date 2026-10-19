@@ -11,11 +11,18 @@
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const copyButton = document.getElementById('copy-link');
   const shareStatus = document.getElementById('share-status');
-  const copyLabel = { en: 'Copy page link', ar: 'انسخ رابط الصفحة' };
+  const copyLabel = {
+    en: 'Copy page link', ar: 'انسخ رابط الصفحة', fr: 'Copier le lien de la page',
+    es: 'Copiar enlace de la página', pt: 'Copiar ligação da página', de: 'Seitenlink kopieren'
+  };
   const currentYear = new Date().getFullYear();
   const feedback = {
     en: { copied: 'Link copied.', failed: 'Copy was unavailable. Copy the page address from your browser.', pause: 'Pause slideshow', play: 'Play slideshow' },
-    ar: { copied: 'تم نسخ الرابط.', failed: 'تعذّر النسخ. انسخ عنوان الصفحة من المتصفح.', pause: 'إيقاف عرض الصور مؤقتاً', play: 'تشغيل عرض الصور' }
+    ar: { copied: 'تم نسخ الرابط.', failed: 'تعذّر النسخ. انسخ عنوان الصفحة من المتصفح.', pause: 'إيقاف عرض الصور مؤقتاً', play: 'تشغيل عرض الصور' },
+    fr: { copied: 'Lien copié.', failed: 'La copie est indisponible. Copiez l’adresse de la page depuis votre navigateur.', pause: 'Mettre le diaporama en pause', play: 'Lire le diaporama' },
+    es: { copied: 'Enlace copiado.', failed: 'No se pudo copiar. Copia la dirección desde tu navegador.', pause: 'Pausar la presentación', play: 'Reproducir la presentación' },
+    pt: { copied: 'Ligação copiada.', failed: 'Não foi possível copiar. Copie o endereço da página no navegador.', pause: 'Pausar a apresentação', play: 'Reproduzir a apresentação' },
+    de: { copied: 'Link kopiert.', failed: 'Kopieren nicht verfügbar. Kopieren Sie die Seitenadresse aus dem Browser.', pause: 'Diashow pausieren', play: 'Diashow abspielen' }
   };
 
   let language = 'en';
