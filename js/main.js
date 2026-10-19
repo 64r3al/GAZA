@@ -182,9 +182,13 @@
     updateShareLinks();
   }
 
-  languageButton.addEventListener('click', () => setLanguage(language === 'en' ? 'ar' : 'en'));
+  // The shared six-language selector owns localization on every page. Keep the
+  // legacy two-language toggle only for older markup that has no shared selector.
+  if (languageButton && !document.querySelector('[data-noor-language-select]')) {
+    languageButton.addEventListener('click', () => setLanguage(language === 'en' ? 'ar' : 'en'));
+  }
   try {
-    if (localStorage.getItem('noor-language') === 'ar') setLanguage('ar');
+    if (!document.querySelector('[data-noor-language-select]') && localStorage.getItem('noor-language') === 'ar') setLanguage('ar');
   } catch (_) { /* Default to English when storage is unavailable. */ }
 
   function closeMenu() {
@@ -330,6 +334,16 @@
     document.getElementById('share-facebook').href = facebookUrl.toString();
   }
   updateShareLinks();
+
+  document.addEventListener('noor:languagechange', (event) => {
+    language = event.detail && event.detail.language ? event.detail.language : (document.documentElement.lang || 'en');
+    const t = (value) => window.NOORLocalization ? window.NOORLocalization.translate(value, language) : value;
+    if (menuButton) menuButton.setAttribute('aria-label', t(nav.classList.contains('is-open') ? 'Close navigation' : 'Open navigation'));
+    if (pauseButton) pauseButton.setAttribute('aria-label', t(paused ? 'Play slideshow' : 'Pause slideshow'));
+    Array.from(dotsContainer.children).forEach((dot, index) => dot.setAttribute('aria-label', t('Show image') + ' ' + (index + 1));
+    if (copyButton) copyButton.textContent = t('Copy page link');
+    updateShareLinks();
+  });
 
   async function copyPageLink() {
     const currentUrl = getShareableUrl();
