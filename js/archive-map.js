@@ -32,10 +32,10 @@
   const WORLD_W = 2200;
   const WORLD_H = 1600;
   const CENTER = { x: 1100, y: 800 };
-  const HUB_RADIUS = 285;
+  const HUB_RADIUS = 330;
   const RECORD_W = 226;
   const RECORD_H = 100;
-  const HUB_W = 190;
+  const HUB_W = 170;
   const HUB_H = 70;
   const MIN_ZOOM = 0.28;
   const MAX_ZOOM = 2.8;
@@ -250,7 +250,7 @@
     });
     g.appendChild(svgEl('rect', { x: 0, y: 0, width: HUB_W, height: HUB_H, rx: 3, class: 'archive-network-topic-card' }));
     g.appendChild(svgEl('circle', { cx: 14, cy: 16, r: 3, class: 'archive-network-topic-dot' }));
-    const lines = wrapWords(hub.label.toUpperCase(), 23, 2);
+    const lines = wrapWords(hub.label.toUpperCase(), 18, 2;
     lines.forEach((line, i) => appendText(g, 26, 19 + i * 14, line, 'archive-network-topic-title'));
     appendText(g, 13, HUB_H - 12, 'TOPIC NODE / ' + String(hub.count).padStart(2, '0') + ' RECORD' + (hub.count === 1 ? '' : 'S'), 'archive-network-node-meta');
     hub.node = g;
