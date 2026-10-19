@@ -50,6 +50,9 @@
     ['Back to the beginning ↑','Retour au début ↑','Volver al principio ↑','Voltar ao início ↑','Zurück zum Anfang ↑'],
     ['Pass it on','Faites suivre','Compártelo','Partilha','Weitergeben'],
     ['Copy page link','Copier le lien de la page','Copiar enlace de la página','Copiar ligação da página','Seitenlink kopieren'],
+    ['Choose language','Choisir la langue','Elegir idioma','Escolher idioma','Sprache auswählen'],
+    ['Switch language to Arabic','Passer en arabe','Cambiar al árabe','Mudar para árabe','Zu Arabisch wechseln'],
+    ['Switch language to English','Passer en anglais','Cambiar al inglés','Mudar para inglês','Zu Englisch wechseln'],
     ['A light in the darkness, a hand reaching out to children.','Une lumière dans l’obscurité, une main tendue aux enfants.','Una luz en la oscuridad, una mano tendida a los niños.','Uma luz na escuridão, uma mão estendida às crianças.','Ein Licht in der Dunkelheit, eine ausgestreckte Hand für Kinder.'],
     ['Official information ↗','Informations officielles ↗','Información oficial ↗','Informações oficiais ↗','Offizielle Informationen ↗'],
     ['FIELD NOTES / 001','NOTES DE TERRAIN / 001','NOTAS DE CAMPO / 001','NOTAS DE CAMPO / 001','FELDNOTIZEN / 001'],
@@ -213,10 +216,35 @@
       if (target) element.textContent = target;
     });
 
+    // Translate ordinary UI attributes from their original English value while
+    // keeping that source stable across repeated language changes.
+    const attributeMap = [
+      ['aria-label', 'data-i18n-original-aria-label'],
+      ['placeholder', 'data-i18n-original-placeholder'],
+      ['title', 'data-i18n-original-title'],
+      ['alt', 'data-i18n-original-alt']
+    ];
+    attributeMap.forEach(([attribute, originalAttribute]) => {
+      document.querySelectorAll('[' + attribute + ']').forEach((element) => {
+        const explicitEnglish = element.getAttribute('data-en-' + attribute);
+        if (!element.hasAttribute(originalAttribute)) {
+          element.setAttribute(originalAttribute, explicitEnglish != null ? explicitEnglish : element.getAttribute(attribute));
+        }
+        const original = element.getAttribute(originalAttribute) || '';
+        const translated = language === 'en' ? original : (element.getAttribute('data-' + language + '-' + attribute) || lookup(original, language) || original);
+        element.setAttribute(attribute, translated);
+      });
+    });
+
     document.querySelectorAll('[data-en-content]').forEach((element) => {
       const english = element.getAttribute('data-en-content') || '';
       const target = language === 'en' ? english : (element.getAttribute('data-' + language + '-content') || lookup(english, language) || english);
       element.setAttribute('content', target);
+    });
+    document.querySelectorAll('meta[name="description"],meta[property="og:description"],meta[name="twitter:description"]').forEach((element) => {
+      if (!element.hasAttribute('data-i18n-original-content')) element.setAttribute('data-i18n-original-content', element.getAttribute('content') || '');
+      const original = element.getAttribute('data-i18n-original-content') || '';
+      element.setAttribute('content', language === 'en' ? original : (lookup(original, language) || original));
     });
 
     const titleText = titles[language][pageTitleIndex()];
