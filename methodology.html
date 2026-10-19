@@ -18,6 +18,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Cairo:wght@400;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/research.css">
   <script src="js/research.js" defer></script>
+  <link rel="stylesheet" href="css/i18n.css">
+  <script src="js/i18n-content.js" defer></script>
+  <script src="js/i18n.js" defer></script>
 </head>
 <body class="research-methodology-body">
   <a class="research-skip" href="#methodology-main" data-en="Skip to methodology" data-ar="انتقل إلى المنهجية">Skip to methodology</a>
@@ -26,7 +29,7 @@
       <a class="research-wordmark" href="index.html" aria-label="NOOR home"><span class="research-mark" aria-hidden="true">N</span><span>NOOR</span></a>
       <div class="research-header-actions">
         <span class="research-header-label" data-en="RESEARCH DESK / 003" data-ar="مكتب البحث / 003">RESEARCH DESK / 003</span>
-        <button class="research-language" id="methodology-language" type="button" aria-label="Switch language to Arabic" data-en="العربية" data-ar="English">العربية</button>
+        <label class="noor-language-wrap"><span class="noor-sr-only">Choose language</span><select class="noor-language-select" id="noor-language-select" data-noor-language-select data-en-aria="Choose language" data-ar-aria="اختر اللغة" data-fr-aria="Choisir la langue" data-es-aria="Elegir idioma" data-pt-aria="Selecionar idioma" data-de-aria="Sprache wählen" aria-label="Choose language"><option value="en">English</option><option value="ar">العربية</option><option value="fr">Français</option><option value="es">Español</option><option value="pt">Português</option><option value="de">Deutsch</option></select></label>
       </div>
     </header>
     <nav class="research-nav" aria-label="Evidence project navigation" data-en-aria="Evidence project navigation" data-ar-aria="التنقّل في مشروع الأدلة">
