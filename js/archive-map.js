@@ -298,15 +298,15 @@
     const g = svgEl('g', {
       class: 'archive-network-node archive-network-node-center',
       'data-node-id': 'archive-root',
-      role: 'button', tabindex: '0', 'aria-label': 'NOOR central evidence archive'
+      role: 'button', tabindex: '0', 'aria-label': mapCopy('centralAria')
     });
     g.appendChild(svgEl('circle', { cx: CENTER.x, cy: CENTER.y, r: 84, class: 'archive-network-center-glow' }));
     g.appendChild(svgEl('circle', { cx: CENTER.x, cy: CENTER.y, r: 75, class: 'archive-network-center-ring' }));
     g.appendChild(svgEl('circle', { cx: CENTER.x, cy: CENTER.y, r: 66, class: 'archive-network-center-inner' }));
     g.appendChild(svgEl('path', { d: 'M ' + (CENTER.x - 38) + ' ' + (CENTER.y - 35) + ' h 76', class: 'archive-network-center-rule' }));
     appendText(g, CENTER.x, CENTER.y - 12, 'NOOR', 'archive-network-center-title', { 'text-anchor': 'middle' });
-    appendText(g, CENTER.x, CENTER.y + 10, 'EVIDENCE MAP', 'archive-network-center-label', { 'text-anchor': 'middle' });
-    appendText(g, CENTER.x, CENTER.y + 35, records.length + ' SOURCE RECORDS', 'archive-network-center-count', { 'text-anchor': 'middle' });
+    appendText(g, CENTER.x, CENTER.y + 10, mapCopy('evidenceMap'), 'archive-network-center-label', { 'text-anchor': 'middle', direction: isRtl() ? 'rtl' : 'ltr', 'unicode-bidi': 'plaintext' });
+    appendText(g, CENTER.x, CENTER.y + 35, records.length + ' ' + mapCopy('sourceRecords'), 'archive-network-center-count', { 'text-anchor': 'middle', direction: isRtl() ? 'rtl' : 'ltr', 'unicode-bidi': 'plaintext' });
     return g;
   }
 
@@ -315,13 +315,20 @@
       class: 'archive-network-node archive-network-node-topic',
       transform: 'translate(' + (hub.x - HUB_W / 2) + ' ' + (hub.y - HUB_H / 2) + ')',
       'data-node-id': hub.id, 'data-node-type': 'topic', 'data-topic': hub.key,
-      role: 'button', tabindex: '0', 'aria-pressed': 'false', 'aria-label': hub.label + ' topic hub'
+      role: 'button', tabindex: '0', 'aria-pressed': 'false', 'aria-label': hub.label + ' ' + mapCopy('topicAria')
     });
     g.appendChild(svgEl('rect', { x: 0, y: 0, width: HUB_W, height: HUB_H, rx: 3, class: 'archive-network-topic-card' }));
-    g.appendChild(svgEl('circle', { cx: 14, cy: 16, r: 3, class: 'archive-network-topic-dot' }));
-    const lines = wrapWords(hub.label.toUpperCase(), 18, 2);
-    lines.forEach((line, i) => appendText(g, 26, 19 + i * 14, line, 'archive-network-topic-title'));
-    appendText(g, 13, HUB_H - 12, 'TOPIC NODE / ' + String(hub.count).padStart(2, '0') + ' RECORD' + (hub.count === 1 ? '' : 'S'), 'archive-network-node-meta');
+    g.appendChild(svgEl('circle', { cx: isRtl() ? HUB_W - 14 : 14, cy: 16, r: 3, class: 'archive-network-topic-dot' }));
+    const titleMax = isRtl() ? 17 : (['fr', 'es', 'pt', 'de'].includes(getLang()) ? 18 : 20);
+    const titleLines = wrapWords(hub.label.toLocaleUpperCase(getLang()), titleMax, 2);
+    titleLines.forEach((line, i) => appendText(g, isRtl() ? HUB_W - 12 : 26, 19 + i * 14, line, 'archive-network-topic-title', {
+      'text-anchor': isRtl() ? 'end' : 'start',
+      direction: isRtl() ? 'rtl' : 'ltr',
+      'unicode-bidi': 'plaintext'
+    }));
+    appendText(g, isRtl() ? HUB_W - 12 : 13, HUB_H - 12,
+      mapCopy('topicNode') + ' / ' + String(hub.count).padStart(2, '0') + ' ' + (hub.count === 1 ? mapCopy('record') : mapCopy('records')),
+      'archive-network-node-meta', { 'text-anchor': isRtl() ? 'end' : 'start', direction: isRtl() ? 'rtl' : 'ltr', 'unicode-bidi': 'plaintext' });
     hub.node = g;
     return g;
   }
@@ -334,15 +341,31 @@
       transform: 'translate(' + (record.x - RECORD_W / 2) + ' ' + (record.y - RECORD_H / 2) + ')',
       'data-node-id': record.key, 'data-node-type': 'record', 'data-topic': record.category,
       role: 'button', tabindex: '0', 'aria-pressed': 'false',
-      'aria-label': record.title
+      'aria-label': record.title + ' — ' + mapCopy('sourceRecord'),
+      lang: getLang(), direction: isRtl() ? 'rtl' : 'ltr'
     });
     g.appendChild(svgEl('rect', { x: 0, y: 0, width: RECORD_W, height: RECORD_H, rx: 2, class: 'archive-network-record-card' }));
-    g.appendChild(svgEl('rect', { x: 0, y: 0, width: 4, height: RECORD_H, class: 'archive-network-record-stripe' }));
-    appendText(g, 12, 16, 'SOURCE RECORD / ' + String(record.index).padStart(3, '0'), 'archive-network-record-id');
-    const lines = wrapWords(record.title, 29, 2);
-    lines.forEach((line, i) => appendText(g, 12, 38 + i * 14, line, 'archive-network-record-title'));
-    const dateLabel = record.start ? record.start.slice(0, 4) + (record.end && record.end.slice(0, 4) !== record.start.slice(0, 4) ? '–' + record.end.slice(0, 4) : '') : 'DATE NOT LISTED';
-    appendText(g, 12, RECORD_H - 8, dateLabel + '  /  ' + record.status.toUpperCase().replace(/-/g, ' ').slice(0, 20), 'archive-network-node-meta');
+    g.appendChild(svgEl('rect', { x: isRtl() ? RECORD_W - 4 : 0, y: 0, width: 4, height: RECORD_H, class: 'archive-network-record-stripe' }));
+    appendText(g, isRtl() ? RECORD_W - 12 : 12, 16, mapCopy('sourceRecord') + ' / ' + String(record.index).padStart(3, '0'), 'archive-network-record-id', {
+      'text-anchor': isRtl() ? 'end' : 'start', direction: 'ltr', 'unicode-bidi': 'plaintext'
+    });
+    const titleMax = isRtl() ? 18 : (['fr', 'es', 'pt', 'de'].includes(getLang()) ? 25 : 28);
+    const titleLines = wrapWords(record.title, titleMax, 3);
+    titleLines.forEach((line, i) => appendText(g, isRtl() ? RECORD_W - 12 : 12, 37 + i * 13, line, 'archive-network-record-title', {
+      'text-anchor': isRtl() ? 'end' : 'start',
+      direction: isRtl() ? 'rtl' : 'ltr',
+      'unicode-bidi': 'plaintext',
+      lang: getLang()
+    }));
+    const dateLabel = record.start ? record.start.slice(0, 4) + (record.end && record.end.slice(0, 4) !== record.start.slice(0, 4) ? '–' + record.end.slice(0, 4) : '') : mapCopy('dateNotListed');
+    const statusText = record.status ? translateValue(record.status.toUpperCase().replace(/-/g, ' ')).slice(0, 22) : '';
+    appendText(g, isRtl() ? RECORD_W - 12 : 12, RECORD_H - 8,
+      dateLabel + (statusText ? '  /  ' + statusText : ''),
+      'archive-network-node-meta', {
+        'text-anchor': isRtl() ? 'end' : 'start',
+        direction: isRtl() ? 'rtl' : 'ltr',
+        'unicode-bidi': 'plaintext'
+      });
     record.node = g;
     return g;
   }
