@@ -160,6 +160,99 @@
 
   setupResponseCounters();
 
+  const WARNING_COPY = {
+    en: {
+      metadata: 'NOOR // SENSITIVE CONTENT NOTICE // 001', title: 'CONTENT WARNING',
+      subhead: 'SENSITIVE MATERIAL AHEAD // READER DISCRETION ADVISED',
+      lineOne: 'This experience discusses the war in Gaza, death, family loss or separation, displacement, injuries, and severe humanitarian conditions.',
+      lineTwo: 'Some linked reports or personal accounts may refer to blood or other distressing details. Stories or images in related sources may be difficult to read or view.',
+      lineThree: 'The material is sourced to inform and bear witness, not to shock. Continue only if you feel ready; you can pause or leave at any time.',
+      note: 'TAKE YOUR TIME. YOUR WELL-BEING MATTERS MORE THAN CONTINUING.',
+      continue: 'CONTINUE TO THE STORIES', back: 'RETURN TO NOOR',
+      confirmation: 'I have read this warning and choose to continue to the stories.',
+      footer: 'FIELD NOTES 001 // DOCUMENTED SOURCES // NO AUTO-PLAY AUDIO',
+      bootMeta: 'FIELD ARCHIVE / TERMINAL 001', bootIntro: 'OPENING THE HUMANITARIAN FIELD ARCHIVE',
+      bootCopy: ['> NOOR // FIELD NOTES SESSION','> INDEX: WAR / LOSS / DISPLACEMENT','> SOURCES: REPORTS AND TESTIMONIES','> CONTENT NOTICE: SENSITIVE MATERIAL','> NEXT STEP: READER ACKNOWLEDGEMENT'],
+      bootStatus: 'AWAITING READER ACKNOWLEDGEMENT',
+      exitIndex: 'NOOR // FIELD NOTES 001', exitMessage: 'LOOK BEYOND THE HEADLINE'
+    },
+    ar: {
+      metadata: 'نور // تنبيه محتوى حساس // 001', title: 'تحذير من محتوى حساس',
+      subhead: 'قد تكون المواد التالية مؤلمة أو مزعجة',
+      lineOne: 'تتناول هذه التجربة الحرب في غزة، والوفاة، وفقدان أفراد الأسرة أو الانفصال عنهم، والنزوح، والإصابات، والظروف الإنسانية القاسية.',
+      lineTwo: 'قد تشير بعض التقارير أو الشهادات المرتبطة إلى الدم أو تفاصيل أخرى مؤلمة. وقد تكون القصص أو الصور المرتبطة صعبة المشاهدة أو القراءة.',
+      lineThree: 'المحتوى موثّق ويهدف إلى التوعية، وليس إلى الصدمة. تابع فقط إذا كنت مستعداً، ويمكنك التوقف أو المغادرة في أي وقت.',
+      note: 'خذ وقتك. سلامتك وراحتك أهم من المتابعة.',
+      continue: 'متابعة إلى القصص', back: 'العودة إلى نور',
+      confirmation: 'قرأت التحذير وأختار المتابعة إلى القصص.',
+      footer: 'ملاحظات ميدانية 001 // شهادات ومصادر موثّقة // لا يوجد صوت تلقائي',
+      bootMeta: 'سجل ميداني / محطة 001', bootIntro: 'جارٍ فتح ملف التوعية',
+      bootCopy: ['> نور // جلسة جديدة','> الفهرس: الحرب / الفقد / النزوح','> المصادر: تقارير وشهادات موثّقة','> تنبيه المحتوى: مواد حساسة','> الخطوة التالية: تأكيد القارئ'],
+      bootStatus: 'بانتظار موافقة القارئ',
+      exitIndex: 'نور // ملاحظات ميدانية 001', exitMessage: 'ما وراء العناوين'
+    },
+    fr: {
+      metadata: 'NOOR // AVERTISSEMENT DE CONTENU SENSIBLE // 001', title: 'AVERTISSEMENT DE CONTENU',
+      subhead: 'CONTENU SENSIBLE // À LIRE AVEC PRÉCAUTION',
+      lineOne: 'Cette expérience aborde la guerre à Gaza, la mort, la perte ou la séparation familiale, les déplacements, les blessures et des conditions humanitaires extrêmes.',
+      lineTwo: 'Certains rapports ou témoignages liés peuvent mentionner du sang ou d’autres détails éprouvants. Certaines histoires ou images peuvent être difficiles à lire ou à regarder.',
+      lineThree: 'Ces documents sont sourcés pour informer et témoigner, non pour choquer. Continuez uniquement si vous vous sentez prêt ; vous pouvez faire une pause ou quitter la page à tout moment.',
+      note: 'PRENEZ VOTRE TEMPS. VOTRE BIEN-ÊTRE PASSE AVANT LA SUITE.',
+      continue: 'CONTINUER VERS LES RÉCITS', back: 'RETOURNER À NOOR',
+      confirmation: 'J’ai lu cet avertissement et je choisis de poursuivre vers les récits.',
+      footer: 'NOTES DE TERRAIN 001 // SOURCES DOCUMENTÉES // PAS DE LECTURE AUDIO AUTOMATIQUE',
+      bootMeta: 'ARCHIVE DE TERRAIN / TERMINAL 001', bootIntro: 'OUVERTURE DES ARCHIVES HUMANITAIRES',
+      bootCopy: ['> NOOR // SESSION DE NOTES DE TERRAIN','> INDEX : GUERRE / PERTE / DÉPLACEMENT','> SOURCES : RAPPORTS ET TÉMOIGNAGES','> AVERTISSEMENT : CONTENU SENSIBLE','> ÉTAPE SUIVANTE : ACCORD DU LECTEUR'],
+      bootStatus: 'EN ATTENTE DE VOTRE ACCORD',
+      exitIndex: 'NOOR // NOTES DE TERRAIN 001', exitMessage: 'AU-DELÀ DES GROS TITRES'
+    },
+    es: {
+      metadata: 'NOOR // AVISO DE CONTENIDO SENSIBLE // 001', title: 'AVISO DE CONTENIDO',
+      subhead: 'CONTENIDO SENSIBLE // SE RECOMIENDA PRUDENCIA',
+      lineOne: 'Esta experiencia aborda la guerra en Gaza, la muerte, la pérdida o separación familiar, el desplazamiento, las lesiones y las graves condiciones humanitarias.',
+      lineTwo: 'Algunos informes o testimonios enlazados pueden mencionar sangre u otros detalles angustiosos. Algunas historias o imágenes pueden ser difíciles de leer o ver.',
+      lineThree: 'El material está documentado para informar y dar testimonio, no para causar impacto. Continúa solo si te sientes preparado; puedes hacer una pausa o salir en cualquier momento.',
+      note: 'TÓMATE TU TIEMPO. TU BIENESTAR ES MÁS IMPORTANTE QUE CONTINUAR.',
+      continue: 'CONTINUAR A LOS RELATOS', back: 'VOLVER A NOOR',
+      confirmation: 'He leído este aviso y elijo continuar a los relatos.',
+      footer: 'NOTAS DE CAMPO 001 // FUENTES DOCUMENTADAS // SIN AUDIO AUTOMÁTICO',
+      bootMeta: 'ARCHIVO DE CAMPO / TERMINAL 001', bootIntro: 'ABRIENDO EL ARCHIVO HUMANITARIO',
+      bootCopy: ['> NOOR // SESIÓN DE NOTAS DE CAMPO','> ÍNDICE: GUERRA / PÉRDIDA / DESPLAZAMIENTO','> FUENTES: INFORMES Y TESTIMONIOS','> AVISO: MATERIAL SENSIBLE','> SIGUIENTE PASO: CONFIRMACIÓN DEL LECTOR'],
+      bootStatus: 'A LA ESPERA DE LA CONFIRMACIÓN',
+      exitIndex: 'NOOR // NOTAS DE CAMPO 001', exitMessage: 'MÁS ALLÁ DE LOS TITULARES'
+    },
+    pt: {
+      metadata: 'NOOR // AVISO DE CONTEÚDO SENSÍVEL // 001', title: 'AVISO DE CONTEÚDO',
+      subhead: 'CONTEÚDO SENSÍVEL // RECOMENDA-SE PRUDÊNCIA',
+      lineOne: 'Esta experiência aborda a guerra em Gaza, a morte, a perda ou separação familiar, a deslocação, os ferimentos e condições humanitárias graves.',
+      lineTwo: 'Alguns relatórios ou testemunhos ligados podem mencionar sangue ou outros detalhes perturbadores. Algumas histórias ou imagens podem ser difíceis de ler ou ver.',
+      lineThree: 'O material é documentado para informar e testemunhar, não para chocar. Continue apenas se se sentir preparado; pode fazer uma pausa ou sair a qualquer momento.',
+      note: 'LEVE O TEMPO QUE PRECISAR. O SEU BEM-ESTAR É MAIS IMPORTANTE.',
+      continue: 'CONTINUAR PARA OS RELATOS', back: 'VOLTAR À NOOR',
+      confirmation: 'Li este aviso e escolho continuar para os relatos.',
+      footer: 'NOTAS DE CAMPO 001 // FONTES DOCUMENTADAS // SEM ÁUDIO AUTOMÁTICO',
+      bootMeta: 'ARQUIVO DE CAMPO / TERMINAL 001', bootIntro: 'A ABRIR O ARQUIVO HUMANITÁRIO',
+      bootCopy: ['> NOOR // SESSÃO DE NOTAS DE CAMPO','> ÍNDICE: GUERRA / PERDA / DESLOCAÇÃO','> FONTES: RELATÓRIOS E TESTEMUNHOS','> AVISO: MATERIAL SENSÍVEL','> PRÓXIMO PASSO: CONFIRMAÇÃO DO LEITOR'],
+      bootStatus: 'À ESPERA DA CONFIRMAÇÃO',
+      exitIndex: 'NOOR // NOTAS DE CAMPO 001', exitMessage: 'PARA ALÉM DAS MANCHETES'
+    },
+    de: {
+      metadata: 'NOOR // HINWEIS ZU SENSIBLEN INHALTEN // 001', title: 'INHALTSHINWEIS',
+      subhead: 'SENSIBLES MATERIAL // BITTE MIT BEDACHT FORTFAHREN',
+      lineOne: 'Diese Seite behandelt den Krieg in Gaza, Tod, Verlust oder Trennung von Familienangehörigen, Vertreibung, Verletzungen und schwere humanitäre Bedingungen.',
+      lineTwo: 'Einige verlinkte Berichte oder persönliche Zeugnisse können Blut oder andere belastende Details erwähnen. Bestimmte Geschichten oder Bilder können schwer zu lesen oder anzusehen sein.',
+      lineThree: 'Das Material ist dokumentiert, um zu informieren und Zeugnis abzulegen, nicht um zu schockieren. Fahren Sie nur fort, wenn Sie sich dazu bereit fühlen; Sie können jederzeit pausieren oder die Seite verlassen.',
+      note: 'LASSEN SIE SICH ZEIT. IHR WOHLBEFINDEN IST WICHTIGER ALS DAS WEITERLESEN.',
+      continue: 'ZU DEN BERICHTEN WEITER', back: 'ZURÜCK ZU NOOR',
+      confirmation: 'Ich habe diesen Hinweis gelesen und möchte zu den Berichten weitergehen.',
+      footer: 'FELDNOTIZEN 001 // DOKUMENTIERTE QUELLEN // KEINE AUTOMATISCHE AUDIOWIEDERGABE',
+      bootMeta: 'FELDARCHIV / TERMINAL 001', bootIntro: 'HUMANITÄRES FELDARCHIV WIRD GEÖFFNET',
+      bootCopy: ['> NOOR // FELDNOTIZEN-SITZUNG','> INDEX: KRIEG / VERLUST / VERTREIBUNG','> QUELLEN: BERICHTE UND ZEUGNISSE','> HINWEIS: SENSIBLES MATERIAL','> NÄCHSTER SCHRITT: BESTÄTIGUNG'],
+      bootStatus: 'WARTET AUF IHRE BESTÄTIGUNG',
+      exitIndex: 'NOOR // FELDNOTIZEN 001', exitMessage: 'HINTER DIE SCHLAGZEILEN BLICKEN'
+    }
+  };
+
   function localized(source, fallback) {
     if (window.NOORLocalization && typeof window.NOORLocalization.translate === 'function') {
       return window.NOORLocalization.translate(source, language);
@@ -408,7 +501,7 @@
       thresholdTransitionActive = true;
 
       const destination = thresholdLink.href;
-      const isArabic = language === 'ar';
+      const warningCopy = WARNING_COPY[language] || WARNING_COPY.en;
       const overlay = document.createElement('div');
       overlay.className = 'noor-warning-screen';
       overlay.setAttribute('role', 'dialog');
@@ -416,8 +509,8 @@
       overlay.setAttribute('tabindex', '-1');
       overlay.setAttribute('aria-labelledby', 'noor-warning-title');
       overlay.setAttribute('aria-describedby', 'noor-warning-copy');
-      overlay.setAttribute('lang', isArabic ? 'ar' : 'en');
-      overlay.setAttribute('dir', isArabic ? 'rtl' : 'ltr');
+      overlay.setAttribute('lang', language);
+      overlay.setAttribute('dir', language === 'ar' ? 'rtl' : 'ltr');
 
       const frame = document.createElement('section');
       frame.className = 'noor-warning-screen__frame';
@@ -429,17 +522,17 @@
       signal.className = 'noor-warning-screen__signal';
       const metadata = document.createElement('span');
       metadata.className = 'noor-warning-screen__meta';
-      metadata.textContent = isArabic ? 'نور // تنبيه محتوى حساس // 001' : 'NOOR // SENSITIVE CONTENT NOTICE // 001';
+      metadata.textContent = warningCopy.metadata;
       signalRow.append(signal, metadata);
 
       const title = document.createElement('h2');
       title.className = 'noor-warning-screen__title';
       title.id = 'noor-warning-title';
-      title.textContent = isArabic ? 'تحذير من محتوى حساس' : 'CONTENT WARNING';
+      title.textContent = warningCopy.title;
 
       const subhead = document.createElement('p');
       subhead.className = 'noor-warning-screen__subhead';
-      subhead.textContent = isArabic ? 'قد تكون المواد التالية مؤلمة أو مزعجة' : 'SENSITIVE MATERIAL AHEAD // READER DISCRETION ADVISED';
+      subhead.textContent = warningCopy.subhead;
 
       const copy = document.createElement('div');
       copy.className = 'noor-warning-screen__copy';
@@ -447,27 +540,19 @@
 
       const lineOne = document.createElement('p');
       lineOne.className = 'noor-warning-screen__lead';
-      lineOne.textContent = isArabic
-        ? 'تتناول هذه التجربة الحرب في غزة، والوفاة، وفقدان أفراد الأسرة أو الانفصال عنهم، والنزوح، والإصابات، والظروف الإنسانية القاسية.'
-        : 'This experience discusses the war in Gaza, death, family loss or separation, displacement, injuries, and severe humanitarian conditions.';
+      lineOne.textContent = warningCopy.lineOne;
 
       const lineTwo = document.createElement('p');
-      lineTwo.textContent = isArabic
-        ? 'قد تشير بعض التقارير أو الشهادات المرتبطة إلى الدم أو تفاصيل أخرى مؤلمة. قد تكون القصص أو الصور المرتبطة صعبة المشاهدة أو القراءة.'
-        : 'Some linked reports or personal accounts may refer to blood or other distressing details. Stories or images in related sources may be difficult to read or view.';
+      lineTwo.textContent = warningCopy.lineTwo;
 
       const lineThree = document.createElement('p');
-      lineThree.textContent = isArabic
-        ? 'المحتوى موثّق ويهدف إلى التوعية، وليس إلى الصدمة. تابع فقط إذا كنت مستعداً، ويمكنك التوقف أو المغادرة في أي وقت.'
-        : 'The material is sourced to inform and bear witness, not to shock. Continue only if you feel ready; you can pause or leave at any time.';
+      lineThree.textContent = warningCopy.lineThree;
 
       copy.append(lineOne, lineTwo, lineThree);
 
       const note = document.createElement('p');
       note.className = 'noor-warning-screen__note';
-      note.textContent = isArabic
-        ? 'خذ وقتك. سلامتك وراحتك أهم من المتابعة.'
-        : 'TAKE YOUR TIME. YOUR WELL-BEING MATTERS MORE THAN CONTINUING.';
+      note.textContent = warningCopy.note;
 
       const actions = document.createElement('div');
       actions.className = 'noor-warning-screen__actions';
@@ -475,11 +560,11 @@
       continueButton.type = 'button';
       continueButton.className = 'noor-warning-screen__continue';
       continueButton.disabled = true;
-      continueButton.textContent = isArabic ? 'متابعة إلى القصص' : 'CONTINUE TO THE STORIES';
+      continueButton.textContent = warningCopy.continue;
       const returnButton = document.createElement('button');
       returnButton.type = 'button';
       returnButton.className = 'noor-warning-screen__return';
-      returnButton.textContent = isArabic ? 'العودة إلى نور' : 'RETURN TO NOOR';
+      returnButton.textContent = warningCopy.back;
       actions.append(continueButton, returnButton);
 
       const confirmation = document.createElement('div');
@@ -490,14 +575,12 @@
       acknowledgement.className = 'noor-warning-screen__checkbox';
       const confirmationLabel = document.createElement('label');
       confirmationLabel.htmlFor = acknowledgement.id;
-      confirmationLabel.textContent = isArabic
-        ? 'قرأت التحذير وأختار المتابعة إلى القصص.'
-        : 'I have read this warning and choose to continue to the stories.';
+      confirmationLabel.textContent = warningCopy.confirmation;
       confirmation.append(acknowledgement, confirmationLabel);
 
       const footer = document.createElement('div');
       footer.className = 'noor-warning-screen__footer';
-      footer.textContent = isArabic ? 'ملاحظات ميدانية 001 // شهادات ومصادر موثّقة // لا يوجد صوت تلقائي' : 'FIELD NOTES 001 // DOCUMENTED SOURCES // NO AUTO-PLAY AUDIO';
+      footer.textContent = warningCopy.footer;
 
       // This terminal sequence is a visual introduction to the warning, not a visitor scan.
       const bootPanel = document.createElement('div');
@@ -510,30 +593,16 @@
       bootMark.textContent = 'NOOR';
       const bootMeta = document.createElement('span');
       bootMeta.className = 'noor-warning-screen__boot-meta';
-      bootMeta.textContent = isArabic ? 'سجل ميداني / محطة 001' : 'FIELD ARCHIVE / TERMINAL 001';
+      bootMeta.textContent = warningCopy.bootMeta;
       bootHeader.append(bootMark, bootMeta);
 
       const bootIntro = document.createElement('p');
       bootIntro.className = 'noor-warning-screen__boot-intro';
-      bootIntro.textContent = isArabic ? 'جارٍ فتح ملف التوعية' : 'OPENING THE HUMANITARIAN FIELD ARCHIVE';
+      bootIntro.textContent = warningCopy.bootIntro;
 
       const bootTerminal = document.createElement('div');
       bootTerminal.className = 'noor-warning-screen__boot-terminal';
-      const bootCopy = isArabic
-        ? [
-            '> نور // جلسة جديدة',
-            '> الفهرس: الحرب / الفقد / النزوح',
-            '> المصادر: تقارير وشهادات موثّقة',
-            '> تنبيه المحتوى: مواد حساسة',
-            '> الخطوة التالية: تأكيد القارئ'
-          ]
-        : [
-            '> NOOR // FIELD NOTES SESSION',
-            '> INDEX: WAR / LOSS / DISPLACEMENT',
-            '> SOURCES: REPORTS AND TESTIMONIES',
-            '> CONTENT NOTICE: SENSITIVE MATERIAL',
-            '> NEXT STEP: READER ACKNOWLEDGEMENT'
-          ];
+      const bootCopy = warningCopy.bootCopy;
       const bootRows = bootCopy.map((line, index) => {
         const row = document.createElement('p');
         row.className = 'noor-warning-screen__boot-line';
@@ -550,7 +619,7 @@
       bootProgress.appendChild(bootProgressFill);
       const bootStatus = document.createElement('p');
       bootStatus.className = 'noor-warning-screen__boot-status';
-      bootStatus.textContent = isArabic ? 'بانتظار موافقة القارئ' : 'AWAITING READER ACKNOWLEDGEMENT';
+      bootStatus.textContent = warningCopy.bootStatus;
       bootPanel.append(bootHeader, bootIntro, bootTerminal, bootProgress, bootStatus);
 
       frame.append(signalRow, title, subhead, copy, note, confirmation, actions, footer);
@@ -679,10 +748,10 @@
         label.className = 'noor-pixel-exit__label';
         const indexLabel = document.createElement('p');
         indexLabel.className = 'noor-pixel-exit__index';
-        indexLabel.textContent = isArabic ? 'نور // ملاحظات ميدانية 001' : 'NOOR // FIELD NOTES 001';
+        indexLabel.textContent = warningCopy.exitIndex;
         const message = document.createElement('p');
         message.className = 'noor-pixel-exit__message';
-        message.textContent = isArabic ? 'ما وراء العناوين' : 'LOOK BEYOND THE HEADLINE';
+        message.textContent = warningCopy.exitMessage;
         label.append(indexLabel, message);
 
         pixelOverlay.append(grid, label);
