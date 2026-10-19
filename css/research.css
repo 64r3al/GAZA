@@ -603,3 +603,10 @@
  .archive-network-record-title{font-size:12px}
  .archive-network-topic-title{font-size:13.5px}
 }
+
+/* Localized SVG labels: enough room for Arabic ligatures and mixed RTL/LTR metadata. */
+.archive-network-record-title{font-size:12.5px;letter-spacing:0;paint-order:stroke}
+.archive-network-topic-title{font-size:13.5px;letter-spacing:0}
+[dir="rtl"] .archive-network-record-title,[dir="rtl"] .archive-network-topic-title{font-family:"Cairo","Noto Sans Arabic",Tahoma,sans-serif;font-weight:700;letter-spacing:0}
+[dir="rtl"] .archive-network-node-meta,[dir="rtl"] .archive-network-record-id{font-family:"DM Sans","Courier New",monospace;letter-spacing:.2px}
+@media(max-width:760px){.archive-network-record-title{font-size:12px}.archive-network-topic-title{font-size:13px}}
