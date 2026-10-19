@@ -59,9 +59,8 @@
   }
 
   function translatedValue(element, english, locale, attribute) {
-    const explicit = element.getAttribute('data-' + locale + '-' + attribute);
+    const explicit = element.getAttribute(attribute === 'text' ? 'data-' + locale : 'data-' + locale + '-' + attribute);
     if (explicit) return explicit;
-    const isEnglish = element.getAttribute('data-' + attribute);
     if (locale === 'en') return english;
     // A legacy Arabic-only value should never be used as French, Spanish,
     // Portuguese or German; each locale gets its own entry or dictionary lookup.
@@ -114,6 +113,14 @@
           (language === 'en' ? english : translate(english, language));
         element.setAttribute(attribute, value);
       });
+    });
+
+    // Existing pages use data-en-aria/data-ar-aria for accessible labels.
+    document.querySelectorAll('[data-en-aria]').forEach((element) => {
+      const english = element.getAttribute('data-en-aria') || '';
+      const value = element.getAttribute('data-' + language + '-aria') ||
+        (language === 'en' ? english : translate(english, language));
+      element.setAttribute('aria-label', value);
     });
 
     // Translate exact dictionary matches for unannotated leaf copy; keep unknown
