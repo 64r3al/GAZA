@@ -452,8 +452,13 @@ else:
     ):
         if map_marker not in archive_html:
             errors.append(f"interactive archive map is missing its required control or region: {map_marker}")
+    if 'src="js/archive-map-layout.js" defer' not in archive_html:
+        errors.append("evidence archive must load its collision-free map layout module")
     if 'src="js/archive-map.js" defer' not in archive_html:
         errors.append("evidence archive must load its interactive pan-and-zoom map script")
+    map_layout_path = ROOT / "js" / "archive-map-layout.js"
+    if not map_layout_path.is_file():
+        errors.append("missing collision-free archive map layout module: js/archive-map-layout.js")
     map_script_path = ROOT / "js" / "archive-map.js"
     if not map_script_path.is_file():
         errors.append("missing interactive archive map script: js/archive-map.js")
