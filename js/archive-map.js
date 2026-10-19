@@ -241,6 +241,19 @@
   let allNodes = [];
   let mapInitialized = false;
 
+  function translateStatus(status) {
+    const map = {
+      en: { 'reported-figures': 'REPORTED FIGURES', humanitarian: 'HUMANITARIAN REPORT', 'un-verified': 'UNVERIFIED', 'ngo-findings': 'NGO FINDINGS', 'independent-analysis': 'INDEPENDENT ANALYSIS', probe: 'INVESTIGATION' },
+      ar: { 'reported-figures': 'أرقام واردة بالتقارير', humanitarian: 'تقرير إنساني', 'un-verified': 'غير متحقق', 'ngo-findings': 'نتائج منظمة حقوقية', 'independent-analysis': 'تحليل مستقل', probe: 'تحقيق' },
+      fr: { 'reported-figures': 'CHIFFRES RAPPORTÉS', humanitarian: 'RAPPORT HUMANITAIRE', 'un-verified': 'NON VÉRIFIÉ', 'ngo-findings': 'CONCLUSIONS D’ONG', 'independent-analysis': 'ANALYSE INDÉPENDANTE', probe: 'ENQUÊTE' },
+      es: { 'reported-figures': 'CIFRAS PUBLICADAS', humanitarian: 'INFORME HUMANITARIO', 'un-verified': 'NO VERIFICADO', 'ngo-findings': 'HALLAZGOS DE ONG', 'independent-analysis': 'ANÁLISIS INDEPENDIENTE', probe: 'INVESTIGACIÓN' },
+      pt: { 'reported-figures': 'NÚMEROS REPORTADOS', humanitarian: 'RELATÓRIO HUMANITÁRIO', 'un-verified': 'NÃO VERIFICADO', 'ngo-findings': 'CONCLUSÕES DE ONG', 'independent-analysis': 'ANÁLISE INDEPENDENTE', probe: 'INVESTIGAÇÃO' },
+      de: { 'reported-figures': 'BERICHTETE ZAHLEN', humanitarian: 'HUMANITÄRER BERICHT', 'un-verified': 'NICHT VERIFIZIERT', 'ngo-findings': 'ERGEBNISSE VON NGOs', 'independent-analysis': 'UNABHÄNGIGE ANALYSE', probe: 'UNTERSUCHUNG' }
+    };
+    const language = getLang();
+    return (map[language] && map[language][status]) || (map.en[status] || String(status || '').replace(/-/g, ' ').toUpperCase());
+  }
+
   function createCenterNode() {
     const g = svgEl('g', {
       class: 'archive-network-node archive-network-node-center',
