@@ -118,7 +118,7 @@
         theta, count: records.filter((r) => r.category === key).length,
         records: [], node: null
       };
-    });
+    }).sort((left, right) => left.theta - right.theta);
   }
 
   function svgEl(name, attrs = {}, textContent = null) {
