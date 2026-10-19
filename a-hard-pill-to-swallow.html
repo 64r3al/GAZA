@@ -37,6 +37,9 @@
   <link rel="stylesheet" href="css/story.css">
   <link rel="stylesheet" href="css/research.css">
   <script src="js/story.js" defer></script>
+  <link rel="stylesheet" href="css/i18n.css">
+  <script src="js/i18n-content.js" defer></script>
+  <script src="js/i18n.js" defer></script>
 </head>
 <body class="story-body">
   <a class="story-skip" href="#story-main" data-en="Skip to story" data-ar="انتقل إلى القصة">Skip to story</a>
@@ -45,7 +48,7 @@
       <a class="story-wordmark" href="index.html" aria-label="NOOR home"><span class="story-mark" aria-hidden="true">N</span><span>NOOR</span></a>
       <div class="story-header-actions">
         <span class="story-header-label" data-en="FIELD NOTES / 001" data-ar="ملاحظات ميدانية / 001">FIELD NOTES / 001</span>
-        <button class="story-language" id="story-language" type="button" aria-label="Switch language to Arabic" data-en="العربية" data-ar="English">العربية</button>
+        <label class="noor-language-wrap"><span class="noor-sr-only">Choose language</span><select class="noor-language-select" id="noor-language-select" data-noor-language-select data-en-aria="Choose language" data-ar-aria="اختر اللغة" data-fr-aria="Choisir la langue" data-es-aria="Elegir idioma" data-pt-aria="Selecionar idioma" data-de-aria="Sprache wählen" aria-label="Choose language"><option value="en">English</option><option value="ar">العربية</option><option value="fr">Français</option><option value="es">Español</option><option value="pt">Português</option><option value="de">Deutsch</option></select></label>
         <a class="story-archive-link" href="evidence-archive.html" data-en="Evidence archive ↗" data-ar="أرشيف الأدلة ↗">Evidence archive ↗</a>
         <a class="story-back" href="index.html" data-en="Back to NOOR ↗" data-ar="العودة إلى نور ↗">Back to NOOR ↗</a>
       </div>
