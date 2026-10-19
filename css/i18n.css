@@ -37,3 +37,46 @@
  :root[dir="rtl"] .archive-network-status{align-items:flex-start}
 }
 @media(prefers-reduced-motion:reduce){.noor-language-select{scroll-behavior:auto}}
+
+
+/* Shared locale behavior: one selector, one source of truth for language and direction. */
+.noor-language-wrap{flex:0 0 auto;position:relative}
+.noor-language-select{width:auto;min-width:118px;max-width:100%;font-family:"DM Sans","Cairo",sans-serif;font-size:11px;line-height:1.45;letter-spacing:0;text-transform:none;white-space:normal}
+.noor-language-select option{background:#101210;color:#f0e9df}
+.site-header .noor-language-select{min-height:40px}
+.story-header .noor-language-select,.archive-header .noor-language-select,.research-header .noor-language-select{min-height:30px}
+.story-header-actions .noor-language-wrap,.archive-header-right .noor-language-wrap,.research-header-actions .noor-language-wrap{margin-inline-start:8px}
+:root[dir="rtl"] .noor-language-wrap{direction:ltr}
+:root[lang="ar"] body,:root[lang="ar"] input,:root[lang="ar"] textarea,:root[lang="ar"] select,:root[lang="ar"] button{font-family:"Cairo","Noto Sans Arabic",Tahoma,sans-serif}
+:root[lang="ar"] .noor-language-select{font-family:"Cairo","Noto Sans Arabic",Tahoma,sans-serif}
+:root[dir="rtl"] .skip,:root[dir="rtl"] .research-skip{direction:rtl}
+:root[dir="rtl"] .archive-network-explorer,:root[dir="rtl"] .research-hero,:root[dir="rtl"] .research-method-content,:root[dir="rtl"] .research-visual-card,:root[dir="rtl"] .research-status-row,:root[dir="rtl"] .research-method-card,:root[dir="rtl"] .research-caution,:root[dir="rtl"] .research-footer{direction:rtl;text-align:start}
+:root[dir="rtl"] .archive-network-heading h1,:root[dir="rtl"] .archive-map-empty-state h2,:root[dir="rtl"] #archive-map-detail-title,:root[dir="rtl"] .research-hero h1,:root[dir="rtl"] .research-method-content h2{font-family:"Cairo","Noto Sans Arabic",Tahoma,sans-serif;font-weight:800;text-transform:none;letter-spacing:0;line-height:1.35}
+:root[dir="rtl"] .archive-network-heading h1{font-size:clamp(36px,4.7vw,64px)}
+:root[dir="rtl"] .archive-network-kicker,:root[dir="rtl"] .archive-network-status,:root[dir="rtl"] .archive-network-legend,:root[dir="rtl"] .archive-network-details-footer{letter-spacing:0}
+:root[dir="rtl"] .archive-network-viewport,:root[dir="rtl"] #archive-network-svg,:root[dir="rtl"] .archive-network-map-grid{direction:ltr}
+:root[dir="rtl"] .archive-network-map-controls,:root[dir="rtl"] .archive-network-scale{direction:ltr}
+:root[dir="rtl"] .archive-network-record-title,:root[dir="rtl"] .archive-network-topic-title{font-family:"Cairo","Noto Sans Arabic",Tahoma,sans-serif;font-weight:700;letter-spacing:0}
+:root[dir="rtl"] .archive-network-record-id,:root[dir="rtl"] .archive-network-node-meta,:root[dir="rtl"] .archive-network-center-label,:root[dir="rtl"] .archive-network-center-count{direction:ltr;unicode-bidi:isolate;text-anchor:start}
+:root[dir="rtl"] .archive-map-detail-meta span,:root[dir="rtl"] .archive-network-total .archive-fact-number{direction:ltr;unicode-bidi:isolate}
+:root[dir="rtl"] .archive-network-hint{text-align:start}
+:root[dir="rtl"] .archive-network-legend>span{flex-direction:row-reverse}
+:root[dir="rtl"] .archive-map-detail-top{direction:rtl}
+:root[dir="rtl"] .archive-map-source-links a{direction:rtl;text-align:right;unicode-bidi:plaintext}
+:root[dir="rtl"] .research-nav-inner{direction:rtl}
+:root[dir="rtl"] .research-nav-label{margin-inline-end:0;margin-inline-start:auto}
+:root[dir="rtl"] .research-nav a{letter-spacing:0;text-transform:none}
+:root[dir="rtl"] .research-hero-meta,:root[dir="rtl"] .research-page-links,:root[dir="rtl"] .research-source-item,:root[dir="rtl"] .research-case-directory-grid{direction:rtl}
+:root[dir="rtl"] .research-eyebrow,:root[dir="rtl"] .research-section-index,:root[dir="rtl"] .research-source-date,:root[dir="rtl"] .research-visual-index,:root[dir="rtl"] .research-visual-type,:root[dir="rtl"] .research-visual-meta{letter-spacing:0}
+:root[dir="rtl"] .research-visual-filters label,:root[dir="rtl"] .research-visual-actions{direction:rtl;text-align:start}
+:root[dir="rtl"] .research-timeline-item{direction:rtl}
+:root[dir="rtl"] .research-page-link{letter-spacing:0}
+:root[dir="rtl"] .archive-network-map-note{direction:rtl;text-align:start}
+:root[dir="rtl"] .archive-network-map-note,:root[dir="rtl"] .research-method-content p,:root[dir="rtl"] .research-hero-deck,:root[dir="rtl"] .research-caution{line-height:1.95}
+@media(max-width:760px){
+ .noor-language-wrap{margin-inline-start:5px}
+ .noor-language-select{min-width:100px;max-width:135px;font-size:10px}
+ .site-header .noor-language-select{min-height:36px}
+ .research-header-actions .noor-language-wrap{margin-inline-start:4px}
+}
+@media(prefers-reduced-motion:reduce){.noor-language-select{scroll-behavior:auto}}
