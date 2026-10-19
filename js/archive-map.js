@@ -32,9 +32,9 @@
   const WORLD_W = 2200;
   const WORLD_H = 1600;
   const CENTER = { x: 1100, y: 800 };
-  const HUB_RADIUS = 320;
-  const RECORD_W = 218;
-  const RECORD_H = 94;
+  const HUB_RADIUS = 285;
+  const RECORD_W = 226;
+  const RECORD_H = 100;
   const HUB_W = 190;
   const HUB_H = 70;
   const MIN_ZOOM = 0.28;
@@ -178,20 +178,115 @@
   }
 
   function recordPosition(record, hub, index, count) {
-    const row = Math.floor(index / 3);
-    const col = index % 3;
-    const offsets = count <= 2 ? (count === 1 ? [0] : [-112, 112]) :
-      (count % 3 === 1 && row === Math.floor(count / 3) ? [-112] : [-236, 0, 236]);
-    const off = offsets[col] == null ? 0 : offsets[col];
-    const radialDistance = 128 + row * 134;
+    // Two-card rows make the topic cluster legible. A collision pass below
+    // then separates any cards whose boxes overlap another cluster or hub.
+    const row = Math.floor(index / 2);
+    const col = index % 2;
+    const rowCount = Math.min(2, count - row * 2);
+    const offset = rowCount === 1 ? 0 : (col === 0 ? -132 : 132);
+    const radialDistance = 150 + row * 126;
     const radialX = Math.cos(hub.theta);
     const radialY = Math.sin(hub.theta);
     const tangentX = -radialY;
     const tangentY = radialX;
     return {
-      x: hub.x + radialX * radialDistance + tangentX * off,
-      y: hub.y + radialY * radialDistance + tangentY * off
+      x: hub.x + radialX * radialDistance + tangentX * offset,
+      y: hub.y + radialY * radialDistance + tangentY * offset
     };
+  }
+
+  function layoutRecordsWithoutCollisions(records, categories) {
+    const targets = new Map(records.map((record) => [record.key, { x: record.x, y: record.y }]));
+    const fixed = [
+      { x: CENTER.x, y: CENTER.y, w: 168, h: 168, key: 'archive-root' },
+      ...categories.map((hub) => ({ x: hub.x, y: hub.y, w: HUB_W, h: HUB_H, key: hub.id }))
+    ];
+    const margin = 20;
+    const halfW = RECORD_W / 2;
+    const halfH = RECORD_H / 2;
+
+    // Deterministic, tethered collision relaxation. Source cards are repelled
+    // from overlapping cards/hubs; a light spring preserves topic clustering.
+    for (let iteration = 0; iteration < 420; iteration += 1) {
+      const tether = iteration < 240 ? 0.018 : 0.006;
+      records.forEach((record) => {
+        const target = targets.get(record.key);
+        record.x += (target.x - record.x) * tether;
+        record.y += (target.y - record.y) * tether;
+      });
+
+      for (let i = 0; i < records.length; i += 1) {
+        const a = records[i];
+        const boxA = { x: a.x, y: a.y, w: RECORD_W, h: RECORD_H };
+        const collideWith = (b, isRecord, j) => {
+          const dx = a.x - b.x;
+          const dy = a.y - b.y;
+          const overlapX = (boxA.w + b.w) / 2 + margin - Math.abs(dx);
+          const overlapY = (boxA.h + b.h) / 2 + margin - Math.abs(dy);
+          if (overlapX <= 0 || overlapY <= 0) return;
+
+          if (overlapX <= overlapY) {
+            const direction = dx === 0 ? ((i + j) % 2 ? 1 : -1) : Math.sign(dx);
+            const push = overlapX + 1;
+            if (isRecord) {
+              a.x += direction * push * 0.51;
+              b.x -= direction * push * 0.49;
+            } else {
+              a.x += direction * push;
+            }
+          } else {
+            const direction = dy === 0 ? ((i + j) % 2 ? 1 : -1) : Math.sign(dy);
+            const push = overlapY + 1;
+            if (isRecord) {
+              a.y += direction * push * 0.51;
+              b.y -= direction * push * 0.49;
+            } else {
+              a.y += direction * push;
+            }
+          }
+        };
+
+        fixed.forEach((item, index) => collideWith(item, false, index + records.length));
+        for (let j = i + 1; j < records.length; j += 1) {
+          const b = records[j];
+          collideWith(b, true, j);
+        }
+      }
+    }
+
+    // One final projection guarantees clear separation after the gentle tether.
+    for (let pass = 0; pass < 30; pass += 1) {
+      let collisions = 0;
+      for (let i = 0; i < records.length; i += 1) {
+        const a = records[i];
+        const resolveAgainst = (b, isRecord, j) => {
+          const overlapX = (RECORD_W + b.w) / 2 + margin - Math.abs(a.x - b.x);
+          const overlapY = (RECORD_H + b.h) / 2 + margin - Math.abs(a.y - b.y);
+          if (overlapX <= 0 || overlapY <= 0) return;
+          collisions += 1;
+          if (overlapX <= overlapY) {
+            const sign = a.x === b.x ? ((i + j) % 2 ? 1 : -1) : Math.sign(a.x - b.x);
+            const shift = overlapX + 2;
+            if (isRecord) {
+              a.x += sign * shift * 0.51;
+              b.x -= sign * shift * 0.49;
+            } else a.x += sign * shift;
+          } else {
+            const sign = a.y === b.y ? ((i + j) % 2 ? 1 : -1) : Math.sign(a.y - b.y);
+            const shift = overlapY + 2;
+            if (isRecord) {
+              a.y += sign * shift * 0.51;
+              b.y -= sign * shift * 0.49;
+            } else a.y += sign * shift;
+          }
+        };
+        fixed.forEach((item, index) => resolveAgainst(item, false, index + records.length));
+        for (let j = i + 1; j < records.length; j += 1) {
+          resolveAgainst(records[j], true, j);
+        }
+      }
+      if (collisions === 0) break;
+    }
   }
 
   let records = readRecords();
@@ -274,6 +369,7 @@
       hub.records = records.filter((record) => record.category === hub.key);
       hub.records.forEach((record, index) => Object.assign(record, recordPosition(record, hub, index, hub.records.length)));
     });
+    layoutRecordsWithoutCollisions(records, categories);
 
     categories.forEach((hub) => connect(linksLayer, CENTER, hub, 'archive-network-edge-root', 24));
     categories.forEach((hub, index) => {
