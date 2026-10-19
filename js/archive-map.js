@@ -139,7 +139,13 @@
   }
 
   function appendText(parent, x, y, value, className, attrs = {}) {
-    parent.appendChild(svgEl('text', { x, y, class: className, ...attrs }, value));
+    const rtl = isRtl();
+    parent.appendChild(svgEl('text', {
+      x, y, class: className,
+      direction: rtl ? 'rtl' : 'ltr',
+      'unicode-bidi': 'plaintext',
+      ...attrs
+    }, value));
   }
 
   function wrapWords(value, maxChars, maxLines = 2) {
@@ -239,30 +245,34 @@
     const g = svgEl('g', {
       class: 'archive-network-node archive-network-node-center',
       'data-node-id': 'archive-root',
-      role: 'button', tabindex: '0', 'aria-label': 'NOOR central evidence archive'
+      role: 'button', tabindex: '0', 'aria-label': mapText('archiveRoot')
     });
     g.appendChild(svgEl('circle', { cx: CENTER.x, cy: CENTER.y, r: 84, class: 'archive-network-center-glow' }));
     g.appendChild(svgEl('circle', { cx: CENTER.x, cy: CENTER.y, r: 75, class: 'archive-network-center-ring' }));
     g.appendChild(svgEl('circle', { cx: CENTER.x, cy: CENTER.y, r: 66, class: 'archive-network-center-inner' }));
     g.appendChild(svgEl('path', { d: 'M ' + (CENTER.x - 38) + ' ' + (CENTER.y - 35) + ' h 76', class: 'archive-network-center-rule' }));
     appendText(g, CENTER.x, CENTER.y - 12, 'NOOR', 'archive-network-center-title', { 'text-anchor': 'middle' });
-    appendText(g, CENTER.x, CENTER.y + 10, 'EVIDENCE MAP', 'archive-network-center-label', { 'text-anchor': 'middle' });
-    appendText(g, CENTER.x, CENTER.y + 35, records.length + ' SOURCE RECORDS', 'archive-network-center-count', { 'text-anchor': 'middle' });
+    appendText(g, CENTER.x, CENTER.y + 10, mapText('evidenceMap'), 'archive-network-center-label', { 'text-anchor': 'middle' });
+    appendText(g, CENTER.x, CENTER.y + 35, records.length + ' ' + mapText('sourceRecords'), 'archive-network-center-count', { 'text-anchor': 'middle' });
     return g;
   }
 
   function createCategoryNode(hub) {
+    const rtl = isRtl();
+    const labelX = rtl ? HUB_W - 12 : 26;
+    const labelAnchor = rtl ? 'end' : 'start';
     const g = svgEl('g', {
       class: 'archive-network-node archive-network-node-topic',
       transform: 'translate(' + (hub.x - HUB_W / 2) + ' ' + (hub.y - HUB_H / 2) + ')',
       'data-node-id': hub.id, 'data-node-type': 'topic', 'data-topic': hub.key,
-      role: 'button', tabindex: '0', 'aria-pressed': 'false', 'aria-label': hub.label + ' topic hub'
+      role: 'button', tabindex: '0', 'aria-pressed': 'false', 'aria-label': hub.label + ' ' + mapText('topicNode')
     });
     g.appendChild(svgEl('rect', { x: 0, y: 0, width: HUB_W, height: HUB_H, rx: 3, class: 'archive-network-topic-card' }));
-    g.appendChild(svgEl('circle', { cx: 14, cy: 16, r: 3, class: 'archive-network-topic-dot' }));
-    const lines = wrapWords(hub.label.toUpperCase(), 18, 2);
-    lines.forEach((line, i) => appendText(g, 26, 19 + i * 14, line, 'archive-network-topic-title'));
-    appendText(g, 13, HUB_H - 12, 'TOPIC NODE / ' + String(hub.count).padStart(2, '0') + ' RECORD' + (hub.count === 1 ? '' : 'S'), 'archive-network-node-meta');
+    g.appendChild(svgEl('circle', { cx: rtl ? HUB_W - 14 : 14, cy: 16, r: 3, class: 'archive-network-topic-dot' }));
+    const lines = wrapWords(hub.label.toUpperCase(), rtl ? 17 : 18, 2);
+    lines.forEach((line, i) => appendText(g, labelX, 19 + i * 14, line, 'archive-network-topic-title', { 'text-anchor': labelAnchor }));
+    const countLabel = String(hub.count).padStart(2, '0') + ' ' + mapText('records');
+    appendText(g, rtl ? HUB_W - 12 : 13, HUB_H - 12, mapText('topicNode') + ' / ' + countLabel, 'archive-network-node-meta', { 'text-anchor': labelAnchor });
     hub.node = g;
     return g;
   }
@@ -277,13 +287,18 @@
       role: 'button', tabindex: '0', 'aria-pressed': 'false',
       'aria-label': record.title
     });
+    const rtl = isRtl();
+    const anchorX = rtl ? RECORD_W - 12 : 12;
+    const anchor = rtl ? 'end' : 'start';
+    const titleMax = rtl ? 19 : (getLang() === 'de' ? 25 : 27);
     g.appendChild(svgEl('rect', { x: 0, y: 0, width: RECORD_W, height: RECORD_H, rx: 2, class: 'archive-network-record-card' }));
-    g.appendChild(svgEl('rect', { x: 0, y: 0, width: 4, height: RECORD_H, class: 'archive-network-record-stripe' }));
-    appendText(g, 12, 16, 'SOURCE RECORD / ' + String(record.index).padStart(3, '0'), 'archive-network-record-id');
-    const lines = wrapWords(record.title, 29, 2);
-    lines.forEach((line, i) => appendText(g, 12, 38 + i * 14, line, 'archive-network-record-title'));
-    const dateLabel = record.start ? record.start.slice(0, 4) + (record.end && record.end.slice(0, 4) !== record.start.slice(0, 4) ? '–' + record.end.slice(0, 4) : '') : 'DATE NOT LISTED';
-    appendText(g, 12, RECORD_H - 8, dateLabel + '  /  ' + record.status.toUpperCase().replace(/-/g, ' ').slice(0, 20), 'archive-network-node-meta');
+    g.appendChild(svgEl('rect', { x: rtl ? RECORD_W - 4 : 0, y: 0, width: 4, height: RECORD_H, class: 'archive-network-record-stripe' }));
+    appendText(g, anchorX, 16, mapText('sourceRecord') + ' / ' + String(record.index).padStart(3, '0'), 'archive-network-record-id', { 'text-anchor': anchor });
+    const lines = wrapWords(record.title, titleMax, 2);
+    lines.forEach((line, i) => appendText(g, anchorX, 38 + i * 15, line, 'archive-network-record-title', { 'text-anchor': anchor }));
+    const dateLabel = record.start ? record.start.slice(0, 4) + (record.end && record.end.slice(0, 4) !== record.start.slice(0, 4) ? '–' + record.end.slice(0, 4) : '') : mapText('dateNotListed');
+    const statusLabel = translateStatus(record.status);
+    appendText(g, anchorX, RECORD_H - 8, dateLabel + '  /  ' + statusLabel, 'archive-network-node-meta', { 'text-anchor': anchor });
     record.node = g;
     return g;
   }
