@@ -27,10 +27,12 @@
     try { localStorage.setItem('noor-language', language); } catch (_) { /* Storage can be disabled. */ }
   }
 
-  if (languageButton) languageButton.addEventListener('click', () => setLanguage(root.lang === 'en' ? 'ar' : 'en'));
-  try {
-    if (localStorage.getItem('noor-language') === 'ar') setLanguage('ar');
-  } catch (_) { /* Default to English when storage is unavailable. */ }
+  if (languageButton) {
+    languageButton.addEventListener('click', () => setLanguage(root.lang === 'en' ? 'ar' : 'en'));
+    try {
+      if (localStorage.getItem('noor-language') === 'ar') setLanguage('ar');
+    } catch (_) { /* Default to English when storage is unavailable. */ }
+  }
 
   const reveals = Array.from(document.querySelectorAll('.story-reveal'));
   if (reveals.length && !reduceMotion.matches && 'IntersectionObserver' in window) {
