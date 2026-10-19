@@ -32,10 +32,10 @@
   const WORLD_W = 2200;
   const WORLD_H = 1600;
   const CENTER = { x: 1100, y: 800 };
-  const HUB_RADIUS = 320;
-  const RECORD_W = 218;
-  const RECORD_H = 94;
-  const HUB_W = 190;
+  const HUB_RADIUS = 330;
+  const RECORD_W = 226;
+  const RECORD_H = 100;
+  const HUB_W = 170;
   const HUB_H = 70;
   const MIN_ZOOM = 0.28;
   const MAX_ZOOM = 2.8;
@@ -178,20 +178,35 @@
   }
 
   function recordPosition(record, hub, index, count) {
-    const row = Math.floor(index / 3);
-    const col = index % 3;
-    const offsets = count <= 2 ? (count === 1 ? [0] : [-112, 112]) :
-      (count % 3 === 1 && row === Math.floor(count / 3) ? [-112] : [-236, 0, 236]);
-    const off = offsets[col] == null ? 0 : offsets[col];
-    const radialDistance = 128 + row * 134;
+    // Two-card rows make the topic cluster legible. A collision pass below
+    // then separates any cards whose boxes overlap another cluster or hub.
+    const row = Math.floor(index / 2);
+    const col = index % 2;
+    const rowCount = Math.min(2, count - row * 2);
+    const offset = rowCount === 1 ? 0 : (col === 0 ? -132 : 132);
+    const radialDistance = 150 + row * 126;
     const radialX = Math.cos(hub.theta);
     const radialY = Math.sin(hub.theta);
     const tangentX = -radialY;
     const tangentY = radialX;
     return {
-      x: hub.x + radialX * radialDistance + tangentX * off,
-      y: hub.y + radialY * radialDistance + tangentY * off
+      x: hub.x + radialX * radialDistance + tangentX * offset,
+      y: hub.y + radialY * radialDistance + tangentY * offset
     };
+  }
+
+  function layoutRecordsWithoutCollisions(records, categories) {
+    if (!window.NOORArchiveMapLayout) {
+      throw new Error('NOOR archive map layout module was not loaded.');
+    }
+    const result = window.NOORArchiveMapLayout.layoutRecordsWithoutCollisions(records, categories, {
+      center: CENTER, recordWidth: RECORD_W, recordHeight: RECORD_H,
+      hubWidth: HUB_W, hubHeight: HUB_H, rootWidth: 168, rootHeight: 168, margin: 20
+    });
+    if (result.overlaps.length) {
+      console.error('Archive map could not fully resolve collisions:', result.overlaps);
+    }
+    return result;
   }
 
   let records = readRecords();
@@ -235,7 +250,7 @@
     });
     g.appendChild(svgEl('rect', { x: 0, y: 0, width: HUB_W, height: HUB_H, rx: 3, class: 'archive-network-topic-card' }));
     g.appendChild(svgEl('circle', { cx: 14, cy: 16, r: 3, class: 'archive-network-topic-dot' }));
-    const lines = wrapWords(hub.label.toUpperCase(), 23, 2);
+    const lines = wrapWords(hub.label.toUpperCase(), 18, 2);
     lines.forEach((line, i) => appendText(g, 26, 19 + i * 14, line, 'archive-network-topic-title'));
     appendText(g, 13, HUB_H - 12, 'TOPIC NODE / ' + String(hub.count).padStart(2, '0') + ' RECORD' + (hub.count === 1 ? '' : 'S'), 'archive-network-node-meta');
     hub.node = g;
@@ -274,6 +289,7 @@
       hub.records = records.filter((record) => record.category === hub.key);
       hub.records.forEach((record, index) => Object.assign(record, recordPosition(record, hub, index, hub.records.length)));
     });
+    layoutRecordsWithoutCollisions(records, categories);
 
     categories.forEach((hub) => connect(linksLayer, CENTER, hub, 'archive-network-edge-root', 24));
     categories.forEach((hub, index) => {
@@ -353,10 +369,44 @@
     zoomAt(scale * 1.22, { x: VIEW_W / 2, y: VIEW_H / 2 });
   }
 
+  function clearRelationshipHighlights() {
+    world.querySelectorAll('.is-active-edge').forEach((path) => path.classList.remove('is-active-edge'));
+    world.querySelectorAll('.archive-network-node-record.is-related').forEach((node) => node.classList.remove('is-related'));
+  }
+
+  function highlightRecordRelationships(record) {
+    clearRelationshipHighlights();
+    world.querySelectorAll('[data-record-link]').forEach((path) => {
+      if (path.getAttribute('data-record-link') === record.key) path.classList.add('is-active-edge');
+    });
+    const hub = categories.find((item) => item.key === record.category);
+    if (hub) {
+      const rootEdge = world.querySelector('.archive-network-edge-root[data-to="' + hub.id + '"]');
+      if (rootEdge) rootEdge.classList.add('is-active-edge');
+      hub.records.forEach((related) => {
+        if (related.node && related.key !== record.key) related.node.classList.add('is-related');
+      });
+    }
+  }
+
+  function highlightTopicRelationships(hub) {
+    clearRelationshipHighlights();
+    const rootEdge = world.querySelector('.archive-network-edge-root[data-to="' + hub.id + '"]');
+    if (rootEdge) rootEdge.classList.add('is-active-edge');
+    world.querySelectorAll('[data-record-link]').forEach((path) => {
+      const record = records.find((item) => item.key === path.getAttribute('data-record-link'));
+      if (record && record.category === hub.key) path.classList.add('is-active-edge');
+    });
+    hub.records.forEach((record) => {
+      if (record.node) record.node.classList.add('is-related');
+    });
+  }
+
   function resetDetails() {
     selectedKey = '';
     selectedPanel.hidden = true;
     emptyPanel.hidden = false;
+    clearRelationshipHighlights();
     allNodes.forEach((item) => {
       if (item.node && item.node.hasAttribute('aria-pressed')) item.node.setAttribute('aria-pressed', 'false');
       if (item.node) item.node.classList.remove('is-selected');
@@ -419,6 +469,7 @@
     const caseLinks = record.links.filter((link) => /^case-[^#]+\.html(?:#.*)?$/.test(link.href) || link.href.startsWith('case-'));
     const actions = [{ href: '#' + record.el.id, label: getLang() === 'ar' ? 'افتح السجل الكامل ↓' : 'OPEN FULL RECORD ↓', external: false }];
     caseLinks.forEach((link) => actions.push(link));
+    highlightRecordRelationships(record);
     setPanel(record.title, 'SOURCE RECORD / ' + String(record.index).padStart(3, '0'), 'ARCHIVE SOURCE RECORD', meta, record.summary, actions, record.links.filter((link) => link.external).slice(0, 5));
   }
 
@@ -442,6 +493,7 @@
       label: getLang() === 'ar' ? 'افتح عوامل التصفية ↓' : 'OPEN ARCHIVE FILTERS ↓',
       external: false
     }];
+    highlightTopicRelationships(hub);
     setPanel(hub.label, 'TOPIC HUB / ' + String(hub.count).padStart(2, '0'), 'SUBJECT CLUSTER', [
       hub.count + ' records', visible.length + ' visible after filters'
     ], getLang() === 'ar'
@@ -528,12 +580,46 @@
   queryInput.addEventListener('input', () => setMapQuery(queryInput.value));
   topicInput.addEventListener('change', () => {
     mapTopic = topicInput.value;
-    if (archiveCategory) {
+    if (archiveCategory && archiveCategory.value !== mapTopic) {
       archiveCategory.value = mapTopic;
       archiveCategory.dispatchEvent(new Event('change', { bubbles: true }));
     }
     applyFilters();
   });
+
+  // Keep the relationship map in sync when people use the detailed filters
+  // farther down the page, not only when they use the map-specific controls.
+  if (archiveQuery) {
+    archiveQuery.addEventListener('input', () => {
+      if (queryInput.value !== archiveQuery.value) queryInput.value = archiveQuery.value;
+      applyFilters();
+    });
+  }
+  if (archiveCategory) {
+    archiveCategory.addEventListener('change', () => {
+      if (topicInput.value !== archiveCategory.value) topicInput.value = archiveCategory.value;
+      mapTopic = archiveCategory.value || '';
+      applyFilters();
+    });
+  }
+  const archiveFilterForm = document.getElementById('archive-filter-form');
+  if (archiveFilterForm) {
+    archiveFilterForm.addEventListener('input', () => window.setTimeout(applyFilters, 0));
+    archiveFilterForm.addEventListener('change', () => window.setTimeout(applyFilters, 0));
+    archiveFilterForm.addEventListener('submit', () => window.setTimeout(applyFilters, 0));
+  }
+  const archiveClearButton = document.getElementById('archive-clear');
+  if (archiveClearButton) {
+    archiveClearButton.addEventListener('click', () => window.setTimeout(() => {
+      queryInput.value = archiveQuery ? archiveQuery.value : '';
+      topicInput.value = archiveCategory ? archiveCategory.value : '';
+      mapQuery = queryInput.value;
+      mapTopic = topicInput.value;
+      applyFilters();
+      resetDetails();
+      fitMap();
+    }, 0));
+  }
 
   document.getElementById('archive-map-clear').addEventListener('click', () => {
     queryInput.value = '';
