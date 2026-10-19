@@ -16,8 +16,10 @@ const stylesheet = read('css/research.css');
 const script = read('js/research.js');
 const visualScript = read('js/visual-evidence.js');
 const archiveMapScript = read('js/archive-map.js');
+const archiveMapLayout = read('js/archive-map-layout.js');
 execFileSync(process.execPath, ['--check', path.join(root, 'js/visual-evidence.js')]);
 execFileSync(process.execPath, ['--check', path.join(root, 'js/archive-map.js')]);
+execFileSync(process.execPath, ['--check', path.join(root, 'js/archive-map-layout.js')]);
 const archiveScript = read('js/archive.js');
 const builder = read('scripts/build_site.py');
 const caseFiles = [
@@ -63,6 +65,11 @@ assert.ok(archive.includes('id="archive-network-world"'), 'Network map should ha
 assert.ok(archive.includes('id="archive-map-query"'), 'Network explorer should provide node search.');
 assert.ok(archive.includes('id="archive-map-topic"'), 'Network explorer should filter by topic.');
 assert.ok(archive.includes('id="archive-map-fit"'), 'Network explorer should provide a fit-to-map control.');
+assert.ok(archive.includes('src="js/archive-map-layout.js" defer'), 'Map layout module must load before the renderer.');
+assert.match(archiveMapScript, /layoutRecordsWithoutCollisions\(records, categories\)/, 'The map renderer must use the collision solver.');
+assert.match(archiveMapLayout, /result|overlaps/, 'The shared map layout solver must verify collision results.');
+assert.match(archiveMapScript, /archive-filter-form/, 'Map state should sync with the existing archive filter form.');
+assert.match(archiveMapScript, /archiveClearButton/, 'Clearing detailed archive filters should resync the map.');
 assert.ok(archive.includes('id="archive-total"'), 'Existing live archive record total must remain available.');
 assert.match(archiveMapScript, /pointerdown/, 'Network map should support pointer-driven panning.');
 assert.match(archiveMapScript, /addEventListener\('wheel'/, 'Network map should support wheel zoom.');
