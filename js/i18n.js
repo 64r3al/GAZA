@@ -166,8 +166,7 @@
     }));
   }
 
-  const initialRows = window.NOORTranslationRows;
-  if (Array.isArray(initialRows)) addTranslations(initialRows);
+  if (Array.isArray(window.NOORTranslationRows)) addTranslations(window.NOORTranslationRows);
 
   const localization = {
     languages: LANGUAGES.slice(),
