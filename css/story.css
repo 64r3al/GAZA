@@ -13,6 +13,8 @@ html.story-arrival-pending .story-shell{opacity:0;visibility:hidden}
 .story-header-actions{display:flex;align-items:center;gap:18px}
 .story-header-label,.story-index,.story-source-date,.story-eyebrow{font-family:"Courier New",monospace;font-size:10px;letter-spacing:.16em;color:#91a194}
 .story-language{min-height:38px;padding:0 12px;border:1px solid #354037;background:#101511;color:var(--story-text);border-radius:2px;font-weight:700;font-size:11px;cursor:pointer}
+.story-language{font-family:inherit;max-width:140px;appearance:auto;color-scheme:dark;text-align:start}
+.story-language option{background:#101511;color:var(--story-text)}
 .story-back{color:#c7d4c9;font-size:11px;font-weight:700;text-decoration:none;border-bottom:1px solid #526354;padding-bottom:4px}
 .story-back:hover,.story-source-link:hover,.story-footer>a:hover{color:#fff;border-color:var(--story-green)}
 .story-hero{position:relative;isolation:isolate;overflow:hidden;padding:clamp(70px,10vw,142px) 0 clamp(48px,7vw,85px);border-bottom:1px solid var(--story-line)}
