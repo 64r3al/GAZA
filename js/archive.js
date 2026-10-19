@@ -134,22 +134,45 @@
     });
 
     noResults.hidden = visibleCount > 0 || invalidRange;
+    const t = (english) => window.NOORLocalization ? window.NOORLocalization.translate(english, language) : english;
+    const localizedMessages = {
+      ar: {
+        invalid: 'نطاق التاريخ غير صالح — يجب أن يكون تاريخ البداية في يوم النهاية أو قبله.',
+        none: 'لا توجد سجلات مطابقة',
+        count: (visible, total) => 'عرض ' + visible + ' من أصل ' + total + ' سجلات'
+      },
+      fr: {
+        invalid: 'Période invalide : la date de début doit précéder ou égaler la date de fin.',
+        none: 'Aucun dossier correspondant',
+        count: (visible, total) => visible + ' dossier(s) sur ' + total + ' affiché(s)'
+      },
+      es: {
+        invalid: 'Rango de fechas no válido: la fecha inicial debe ser anterior o igual a la final.',
+        none: 'No hay registros coincidentes',
+        count: (visible, total) => visible + ' de ' + total + ' registros visibles'
+      },
+      pt: {
+        invalid: 'Intervalo de datas inválido: a data inicial deve ser anterior ou igual à data final.',
+        none: 'Não existem registos correspondentes',
+        count: (visible, total) => 'A mostrar ' + visible + ' de ' + total + ' registos'
+      },
+      de: {
+        invalid: 'Ungültiger Zeitraum: Das Startdatum muss am oder vor dem Enddatum liegen.',
+        none: 'Keine passenden Einträge',
+        count: (visible, total) => visible + ' von ' + total + ' Einträgen sichtbar'
+      }
+    };
+    const messages = localizedMessages[language] || localizedMessages.en || {};
     if (invalidRange) {
-      resultCount.textContent = language === 'en'
-        ? 'Invalid date range — start date must be on or before end date.'
-        : 'نطاق التاريخ غير صالح — يجب أن يكون تاريخ البداية في يوم النهاية أو قبله.';
+      resultCount.textContent = language === 'en' ? 'Invalid date range — start date must be on or before end date.' : (messages.invalid || t('Invalid date range — start date must be on or before end date.'));
     } else if (visibleCount === 0) {
-      resultCount.textContent = language === 'en'
-        ? 'No matching records'
-        : 'لا توجد سجلات مطابقة';
+      resultCount.textContent = language === 'en' ? 'No matching records' : (messages.none || t('No matching records'));
     } else {
-      resultCount.textContent = language === 'en'
-        ? 'Showing ' + visibleCount + ' of ' + cards.length + ' records'
-        : 'عرض ' + visibleCount + ' من أصل ' + cards.length + ' سجلات';
+      resultCount.textContent = language === 'en' ? 'Showing ' + visibleCount + ' of ' + cards.length + ' records' : (messages.count ? messages.count(visibleCount, cards.length) : t('Showing records') + ' ' + visibleCount + '/' + cards.length);
     }
   }
 
-  if (languageButton) {
+  if (languageButton && !document.querySelector('[data-noor-language-select]')) {
     languageButton.addEventListener('click', () => setLanguage(language === 'en' ? 'ar' : 'en'));
   }
 
@@ -208,6 +231,11 @@
     });
   }
 
+  document.addEventListener('noor:languagechange', (event) => {
+    language = event.detail && event.detail.language ? event.detail.language : (document.documentElement.lang || 'en');
+    applyFilters();
+  });
+
   // Dates are ISO 8601 in data attributes, so string comparison is chronological.
   // Event windows overlap the requested range; date filtering never treats a
   // publication date as the incident date unless the record explicitly says so.
@@ -216,7 +244,7 @@
   applyFilters();
 
   try {
-    if (localStorage.getItem('noor-language') === 'ar') setLanguage('ar');
+    if (!document.querySelector('[data-noor-language-select]') && localStorage.getItem('noor-language') === 'ar') setLanguage('ar');
   } catch (_) {
     /* Default to English when storage is unavailable. */
   }
