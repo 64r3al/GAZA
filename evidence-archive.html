@@ -30,6 +30,9 @@
   <script src="js/archive.js" defer></script>
   <script src="js/archive-map-layout.js" defer></script>
   <script src="js/archive-map.js" defer></script>
+  <link rel="stylesheet" href="css/i18n.css">
+  <script src="js/i18n-content.js" defer></script>
+  <script src="js/i18n.js" defer></script>
 </head>
 <body class="archive-body">
   <a class="archive-skip" href="#archive-main" data-en="Skip to archive" data-ar="انتقل إلى الأرشيف">Skip to archive</a>
@@ -38,7 +41,7 @@
       <a class="archive-wordmark" href="index.html" aria-label="NOOR home"><span class="archive-mark" aria-hidden="true">N</span><span>NOOR</span></a>
       <div class="archive-header-right">
         <span class="archive-header-label" data-en="FIELD NOTES / 002" data-ar="ملاحظات ميدانية / 002">FIELD NOTES / 002</span>
-        <button class="archive-language" id="archive-language" type="button" aria-label="Switch language to Arabic" data-en="العربية" data-ar="English">العربية</button>
+        <label class="noor-language-wrap"><span class="noor-sr-only">Choose language</span><select class="noor-language-select" id="noor-language-select" data-noor-language-select data-en-aria="Choose language" data-ar-aria="اختر اللغة" data-fr-aria="Choisir la langue" data-es-aria="Elegir idioma" data-pt-aria="Selecionar idioma" data-de-aria="Sprache wählen" aria-label="Choose language"><option value="en">English</option><option value="ar">العربية</option><option value="fr">Français</option><option value="es">Español</option><option value="pt">Português</option><option value="de">Deutsch</option></select></label>
         <a class="archive-header-link" href="a-hard-pill-to-swallow.html" data-en="Read the field notes ↗" data-ar="اقرأ الملاحظات ↗">Read the field notes ↗</a>
       </div>
     </header>
