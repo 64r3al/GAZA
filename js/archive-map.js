@@ -497,7 +497,7 @@
       item.node.classList.toggle('is-selected', selected);
       if (item.node.hasAttribute('aria-pressed')) item.node.setAttribute('aria-pressed', String(selected));
     });
-    const date = record.start ? record.start + (record.end && record.end !== record.start ? ' → ' + record.end : '') : 'Dates not listed';
+    const date = record.start ? record.start + (record.end && record.end !== record.start ? ' → ' + record.end : '') : mapText('datesNotListed');
     const meta = [
       record.categoryLabel,
       date,
