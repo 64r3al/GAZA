@@ -29,6 +29,8 @@ jobs:
         run: node --check js/research.js
       - name: Smoke-test archive filters and language controls
         run: node scripts/test_archive.js
+      - name: Verify collision-free archive map layout
+        run: node scripts/test_archive_map_layout.js
       - name: Test research navigation and methodology
         run: node scripts/test_research.js
       - name: Validate local assets and links
