@@ -23,6 +23,8 @@ jobs:
         run: node --check js/story.js
       - name: Check archive JavaScript syntax
         run: node --check js/archive.js
+      - name: Check interactive map JavaScript syntax
+        run: node --check js/archive-map.js
       - name: Check research JavaScript syntax
         run: node --check js/research.js
       - name: Smoke-test archive filters and language controls

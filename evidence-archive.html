@@ -28,6 +28,7 @@
   <link rel="stylesheet" href="css/archive.css">
   <link rel="stylesheet" href="css/research.css">
   <script src="js/archive.js" defer></script>
+  <script src="js/archive-map.js" defer></script>
 </head>
 <body class="archive-body">
   <a class="archive-skip" href="#archive-main" data-en="Skip to archive" data-ar="انتقل إلى الأرشيف">Skip to archive</a>
@@ -53,75 +54,76 @@
     </nav>
 
     <main id="archive-main">
-<section class="archive-cinema" aria-labelledby="archive-title">
-  <a class="archive-cinema-rail" href="a-hard-pill-to-swallow.html" aria-label="Back to the story"><span data-en="BACK TO THE STORY" data-ar="العودة إلى القصة">BACK TO THE STORY</span></a>
-  <div class="archive-cinema-wall" aria-hidden="true">
-    <figure class="archive-wall-card archive-wall-card-a"><img src="assets/hero/children-awaiting-assistance.jpg" alt="" width="640" height="360" loading="eager"><figcaption>CONTEXT IMAGE / 01</figcaption></figure>
-    <figure class="archive-wall-card archive-wall-card-b"><img src="assets/hero/aid-queue-closeup-small.jpg" alt="" width="640" height="360" loading="eager"><figcaption>HUMANITARIAN CONTEXT</figcaption></figure>
-    <figure class="archive-wall-card archive-wall-card-c"><img src="assets/hero/children-and-families-collecting-water.jpg" alt="" width="640" height="360" loading="lazy"><figcaption>CONTEXT IMAGE / 02</figcaption></figure>
-    <figure class="archive-wall-card archive-wall-card-d"><img src="assets/hero/families-seeking-assistance.jpg" alt="" width="640" height="360" loading="lazy"><figcaption>FIELD CONTEXT</figcaption></figure>
-    <figure class="archive-wall-card archive-wall-card-e"><img src="assets/hero/families-at-water-distribution.jpg" alt="" width="640" height="360" loading="lazy"><figcaption>PUBLIC RECORD / CONTEXT</figcaption></figure>
-  </div>
-  <div class="archive-cinema-register archive-register-one" aria-label="Source index card">
-    <span class="archive-register-label">INVESTIGATION / 011</span>
-    <strong>Gaza: Israeli Strike Killing 106 Civilians</strong>
-    <span>HUMAN RIGHTS WATCH</span><span>04 APR 2024 / REPORT</span>
-  </div>
-  <div class="archive-cinema-register archive-register-two" aria-label="Source index card">
-    <span class="archive-register-label">PRIMARY DOCUMENT / 012</span>
-    <strong>Commission of Inquiry report</strong>
-    <span>UNITED NATIONS</span><span>16 SEP 2025 / FINDING</span>
-  </div>
-  <div class="archive-cinema-coordinate" aria-hidden="true">NOOR / SOURCE REGISTER<br>INCIDENT · DATE · PUBLISHER · STATUS</div>
-  <div class="archive-cinema-center">
-    <p class="archive-cinema-kicker" data-en="NOOR FIELD NOTES / ARCHIVE 002" data-ar="ملاحظات نور الميدانية / الأرشيف ٠٠٢">NOOR FIELD NOTES / ARCHIVE 002</p>
-    <h1 id="archive-title"><span data-en="Explore" data-ar="استكشف">Explore</span><br><strong data-en="the archive." data-ar="الأرشيف.">the archive.</strong></h1>
-    <p class="archive-cinema-copy" data-en="In the absence of a single complete record, follow the sources: dated reporting, investigations, visual material and primary documents. Compare accounts, check the publisher, and read what each record can—and cannot—establish." data-ar="في غياب سجل واحد مكتمل، تتبّع المصادر: تقارير مؤرخة وتحقيقات ومواد مرئية ووثائق أصلية. قارن الروايات وتحقق من الناشر واقرأ ما يثبته كل سجل وما لا يستطيع إثباته.">In the absence of a single complete record, follow the sources: dated reporting, investigations, visual material and primary documents. Compare accounts, check the publisher, and read what each record can—and cannot—establish.</p>
-    <div class="archive-cinema-actions">
-      <a class="archive-cinema-cta" href="#archive-filters"><span data-en="EXPLORE THE RECORD" data-ar="استكشف السجل">EXPLORE THE RECORD</span><b aria-hidden="true">↘</b></a>
-      <span class="archive-cinema-count"><span class="archive-fact-number" id="archive-total">18</span> <span data-en="CURATED RECORDS" data-ar="سجلات مختارة">CURATED RECORDS</span></span>
+<section class="archive-network-explorer" id="archive-network-explorer" aria-labelledby="archive-title">
+  <header class="archive-network-head">
+    <div class="archive-network-heading">
+      <p class="archive-network-kicker"><span aria-hidden="true"></span><span data-en="INTERACTIVE SOURCE MAP / 002" data-ar="خريطة المصادر التفاعلية / ٠٠٢">INTERACTIVE SOURCE MAP / 002</span></p>
+      <h1 id="archive-title" data-en="Explore the record." data-ar="استكشف السجل.">Explore the record.</h1>
+      <p data-en="Move through the evidence as a connected network. Every node points back to a source record; every line marks a topic or cross-reference—not a claim of guilt." data-ar="تنقّل بين الأدلة كشبكة مترابطة. تشير كل عقدة إلى سجل مصدر، ويمثل كل خط موضوعاً أو إحالةً متقاطعة، وليس ادعاءً بالإدانة.">Move through the evidence as a connected network. Every node points back to a source record; every line marks a topic or cross-reference—not a claim of guilt.</p>
     </div>
-    <p class="archive-cinema-note" data-en="A curated source index—not a verdict machine." data-ar="فهرس مصادر مختار، وليس أداة لإصدار الأحكام.">A curated source index—not a verdict machine.</p>
+    <div class="archive-network-tools">
+      <label for="archive-map-query"><span data-en="FIND A NODE" data-ar="ابحث عن عقدة">FIND A NODE</span><input id="archive-map-query" type="search" autocomplete="off" placeholder="Search names, subjects or sources" data-en-placeholder="Search names, subjects or sources" data-ar-placeholder="ابحث عن أسماء أو مواضيع أو مصادر"></label>
+      <label for="archive-map-topic"><span data-en="TOPIC LAYER" data-ar="طبقة الموضوع">TOPIC LAYER</span><select id="archive-map-topic"><option value="" data-en="All topics" data-ar="كل المواضيع">All topics</option><option value="child-casualties" data-en="Child casualties" data-ar="ضحايا من الأطفال">Child casualties</option><option value="civilian-harm" data-en="Civilian harm" data-ar="الأذى المدني">Civilian harm</option><option value="aid-workers" data-en="Aid and rescue workers" data-ar="عمال الإغاثة والإنقاذ">Aid and rescue workers</option><option value="schools-shelters" data-en="Schools and shelters" data-ar="المدارس والملاجئ">Schools and shelters</option><option value="aid-access" data-en="Access to food and aid" data-ar="الوصول إلى الغذاء والمساعدات">Access to food and aid</option><option value="detention" data-en="Detention / sexual violence" data-ar="الاحتجاز / العنف الجنسي">Detention / sexual violence</option><option value="destruction" data-en="Destruction of buildings" data-ar="تدمير المباني">Destruction of buildings</option><option value="food-nutrition" data-en="Food / nutrition" data-ar="الغذاء / التغذية">Food / nutrition</option><option value="displacement" data-en="Displacement / unsafe shelter" data-ar="النزوح / المأوى غير الآمن">Displacement / unsafe shelter</option></select></label>
+      <div class="archive-map-top-actions"><button type="button" id="archive-map-fit-top" data-en="FIT MAP" data-ar="ملاءمة الخريطة">FIT MAP</button><button type="button" id="archive-map-clear" data-en="CLEAR" data-ar="مسح">CLEAR</button></div>
+    </div>
+  </header>
+  <div class="archive-network-status">
+    <span class="archive-network-total"><span class="archive-fact-number" id="archive-total">18</span><span data-en="TOTAL RECORDS" data-ar="إجمالي السجلات">TOTAL RECORDS</span></span><span id="archive-map-result-count" role="status" aria-live="polite"><strong>18</strong> / 18 RECORDS VISIBLE <i>·</i> 9 TOPIC HUBS</span>
+    <span class="archive-network-hint" data-en="DRAG TO PAN · SCROLL TO ZOOM · SELECT TO INSPECT" data-ar="اسحب للتحريك · مرّر للتكبير · اختر للفحص">DRAG TO PAN · SCROLL TO ZOOM · SELECT TO INSPECT</span>
   </div>
-  <a class="archive-cinema-feature" href="https://www.hrw.org/video-photos/video/2024/04/04/israel-airstrike-gaza-apparent-war-crime" target="_blank" rel="noopener noreferrer" aria-label="Open the Human Rights Watch report and video on its official website">
-    <span class="archive-feature-index">VISUAL RECORD / 001 <i>HUMAN RIGHTS WATCH</i></span>
-    <div class="archive-feature-image"><img src="https://img.youtube.com/vi/jZdcDhYuBNs/hqdefault.jpg" alt="Thumbnail of Human Rights Watch’s video report accompanying the Engineers’ Building investigation" width="480" height="360" loading="eager"><span class="archive-feature-play" aria-hidden="true">▶</span></div>
-    <span class="archive-feature-title" data-en="Israel airstrike on Gaza: an apparent war crime" data-ar="غارة إسرائيلية على غزة: جريمة حرب محتملة">Israel airstrike on Gaza: an apparent war crime</span>
-    <span class="archive-feature-meta">HRW VIDEO & REPORT ↗ · ORIGINAL PUBLISHER / APR 2024</span>
-  </a>
-  <div class="archive-cinema-bottom"><span>01 / SOURCE RECORDS</span><span>02 / VISUAL MATERIAL</span><span>03 / LEGAL STATUS</span><span class="archive-cinema-pan" data-en="SCROLL TO EXPLORE ↓" data-ar="مرّر لاستكشاف الأرشيف ↓">SCROLL TO EXPLORE ↓</span></div>
-</section>
-<section class="archive-explore-board" aria-labelledby="archive-explore-title">
-  <div class="archive-explore-panel archive-entry-triad">
-    <a class="archive-explore-rail" href="a-hard-pill-to-swallow.html" aria-label="Back to the story"><span data-en="BACK TO THE STORY" data-ar="العودة إلى القصة">BACK TO THE STORY</span></a>
-    <article class="archive-entry-card archive-entry-photo">
-      <span class="archive-entry-no">01</span>
-      <h2 data-en="THE PHOTOGRAPH" data-ar="الصورة">THE PHOTOGRAPH</h2>
-      <p data-en="Trace a published image to its original report. Keep date, location, publisher and context together." data-ar="تتبّع الصورة المنشورة إلى تقريرها الأصلي. احتفظ بالتاريخ والموقع والناشر والسياق معاً.">Trace a published image to its original report. Keep date, location, publisher and context together.</p>
-      <a class="archive-entry-stack archive-entry-stack-image" href="visual-evidence.html" aria-label="Browse visual evidence"><img src="assets/hero/aid-queue-closeup-small.jpg" alt="Humanitarian context image from the NOOR site" width="640" height="360" loading="lazy"><span>VISUAL INDEX / OPEN ↗</span></a>
-      <a class="archive-entry-link" href="visual-evidence.html" data-en="BROWSE VISUAL EVIDENCE ↗" data-ar="تصفّح الأدلة المرئية ↗">BROWSE VISUAL EVIDENCE ↗</a>
-    </article>
-    <article class="archive-entry-card archive-entry-document">
-      <span class="archive-entry-no">02</span>
-      <h2 data-en="THE DOCUMENT" data-ar="الوثيقة">THE DOCUMENT</h2>
-      <p data-en="Reports, inquiry findings and dated records. A source summary is not the original document." data-ar="تقارير ونتائج تحقيقات وسجلات مؤرخة. ملخص المصدر ليس الوثيقة الأصلية.">Reports, inquiry findings and dated records. A source summary is not the original document.</p>
-      <a class="archive-entry-stack archive-entry-stack-doc" href="case-un-commission.html" aria-label="Read the linked UN Commission case file"><span>PRIMARY SOURCE / 012</span><strong>COMMISSION<br>OF INQUIRY<br>REPORT</strong><i>UN · 16 SEP 2025</i><b>OPEN CASE FILE ↗</b></a>
-      <a class="archive-entry-link" href="#archive-filters" data-en="SEARCH THE RECORDS ↗" data-ar="ابحث في السجلات ↗">SEARCH THE RECORDS ↗</a>
-    </article>
-    <article class="archive-entry-card archive-entry-network">
-      <span class="archive-entry-no">03</span>
-      <h2 data-en="THE NETWORK" data-ar="شبكة المصادر">THE NETWORK</h2>
-      <p data-en="Connect investigations, institutions and related cases without treating every source as the same kind of proof." data-ar="اربط التحقيقات والمؤسسات والقضايا ذات الصلة من دون اعتبار كل مصدر نوعاً واحداً من الإثبات.">Connect investigations, institutions and related cases without treating every source as the same kind of proof.</p>
-      <a class="archive-entry-stack archive-entry-stack-network" href="legal-record.html" aria-label="Explore the legal record">
-        <span class="archive-network-node archive-network-node-a">HRW</span><span class="archive-network-node archive-network-node-b">UN</span><span class="archive-network-node archive-network-node-c">COURT</span><span class="archive-network-node archive-network-node-d">REPORT</span><i>FOLLOW THE SOURCE TRAIL ↗</i>
-      </a>
-      <a class="archive-entry-link" href="legal-record.html" data-en="OPEN THE LEGAL RECORD ↗" data-ar="افتح السجل القانوني ↗">OPEN THE LEGAL RECORD ↗</a>
-    </article>
-    <div class="archive-explore-footer"><span>NOOR / EVIDENCE INDEX</span><a href="#archive-filters" id="archive-explore-title" data-en="EXPLORE ALL ARCHIVED ITEMS ↘" data-ar="استكشف كل العناصر المؤرشفة ↘">EXPLORE ALL ARCHIVED ITEMS ↘</a><span>DATE · SOURCE · SCOPE</span></div>
+  <div class="archive-network-workspace">
+    <div class="archive-network-map-column">
+      <div class="archive-network-viewport" id="archive-network-viewport" tabindex="0" role="application" aria-label="Interactive evidence relationship map. Drag to move the map, scroll to zoom, use arrow keys to pan, plus and minus to zoom, and zero to fit the map.">
+        <div class="archive-network-map-grid" aria-hidden="true"></div>
+        <svg id="archive-network-svg" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid meet" role="img" aria-labelledby="archive-map-svg-title archive-map-svg-desc">
+          <title id="archive-map-svg-title">NOOR interactive evidence relationship map</title>
+          <desc id="archive-map-svg-desc">A web of topic clusters connected to the central archive. Select a record node to see its summary and original sources.</desc>
+          <defs>
+            <pattern id="archive-map-dots" width="24" height="24" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="#657069" fill-opacity=".3"></circle></pattern>
+            <filter id="archive-map-glow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="4" result="blur"></feGaussianBlur><feMerge><feMergeNode in="blur"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge></filter>
+          </defs>
+          <rect x="0" y="0" width="1600" height="1000" fill="url(#archive-map-dots)" aria-hidden="true"></rect>
+          <g id="archive-network-world"></g>
+        </svg>
+        <div class="archive-network-map-controls" aria-label="Map zoom controls">
+          <button type="button" id="archive-map-zoom-in" aria-label="Zoom in" title="Zoom in">+</button>
+          <button type="button" id="archive-map-zoom-out" aria-label="Zoom out" title="Zoom out">−</button>
+          <span aria-hidden="true"></span>
+          <button type="button" id="archive-map-fit" aria-label="Fit all nodes in view" title="Fit all nodes in view"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 7V3h4M13 3h4v4M17 13v4h-4M7 17H3v-4M3 3l5 5M17 3l-5 5M17 17l-5-5M3 17l5-5" fill="none" stroke="currentColor" stroke-width="1.5"></path></svg></button>
+        </div>
+        <div class="archive-network-scale"><span>NOOR / NODE FIELD</span><span id="archive-map-zoom-level">100%</span></div>
+      </div>
+      <div class="archive-network-legend" aria-label="Map legend">
+        <span><i class="archive-legend-dot archive-legend-central"></i><b data-en="Archive" data-ar="الأرشيف">Archive</b></span>
+        <span><i class="archive-legend-dot archive-legend-topic"></i><b data-en="Topic hub" data-ar="محور موضوع">Topic hub</b></span>
+        <span><i class="archive-legend-dot archive-legend-record"></i><b data-en="Source record" data-ar="سجل المصدر">Source record</b></span>
+        <span><i class="archive-legend-line"></i><b data-en="Related by topic / source" data-ar="ترابط حسب الموضوع / المصدر">Related by topic / source</b></span>
+      </div>
+    </div>
+    <aside class="archive-network-details" id="archive-network-details" aria-label="Selected node details">
+      <div id="archive-map-empty-state" class="archive-map-empty-state">
+        <span class="archive-detail-index">NODE DETAILS / 000</span>
+        <div class="archive-map-empty-mark" aria-hidden="true"><span></span><span></span><span></span></div>
+        <h2 data-en="Select a node." data-ar="اختر عقدة.">Select a node.</h2>
+        <p data-en="Choose a topic hub to isolate its records, or select an individual record to inspect its source links, reporting dates and scope." data-ar="اختر محور موضوع لعزل سجلاته، أو اختر سجلاً فردياً لفحص روابط مصادره وتواريخ التقرير ونطاقه.">Choose a topic hub to isolate its records, or select an individual record to inspect its source links, reporting dates and scope.</p>
+        <div class="archive-map-gesture-list"><span><kbd>DRAG</kbd> Pan around the network</span><span><kbd>SCROLL</kbd> Zoom into clusters</span><span><kbd>0</kbd> Refit the entire map</span></div>
+      </div>
+      <div id="archive-map-selected" hidden>
+        <div class="archive-map-detail-top"><span class="archive-detail-index" id="archive-map-detail-index">SOURCE RECORD / 000</span><button type="button" id="archive-map-deselect" aria-label="Close node details">×</button></div>
+        <p class="archive-map-detail-type" id="archive-map-detail-type">SOURCE RECORD</p>
+        <h2 id="archive-map-detail-title">Selected record</h2>
+        <div class="archive-map-detail-meta" id="archive-map-detail-meta"></div>
+        <p class="archive-map-detail-summary" id="archive-map-detail-summary"></p>
+        <div class="archive-map-detail-actions" id="archive-map-detail-actions"></div>
+        <div class="archive-map-source-wrap"><p class="archive-map-source-heading" data-en="SOURCE TRAIL" data-ar="مسار المصادر">SOURCE TRAIL</p><div class="archive-map-source-links" id="archive-map-source-links"></div></div>
+      </div>
+      <div class="archive-network-details-footer"><span>NOOR / RESEARCH DESK</span><a href="methodology.html" data-en="SOURCE METHOD ↗" data-ar="منهجية المصادر ↗">SOURCE METHOD ↗</a></div>
+    </aside>
   </div>
+  <p class="archive-network-map-note" data-en="This is a relationship map, not a geographic map. Lines show topic groupings and references within the archive; proximity does not imply responsibility or proof. All findings remain attributed to their linked publishers." data-ar="هذه خريطة للعلاقات وليست خريطة جغرافية. تُظهر الخطوط تجميعات الموضوع والإحالات داخل الأرشيف؛ ولا يعني التقارب إثبات المسؤولية أو صحة الادعاء. وتظل جميع النتائج منسوبة إلى ناشريها المرتبطين.">This is a relationship map, not a geographic map. Lines show topic groupings and references within the archive; proximity does not imply responsibility or proof. All findings remain attributed to their linked publishers.</p>
 </section>
 
-      <section class="archive-method" aria-labelledby="method-title">
+<section class="archive-method" aria-labelledby="method-title">
         <p class="archive-section-index" data-en="READING THE RECORD / 00" data-ar="كيفية قراءة السجلات / 00">READING THE RECORD / 00</p>
         <div>
           <h2 id="method-title" data-en="A source trail, not a verdict machine." data-ar="مسار للمصادر، لا أداة لإصدار الأحكام.">A source trail, not a verdict machine.</h2>

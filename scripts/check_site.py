@@ -439,6 +439,37 @@ else:
         errors.append(f"expanded evidence archive needs at least 18 case/report records; found {len(archive_cards)}")
     if '<span class="archive-fact-number" id="archive-total">18</span>' not in archive_html:
         errors.append("evidence archive’s initial record total should match its expanded index")
+
+    for map_marker in (
+        'id="archive-network-explorer"',
+        'id="archive-network-viewport"',
+        'id="archive-network-svg"',
+        'id="archive-network-world"',
+        'id="archive-map-query"',
+        'id="archive-map-topic"',
+        'id="archive-map-fit"',
+        'aria-live="polite"',
+    ):
+        if map_marker not in archive_html:
+            errors.append(f"interactive archive map is missing its required control or region: {map_marker}")
+    if 'src="js/archive-map.js" defer' not in archive_html:
+        errors.append("evidence archive must load its interactive pan-and-zoom map script")
+    map_script_path = ROOT / "js" / "archive-map.js"
+    if not map_script_path.is_file():
+        errors.append("missing interactive archive map script: js/archive-map.js")
+    else:
+        map_script = map_script_path.read_text(encoding="utf-8")
+        for behavior in ("pointerdown", "addEventListener('wheel'", "fitMap", "selectRecord", "aria-pressed"):
+            if behavior not in map_script:
+                errors.append(f"interactive archive map is missing behavior: {behavior}")
+    map_css_path = ROOT / "css" / "research.css"
+    if map_css_path.is_file():
+        map_css = map_css_path.read_text(encoding="utf-8")
+        for selector in (".archive-network-viewport", ".archive-network-edge", ".archive-network-details", "@media(max-width:760px)"):
+            if selector not in map_css:
+                errors.append(f"interactive archive map is missing responsive styling: {selector}")
+    else:
+        errors.append("missing shared research stylesheet for the archive map: css/research.css")
     record_ids = []
     for index, attributes in enumerate(archive_cards, start=1):
         match = re.search(r'data-record-id="([^"]+)"', attributes)
