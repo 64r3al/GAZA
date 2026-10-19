@@ -182,10 +182,26 @@
     updateShareLinks();
   }
 
-  languageButton.addEventListener('click', () => setLanguage(language === 'en' ? 'ar' : 'en'));
-  try {
-    if (localStorage.getItem('noor-language') === 'ar') setLanguage('ar');
-  } catch (_) { /* Default to English when storage is unavailable. */ }
+  // Legacy two-language toggle remains available only on markup that still uses it.
+  // The site-wide locale selector is owned by js/i18n.js.
+  if (languageButton) {
+    languageButton.addEventListener('click', () => setLanguage(language === 'en' ? 'ar' : 'en'));
+    try {
+      if (localStorage.getItem('noor-language') === 'ar') setLanguage('ar');
+    } catch (_) { /* Default to English when storage is unavailable. */ }
+  }
+
+  document.addEventListener('noor:languagechange', (event) => {
+    language = event.detail && event.detail.language || document.documentElement.lang || 'en';
+    const localize = (source) => window.NOORLocalization ? window.NOORLocalization.translate(source, language) : source;
+    menuButton.setAttribute('aria-label', localize(nav.classList.contains('is-open') ? 'Close navigation' : 'Open navigation'));
+    pauseButton.setAttribute('aria-label', localize(feedback.en[paused ? 'play' : 'pause']));
+    Array.from(dotsContainer.children).forEach((dot, index) => {
+      dot.setAttribute('aria-label', localize('Show image') + ' ' + (index + 1));
+    });
+    copyButton.textContent = localize('Copy page link');
+    updateShareLinks();
+  });
 
   function closeMenu() {
     nav.classList.remove('is-open');
