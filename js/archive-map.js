@@ -493,6 +493,8 @@
       if (hub.node) {
         hub.node.classList.toggle('is-filtered-out', matchedInHub === 0);
         hub.node.classList.toggle('is-topic-muted', Boolean(mapTopic && mapTopic !== hub.key));
+        hub.node.setAttribute('aria-hidden', String(matchedInHub === 0));
+        hub.node.setAttribute('tabindex', matchedInHub === 0 ? '-1' : '0');
         hub.node.setAttribute('aria-pressed', String(selectedKey === hub.id));
       }
     });
