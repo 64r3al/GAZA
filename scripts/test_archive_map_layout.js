@@ -29,7 +29,7 @@ const categories = keys.map((key) => {
   const theta = (angles[key] == null ? -90 : angles[key]) * Math.PI / 180;
   return {
     key, id: 'topic:' + key, theta,
-    x: center.x + Math.cos(theta) * 285,
+    x: center.x + Math.cos(theta) * 330,
     y: center.y + Math.sin(theta) * 285,
     records: []
   };
@@ -51,7 +51,7 @@ categories.forEach((hub) => {
 });
 
 const result = layout.layoutRecordsWithoutCollisions(records, categories, {
-  center, recordWidth: 226, recordHeight: 100, hubWidth: 190, hubHeight: 70,
+  center, recordWidth: 226, recordHeight: 100, hubWidth: 170, hubHeight: 70,
   rootWidth: 168, rootHeight: 168, margin: 20
 });
 assert.equal(result.records.length, 18, 'Collision layout must retain every record node.');
@@ -64,7 +64,7 @@ for (const record of result.records) {
 for (let i = 0; i < categories.length; i += 1) {
   for (let j = i + 1; j < categories.length; j += 1) {
     const a = categories[i], b = categories[j];
-    const overlapX = (190 + 190) / 2 + 20 - Math.abs(a.x - b.x);
+    const overlapX = (170 + 170) / 2 + 20 - Math.abs(a.x - b.x);
     const overlapY = (70 + 70) / 2 + 20 - Math.abs(a.y - b.y);
     assert.ok(!(overlapX > 0 && overlapY > 0), 'Topic hubs must not overlap: ' + a.key + ' / ' + b.key);
   }
