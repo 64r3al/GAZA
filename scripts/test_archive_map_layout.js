@@ -30,7 +30,7 @@ const categories = keys.map((key) => {
   return {
     key, id: 'topic:' + key, theta,
     x: center.x + Math.cos(theta) * 330,
-    y: center.y + Math.sin(theta) * 285,
+    y: center.y + Math.sin(theta) * 330,
     records: []
   };
 }).sort((left, right) => left.theta - right.theta);
