@@ -518,7 +518,7 @@
       "IMAGES GRAPHIQUES ÉPROUVANTES : la BBC avertit explicitement que ce reportage contient des images d’enfants blessés, dont beaucoup présentent des blessures mortelles. Aucun aperçu n’est affiché ici.",
       "IMÁGENES GRÁFICAS PERTURBADORAS: la BBC advierte expresamente que el informe contiene imágenes de niños heridos, muchos con lesiones mortales. Aquí no se muestra ninguna vista previa.",
       "IMAGENS GRÁFICAS PERTURBADORAS: a BBC adverte explicitamente que esta reportagem contém imagens de crianças feridas, muitas com ferimentos mortais. Não é mostrada qualquer pré-visualização.",
-      "DRastische, verstörende Bilder: Die BBC warnt ausdrücklich, dass dieser Bericht Bilder verletzter Kinder enthält, viele davon mit tödlichen Verletzungen. Hier wird keine Vorschau angezeigt."
+      "GRAFISCHE, BELASTENDE BILDER: Die BBC warnt ausdrücklich, dass dieser Bericht Bilder verletzter Kinder enthält, viele davon mit tödlichen Verletzungen. Hier wird keine Vorschau angezeigt."
     ],
     "I have read the graphic-content warning and choose to load this report.": ["J’ai lu l’avertissement sur les images graphiques et je choisis de charger ce rapport.", "He leído la advertencia sobre imágenes gráficas y elijo cargar este informe.", "Li o aviso sobre imagens gráficas e escolho carregar este relatório.", "Ich habe die Warnung vor drastischen Bildern gelesen und möchte diesen Bericht laden."],
     "Acknowledge to load BBC report": ["Confirmer pour charger le rapport de la BBC", "Confirmar para cargar el informe de la BBC", "Confirmar para carregar o relatório da BBC", "Bestätigen, um den BBC-Bericht zu laden"],
