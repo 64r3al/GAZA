@@ -57,7 +57,76 @@
     if (option.value) categoryNames.set(option.value, option);
   });
 
-  const getLang = () => document.documentElement.lang === 'ar' ? 'ar' : 'en';
+  const MAP_COPY = {
+    en: {
+      evidenceMap: 'EVIDENCE MAP', sourceRecords: 'SOURCE RECORDS', sourceRecord: 'SOURCE RECORD',
+      topicNode: 'TOPIC NODE', record: 'RECORD', records: 'RECORDS', dateNotListed: 'DATE NOT LISTED',
+      archiveSourceRecord: 'ARCHIVE SOURCE RECORD', subjectCluster: 'SUBJECT CLUSTER',
+      openFullRecord: 'OPEN FULL RECORD ↓', openArchiveFilters: 'OPEN ARCHIVE FILTERS ↓',
+      recordsVisible: '{visible} / {total} RECORDS VISIBLE · {topics} TOPIC HUBS',
+      centralAria: 'NOOR central evidence archive', topicAria: 'topic hub', selectNode: 'Select a node.',
+      topicHelp: 'This hub groups archive records under the same subject. Connections show how the records are classified, not proof of legal responsibility.',
+      locationUnknown: 'LOCATION NOT LISTED', noResults: 'No records match these filters.', noSources: 'No additional source links are attached to this topic hub.', visibleAfterFilters: 'visible after filters'
+    },
+    ar: {
+      evidenceMap: 'خريطة الأدلة', sourceRecords: 'سجلات المصادر', sourceRecord: 'سجل المصدر',
+      topicNode: 'محور موضوعي', record: 'سجل', records: 'سجلات', dateNotListed: 'التاريخ غير مذكور',
+      archiveSourceRecord: 'سجل مصدر من الأرشيف', subjectCluster: 'مجموعة موضوعية',
+      openFullRecord: 'افتح السجل الكامل ↓', openArchiveFilters: 'افتح عوامل التصفية ↓',
+      recordsVisible: '{visible} من {total} سجل ظاهر · {topics} محاور موضوعية',
+      centralAria: 'أرشيف نور المركزي للأدلة', topicAria: 'محور موضوعي', selectNode: 'اختر عقدة.',
+      topicHelp: 'يجمع هذا المحور سجلات الأرشيف ذات الموضوع نفسه. توضّح الروابط تصنيف السجلات ولا تثبت المسؤولية القانونية.',
+      locationUnknown: 'الموقع غير مذكور', noResults: 'لا توجد سجلات تطابق عوامل التصفية.', noSources: 'لا توجد روابط مصادر إضافية مرفقة بهذا المحور.', visibleAfterFilters: 'مرئية بعد التصفية'
+    },
+    fr: {
+      evidenceMap: 'CARTE DES PREUVES', sourceRecords: 'SOURCES ARCHIVÉES', sourceRecord: 'SOURCE',
+      topicNode: 'THÈME', record: 'DOSSIER', records: 'DOSSIERS', dateNotListed: 'DATE NON INDIQUÉE',
+      archiveSourceRecord: 'SOURCE DE L’ARCHIVE', subjectCluster: 'GROUPE THÉMATIQUE',
+      openFullRecord: 'OUVRIR LE DOSSIER COMPLET ↓', openArchiveFilters: 'OUVRIR LES FILTRES ↓',
+      recordsVisible: '{visible} / {total} DOSSIERS VISIBLES · {topics} THÈMES',
+      centralAria: 'Archives centrales de preuves NOOR', topicAria: 'thème', selectNode: 'Sélectionnez un nœud.',
+      topicHelp: 'Ce thème regroupe les dossiers sur un même sujet. Les liens montrent le classement des sources, pas une preuve de responsabilité juridique.',
+      locationUnknown: 'LIEU NON INDIQUÉ', noResults: 'Aucun dossier ne correspond à ces filtres.', noSources: 'Aucun autre lien source n’est associé à ce thème.', visibleAfterFilters: 'visibles après filtrage'
+    },
+    es: {
+      evidenceMap: 'MAPA DE EVIDENCIAS', sourceRecords: 'REGISTROS FUENTE', sourceRecord: 'REGISTRO FUENTE',
+      topicNode: 'TEMA', record: 'REGISTRO', records: 'REGISTROS', dateNotListed: 'FECHA NO INDICADA',
+      archiveSourceRecord: 'REGISTRO DEL ARCHIVO', subjectCluster: 'GRUPO TEMÁTICO',
+      openFullRecord: 'ABRIR REGISTRO COMPLETO ↓', openArchiveFilters: 'ABRIR FILTROS DEL ARCHIVO ↓',
+      recordsVisible: '{visible} / {total} REGISTROS VISIBLES · {topics} TEMAS',
+      centralAria: 'Archivo central de evidencias de NOOR', topicAria: 'tema', selectNode: 'Selecciona un nodo.',
+      topicHelp: 'Este grupo reúne registros sobre el mismo tema. Los enlaces muestran cómo se clasifican las fuentes, no prueban responsabilidad jurídica.',
+      locationUnknown: 'UBICACIÓN NO INDICADA', noResults: 'Ningún registro coincide con estos filtros.', noSources: 'Este tema no tiene enlaces de fuentes adicionales.', visibleAfterFilters: 'visibles tras aplicar filtros'
+    },
+    pt: {
+      evidenceMap: 'MAPA DE EVIDÊNCIAS', sourceRecords: 'REGISTOS DE ORIGEM', sourceRecord: 'REGISTO DE ORIGEM',
+      topicNode: 'TEMA', record: 'REGISTO', records: 'REGISTOS', dateNotListed: 'DATA NÃO INDICADA',
+      archiveSourceRecord: 'REGISTO DO ARQUIVO', subjectCluster: 'GRUPO TEMÁTICO',
+      openFullRecord: 'ABRIR REGISTO COMPLETO ↓', openArchiveFilters: 'ABRIR FILTROS DO ARQUIVO ↓',
+      recordsVisible: '{visible} / {total} REGISTOS VISÍVEIS · {topics} TEMAS',
+      centralAria: 'Arquivo central de evidências da NOOR', topicAria: 'tema', selectNode: 'Selecione um nó.',
+      topicHelp: 'Este grupo reúne registos sobre o mesmo tema. As ligações mostram a classificação das fontes, não provam responsabilidade jurídica.',
+      locationUnknown: 'LOCAL NÃO INDICADO', noResults: 'Nenhum registo corresponde a estes filtros.', noSources: 'Este tema não tem ligações adicionais a fontes.', visibleAfterFilters: 'visíveis após filtrar'
+    },
+    de: {
+      evidenceMap: 'BELEGKARTE', sourceRecords: 'QUELLENBELEGE', sourceRecord: 'QUELLENBELEG',
+      topicNode: 'THEMA', record: 'EINTRAG', records: 'EINTRÄGE', dateNotListed: 'DATUM NICHT ANGEGEBEN',
+      archiveSourceRecord: 'ARCHIVQUELLE', subjectCluster: 'THEMENGRUPPE',
+      openFullRecord: 'VOLLSTÄNDIGEN EINTRAG ÖFFNEN ↓', openArchiveFilters: 'ARCHIVFILTER ÖFFNEN ↓',
+      recordsVisible: '{visible} / {total} EINTRÄGE SICHTBAR · {topics} THEMEN',
+      centralAria: 'Zentrales NOOR-Belegarchiv', topicAria: 'Themenknoten', selectNode: 'Knoten auswählen.',
+      topicHelp: 'Dieser Knoten gruppiert Archivbelege zum selben Thema. Die Verbindungen zeigen die Klassifizierung der Quellen, keinen Beweis rechtlicher Verantwortung.',
+      locationUnknown: 'ORT NICHT ANGEGEBEN', noResults: 'Keine Einträge entsprechen diesen Filtern.', noSources: 'Mit diesem Themenknoten sind keine weiteren Quellenlinks verknüpft.', visibleAfterFilters: 'nach Filterung sichtbar'
+    }
+  };
+  const getLang = () => window.NOORLocalization
+    ? window.NOORLocalization.getLanguage()
+    : (['en', 'ar', 'fr', 'es', 'pt', 'de'].includes(document.documentElement.lang) ? document.documentElement.lang : 'en');
+  const mapCopy = (key) => (MAP_COPY[getLang()] && MAP_COPY[getLang()][key]) || MAP_COPY.en[key] || key;
+  const translateValue = (value) => window.NOORLocalization
+    ? window.NOORLocalization.translate(value, getLang())
+    : value;
+  const isRtl = () => getLang() === 'ar';
   const txt = (element) => (element ? element.textContent : '').trim();
   const attrText = (element, lang = getLang()) => {
     if (!element) return '';
@@ -229,15 +298,15 @@
     const g = svgEl('g', {
       class: 'archive-network-node archive-network-node-center',
       'data-node-id': 'archive-root',
-      role: 'button', tabindex: '0', 'aria-label': 'NOOR central evidence archive'
+      role: 'button', tabindex: '0', 'aria-label': mapCopy('centralAria')
     });
     g.appendChild(svgEl('circle', { cx: CENTER.x, cy: CENTER.y, r: 84, class: 'archive-network-center-glow' }));
     g.appendChild(svgEl('circle', { cx: CENTER.x, cy: CENTER.y, r: 75, class: 'archive-network-center-ring' }));
     g.appendChild(svgEl('circle', { cx: CENTER.x, cy: CENTER.y, r: 66, class: 'archive-network-center-inner' }));
     g.appendChild(svgEl('path', { d: 'M ' + (CENTER.x - 38) + ' ' + (CENTER.y - 35) + ' h 76', class: 'archive-network-center-rule' }));
     appendText(g, CENTER.x, CENTER.y - 12, 'NOOR', 'archive-network-center-title', { 'text-anchor': 'middle' });
-    appendText(g, CENTER.x, CENTER.y + 10, 'EVIDENCE MAP', 'archive-network-center-label', { 'text-anchor': 'middle' });
-    appendText(g, CENTER.x, CENTER.y + 35, records.length + ' SOURCE RECORDS', 'archive-network-center-count', { 'text-anchor': 'middle' });
+    appendText(g, CENTER.x, CENTER.y + 10, mapCopy('evidenceMap'), 'archive-network-center-label', { 'text-anchor': 'middle', direction: isRtl() ? 'rtl' : 'ltr', 'unicode-bidi': 'plaintext' });
+    appendText(g, CENTER.x, CENTER.y + 35, records.length + ' ' + mapCopy('sourceRecords'), 'archive-network-center-count', { 'text-anchor': 'middle', direction: isRtl() ? 'rtl' : 'ltr', 'unicode-bidi': 'plaintext' });
     return g;
   }
 
@@ -246,13 +315,20 @@
       class: 'archive-network-node archive-network-node-topic',
       transform: 'translate(' + (hub.x - HUB_W / 2) + ' ' + (hub.y - HUB_H / 2) + ')',
       'data-node-id': hub.id, 'data-node-type': 'topic', 'data-topic': hub.key,
-      role: 'button', tabindex: '0', 'aria-pressed': 'false', 'aria-label': hub.label + ' topic hub'
+      role: 'button', tabindex: '0', 'aria-pressed': 'false', 'aria-label': hub.label + ' ' + mapCopy('topicAria')
     });
     g.appendChild(svgEl('rect', { x: 0, y: 0, width: HUB_W, height: HUB_H, rx: 3, class: 'archive-network-topic-card' }));
-    g.appendChild(svgEl('circle', { cx: 14, cy: 16, r: 3, class: 'archive-network-topic-dot' }));
-    const lines = wrapWords(hub.label.toUpperCase(), 18, 2);
-    lines.forEach((line, i) => appendText(g, 26, 19 + i * 14, line, 'archive-network-topic-title'));
-    appendText(g, 13, HUB_H - 12, 'TOPIC NODE / ' + String(hub.count).padStart(2, '0') + ' RECORD' + (hub.count === 1 ? '' : 'S'), 'archive-network-node-meta');
+    g.appendChild(svgEl('circle', { cx: isRtl() ? HUB_W - 14 : 14, cy: 16, r: 3, class: 'archive-network-topic-dot' }));
+    const titleMax = isRtl() ? 17 : (['fr', 'es', 'pt', 'de'].includes(getLang()) ? 18 : 20);
+    const titleLines = wrapWords(hub.label.toLocaleUpperCase(getLang()), titleMax, 2);
+    titleLines.forEach((line, i) => appendText(g, isRtl() ? HUB_W - 12 : 26, 19 + i * 14, line, 'archive-network-topic-title', {
+      'text-anchor': isRtl() ? 'end' : 'start',
+      direction: isRtl() ? 'rtl' : 'ltr',
+      'unicode-bidi': 'plaintext'
+    }));
+    appendText(g, isRtl() ? HUB_W - 12 : 13, HUB_H - 12,
+      mapCopy('topicNode') + ' / ' + String(hub.count).padStart(2, '0') + ' ' + (hub.count === 1 ? mapCopy('record') : mapCopy('records')),
+      'archive-network-node-meta', { 'text-anchor': isRtl() ? 'end' : 'start', direction: isRtl() ? 'rtl' : 'ltr', 'unicode-bidi': 'plaintext' });
     hub.node = g;
     return g;
   }
@@ -265,15 +341,31 @@
       transform: 'translate(' + (record.x - RECORD_W / 2) + ' ' + (record.y - RECORD_H / 2) + ')',
       'data-node-id': record.key, 'data-node-type': 'record', 'data-topic': record.category,
       role: 'button', tabindex: '0', 'aria-pressed': 'false',
-      'aria-label': record.title
+      'aria-label': record.title + ' — ' + mapCopy('sourceRecord'),
+      lang: getLang(), direction: isRtl() ? 'rtl' : 'ltr'
     });
     g.appendChild(svgEl('rect', { x: 0, y: 0, width: RECORD_W, height: RECORD_H, rx: 2, class: 'archive-network-record-card' }));
-    g.appendChild(svgEl('rect', { x: 0, y: 0, width: 4, height: RECORD_H, class: 'archive-network-record-stripe' }));
-    appendText(g, 12, 16, 'SOURCE RECORD / ' + String(record.index).padStart(3, '0'), 'archive-network-record-id');
-    const lines = wrapWords(record.title, 29, 2);
-    lines.forEach((line, i) => appendText(g, 12, 38 + i * 14, line, 'archive-network-record-title'));
-    const dateLabel = record.start ? record.start.slice(0, 4) + (record.end && record.end.slice(0, 4) !== record.start.slice(0, 4) ? '–' + record.end.slice(0, 4) : '') : 'DATE NOT LISTED';
-    appendText(g, 12, RECORD_H - 8, dateLabel + '  /  ' + record.status.toUpperCase().replace(/-/g, ' ').slice(0, 20), 'archive-network-node-meta');
+    g.appendChild(svgEl('rect', { x: isRtl() ? RECORD_W - 4 : 0, y: 0, width: 4, height: RECORD_H, class: 'archive-network-record-stripe' }));
+    appendText(g, isRtl() ? RECORD_W - 12 : 12, 16, mapCopy('sourceRecord') + ' / ' + String(record.index).padStart(3, '0'), 'archive-network-record-id', {
+      'text-anchor': isRtl() ? 'end' : 'start', direction: 'ltr', 'unicode-bidi': 'plaintext'
+    });
+    const titleMax = isRtl() ? 18 : (['fr', 'es', 'pt', 'de'].includes(getLang()) ? 25 : 28);
+    const titleLines = wrapWords(record.title, titleMax, 3);
+    titleLines.forEach((line, i) => appendText(g, isRtl() ? RECORD_W - 12 : 12, 37 + i * 13, line, 'archive-network-record-title', {
+      'text-anchor': isRtl() ? 'end' : 'start',
+      direction: isRtl() ? 'rtl' : 'ltr',
+      'unicode-bidi': 'plaintext',
+      lang: getLang()
+    }));
+    const dateLabel = record.start ? record.start.slice(0, 4) + (record.end && record.end.slice(0, 4) !== record.start.slice(0, 4) ? '–' + record.end.slice(0, 4) : '') : mapCopy('dateNotListed');
+    const statusText = record.status ? translateValue(record.status.toUpperCase().replace(/-/g, ' ')).slice(0, 22) : '';
+    appendText(g, isRtl() ? RECORD_W - 12 : 12, RECORD_H - 8,
+      dateLabel + (statusText ? '  /  ' + statusText : ''),
+      'archive-network-node-meta', {
+        'text-anchor': isRtl() ? 'end' : 'start',
+        direction: isRtl() ? 'rtl' : 'ltr',
+        'unicode-bidi': 'plaintext'
+      });
     record.node = g;
     return g;
   }
@@ -444,7 +536,7 @@
     if (!sources.length) {
       const p = document.createElement('p');
       p.className = 'archive-map-no-sources';
-      p.textContent = getLang() === 'ar' ? 'لا توجد روابط مصدر إضافية ضمن هذا المحور.' : 'No additional source links are attached to this topic hub.';
+      p.textContent = mapCopy('noSources');
       sourceLinks.appendChild(p);
     } else {
       sources.forEach((link) => appendDetailLink(sourceLinks, link));
@@ -459,18 +551,18 @@
       item.node.classList.toggle('is-selected', selected);
       if (item.node.hasAttribute('aria-pressed')) item.node.setAttribute('aria-pressed', String(selected));
     });
-    const date = record.start ? record.start + (record.end && record.end !== record.start ? ' → ' + record.end : '') : 'Dates not listed';
+    const date = record.start ? record.start + (record.end && record.end !== record.start ? ' → ' + record.end : '') : mapCopy('dateNotListed');
     const meta = [
       record.categoryLabel,
       date,
-      record.location.replace(/-/g, ' '),
-      record.status.replace(/-/g, ' ')
+      record.location ? translateValue(record.location.replace(/-/g, ' ')) : mapCopy('locationUnknown'),
+      record.status ? translateValue(record.status.replace(/-/g, ' ')) : ''
     ];
     const caseLinks = record.links.filter((link) => /^case-[^#]+\.html(?:#.*)?$/.test(link.href) || link.href.startsWith('case-'));
-    const actions = [{ href: '#' + record.el.id, label: getLang() === 'ar' ? 'افتح السجل الكامل ↓' : 'OPEN FULL RECORD ↓', external: false }];
+    const actions = [{ href: '#' + record.el.id, label: mapCopy('openFullRecord'), external: false }];
     caseLinks.forEach((link) => actions.push(link));
     highlightRecordRelationships(record);
-    setPanel(record.title, 'SOURCE RECORD / ' + String(record.index).padStart(3, '0'), 'ARCHIVE SOURCE RECORD', meta, record.summary, actions, record.links.filter((link) => link.external).slice(0, 5));
+    setPanel(record.title, mapCopy('sourceRecord') + ' / ' + String(record.index).padStart(3, '0'), mapCopy('archiveSourceRecord'), meta, record.summary, actions, record.links.filter((link) => link.external).slice(0, 5));
   }
 
   function selectTopic(hub) {
@@ -490,15 +582,14 @@
     const visible = hub.records.filter((record) => !record.el.hidden);
     const actions = [{
       href: '#archive-filters',
-      label: getLang() === 'ar' ? 'افتح عوامل التصفية ↓' : 'OPEN ARCHIVE FILTERS ↓',
+      label: mapCopy('openArchiveFilters'),
       external: false
     }];
     highlightTopicRelationships(hub);
-    setPanel(hub.label, 'TOPIC HUB / ' + String(hub.count).padStart(2, '0'), 'SUBJECT CLUSTER', [
-      hub.count + ' records', visible.length + ' visible after filters'
-    ], getLang() === 'ar'
-      ? 'يجمع هذا المحور سجلات الأرشيف ذات الموضوع نفسه. تُعرض الروابط لتوضيح صلات التصنيف، لا لإثبات المسؤولية القانونية.'
-      : 'This hub groups archive records under the same subject. Connections show how the records are classified, not proof of legal responsibility.', actions, []);
+    setPanel(hub.label, mapCopy('topicNode') + ' / ' + String(hub.count).padStart(2, '0'), mapCopy('subjectCluster'), [
+      String(hub.count) + ' ' + mapCopy(hub.count === 1 ? 'record' : 'records'),
+      String(visible.length) + ' ' + mapCopy('visibleAfterFilters')
+    ], mapCopy('topicHelp'), actions, []);
     applyFilters();
   }
 
@@ -558,10 +649,10 @@
       const hub = categories.find((h) => h.id === path.getAttribute('data-to'));
       path.classList.toggle('is-muted-edge', Boolean(mapTopic && hub && mapTopic !== hub.key));
     });
-    const resultText = getLang() === 'ar'
-      ? 'السجلات الظاهرة: ' + matched + ' من ' + records.length + ' · المحاور: ' + categories.length
-      : '<strong>' + matched + '</strong> / ' + records.length + ' RECORDS VISIBLE <i>·</i> ' + categories.length + ' TOPIC HUBS';
-    resultLabel.innerHTML = resultText;
+    resultLabel.textContent = mapCopy('recordsVisible')
+      .replace('{visible}', String(matched))
+      .replace('{total}', String(records.length))
+      .replace('{topics}', String(categories.length));
     if (!records.some((r) => r.key === selectedKey && r.matches) &&
         !categories.some((h) => h.id === selectedKey && (!mapTopic || h.key === mapTopic))) {
       if (selectedKey.startsWith('record:')) resetDetails();
@@ -792,6 +883,27 @@
       }, 0);
     });
   }
+
+  document.addEventListener('noor:languagechange', () => {
+    // Record text and native select labels are localized by the shared runtime.
+    // Re-read them and rebuild all SVG text after the locale has been applied.
+    const previousQuery = queryInput.value;
+    const previousTopic = topicInput.value;
+    const previousSelection = selectedKey;
+    createGraph();
+    queryInput.value = previousQuery;
+    topicInput.value = previousTopic;
+    if (archiveQuery && archiveQuery.value !== previousQuery) archiveQuery.value = previousQuery;
+    applyFilters();
+
+    if (previousSelection.startsWith('record:')) {
+      const record = records.find((item) => item.key === previousSelection);
+      if (record) selectRecord(record);
+    } else if (previousSelection.startsWith('topic:')) {
+      const hub = categories.find((item) => item.id === previousSelection);
+      if (hub) selectTopic(hub);
+    }
+  });
 
   let resizeTimer = null;
   window.addEventListener('resize', () => {

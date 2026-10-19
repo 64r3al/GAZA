@@ -41,7 +41,7 @@ assert.match(runtime, /const LANGUAGES = \['en', 'ar', 'fr', 'es', 'pt', 'de'\]/
 assert.match(runtime, /function addTranslations\(extraRows\)/, 'Runtime must register the extended dictionary.');
 assert.match(runtime, /addTranslations\(window\.NOORTranslationRows\)/, 'Dictionary must be registered before first locale render.');
 assert.match(runtime, /noor:languagechange/, 'Runtime must announce completed locale changes.');
-assert.match(runtime, /html\.dir = isRtl \? 'rtl' : 'ltr'/, 'Runtime must control direction using the selected locale.');
+assert.match(runtime, /html\.dir = rtl \? 'rtl' : 'ltr'/, 'Runtime must control direction using the selected locale.');
 
 for (const pageName of pages) {
   const html = read(pageName);
@@ -65,13 +65,13 @@ assert.match(css, /unicode-bidi/, 'Mixed-script text must have bidi protections.
 assert.match(css, /\.noor-language-select/, 'Shared language control styles must be present.');
 
 const mapScript = read('js/archive-map.js');
-assert.match(mapScript, /function getLang/, 'Map must read the central selected language.');
+assert.match(mapScript, /const getLang =/, 'Map must read the central selected language.');
 assert.match(mapScript, /const MAP_COPY = \{[\s\S]*?de:/, 'Dynamic map labels must support all six locales.');
-assert.match(mapScript, /text-anchor.*anchor|text-anchor': anchor/, 'SVG text alignment must be locale-aware.');
+assert.match(mapScript, /text-anchor.*isRtl/, 'SVG text alignment must be locale-aware.');
 assert.match(mapScript, /noor:languagechange/, 'Map must rerender when the language changes.');
-assert.match(mapScript, /wrapWords\(record\.title, titleMax, 2\)/, 'Map title wrapping must adapt to RTL text width.');
+assert.match(mapScript, /wrapWords\(record\.title, titleMax, 3\)/, 'Map title wrapping must adapt to RTL text width.');
 
-for (const script of ['js/i18n.js','js/i18n-content.js','js/main.js','js/story.js','js/archive.js','js/research.js','js/archive-map.js']) {
+for (const script of ['js/i18n.js','js/i18n-content.js','js/main.js','js/story.js','js/archive.js','js/research.js','js/archive-map-layout.js','js/archive-map.js']) {
   const { execFileSync } = require('node:child_process');
   execFileSync(process.execPath, ['--check', path.join(root, script)]);
 }

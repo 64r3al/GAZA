@@ -26,6 +26,10 @@
   let focusInsideHero = false;
   let paused = reduceMotion.matches;
 
+  function translateUi(source) {
+    return window.NOORLocalization ? window.NOORLocalization.translate(source, language) : source;
+  }
+
   // Motion is progressive enhancement: content stays visible if scripts fail,
   // IntersectionObserver is unavailable, or the visitor prefers reduced motion.
   let revealObserver = null;
@@ -171,9 +175,9 @@
       element.alt = element.getAttribute('data-' + language + '-alt');
     });
     languageButton.setAttribute('aria-label', language === 'en' ? 'Switch language to Arabic' : 'حوّل اللغة إلى الإنجليزية');
-    menuButton.setAttribute('aria-label', language === 'en' ? (nav.classList.contains('is-open') ? 'Close navigation' : 'Open navigation') : (nav.classList.contains('is-open') ? 'إغلاق القائمة' : 'فتح القائمة'));
-    pauseButton.setAttribute('aria-label', feedback[language][paused ? 'play' : 'pause']);
-    Array.from(dotsContainer.children).forEach((dot, index) => { dot.setAttribute('aria-label', language === 'en' ? 'Show image ' + (index + 1) : 'عرض الصورة ' + (index + 1)); });
+    menuButton.setAttribute('aria-label', translateUi(nav.classList.contains('is-open') ? 'Close navigation' : 'Open navigation'));
+    pauseButton.setAttribute('aria-label', translateUi(feedback.en[paused ? 'play' : 'pause']));
+    Array.from(dotsContainer.children).forEach((dot, index) => { dot.setAttribute('aria-label', translateUi('Show image') + ' ' + (index + 1)); });
     copyButton.textContent = copyLabel[language];
     document.querySelectorAll('.footer-bottom p').forEach((paragraph) => {
       paragraph.textContent = paragraph.textContent.replace(/2026/g, String(currentYear));
@@ -182,21 +186,37 @@
     updateShareLinks();
   }
 
-  languageButton.addEventListener('click', () => setLanguage(language === 'en' ? 'ar' : 'en'));
-  try {
-    if (localStorage.getItem('noor-language') === 'ar') setLanguage('ar');
-  } catch (_) { /* Default to English when storage is unavailable. */ }
+  // Legacy two-language toggle remains available only on markup that still uses it.
+  // The site-wide locale selector is owned by js/i18n.js.
+  if (languageButton) {
+    languageButton.addEventListener('click', () => setLanguage(language === 'en' ? 'ar' : 'en'));
+    try {
+      if (localStorage.getItem('noor-language') === 'ar') setLanguage('ar');
+    } catch (_) { /* Default to English when storage is unavailable. */ }
+  }
+
+  document.addEventListener('noor:languagechange', (event) => {
+    language = event.detail && event.detail.language || document.documentElement.lang || 'en';
+    const localize = (source) => window.NOORLocalization ? window.NOORLocalization.translate(source, language) : source;
+    menuButton.setAttribute('aria-label', localize(nav.classList.contains('is-open') ? 'Close navigation' : 'Open navigation'));
+    pauseButton.setAttribute('aria-label', localize(feedback.en[paused ? 'play' : 'pause']));
+    Array.from(dotsContainer.children).forEach((dot, index) => {
+      dot.setAttribute('aria-label', localize('Show image') + ' ' + (index + 1));
+    });
+    copyButton.textContent = localize('Copy page link');
+    updateShareLinks();
+  });
 
   function closeMenu() {
     nav.classList.remove('is-open');
     menuButton.setAttribute('aria-expanded', 'false');
-    menuButton.setAttribute('aria-label', language === 'en' ? 'Open navigation' : 'فتح القائمة');
+    menuButton.setAttribute('aria-label', translateUi('Open navigation'));
   }
 
   menuButton.addEventListener('click', () => {
     const isOpen = nav.classList.toggle('is-open');
     menuButton.setAttribute('aria-expanded', String(isOpen));
-    menuButton.setAttribute('aria-label', language === 'en' ? (isOpen ? 'Close navigation' : 'Open navigation') : (isOpen ? 'إغلاق القائمة' : 'فتح القائمة'));
+    menuButton.setAttribute('aria-label', translateUi(isOpen ? 'Close navigation' : 'Open navigation'));
   });
   nav.addEventListener('click', (event) => {
     if (event.target.closest('a')) closeMenu();
@@ -258,7 +278,7 @@
   function updatePauseButton() {
     pauseButton.textContent = paused ? '▶' : 'Ⅱ';
     pauseButton.setAttribute('aria-pressed', String(paused));
-    pauseButton.setAttribute('aria-label', feedback[language][paused ? 'play' : 'pause']);
+    pauseButton.setAttribute('aria-label', translateUi(feedback.en[paused ? 'play' : 'pause']));
   }
 
   slides.forEach((_, index) => {
@@ -312,9 +332,7 @@
   // Build fresh, correctly encoded share URLs for the current page and language.
   function updateShareLinks() {
     const pageUrl = getShareableUrl();
-    const shareText = language === 'en'
-      ? 'NOOR — a light for every child. Learn more and find official ways to help.'
-      : 'نور لكل طفل — تعرّف على طرق المساعدة الرسمية.';
+    const shareText = translateUi('NOOR — a light for every child. Learn more and find official ways to help.');
 
     const whatsappUrl = new URL('https://wa.me/');
     whatsappUrl.searchParams.set('text', shareText + ' ' + pageUrl);
@@ -337,7 +355,7 @@
       if (navigator.clipboard && window.isSecureContext) {
         try {
           await navigator.clipboard.writeText(currentUrl);
-          shareStatus.textContent = feedback[language].copied;
+          shareStatus.textContent = translateUi(feedback.en.copied);
           return;
         } catch (_) {
           // Fall through to the compatibility copy method if permission is denied.
@@ -360,9 +378,9 @@
         temporaryInput.remove();
       }
       if (!successful) throw new Error('Clipboard copy command failed');
-      shareStatus.textContent = feedback[language].copied;
+      shareStatus.textContent = translateUi(feedback.en.copied);
     } catch (_) {
-      shareStatus.textContent = feedback[language].failed;
+      shareStatus.textContent = translateUi(feedback.en.failed);
     }
   }
   copyButton.addEventListener('click', copyPageLink);

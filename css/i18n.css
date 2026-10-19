@@ -37,3 +37,40 @@
  :root[dir="rtl"] .archive-network-status{align-items:flex-start}
 }
 @media(prefers-reduced-motion:reduce){.noor-language-select{scroll-behavior:auto}}
+
+/* Layout hardening for mixed-script copy and longer European-language labels. */
+.noor-language-wrap{flex:0 0 auto;min-width:0}
+.noor-language-select{font-variant-ligatures:none;white-space:nowrap}
+.noor-language-select option{direction:ltr;text-align:left}
+:root[dir="rtl"] body{direction:rtl;text-align:start}
+:root[dir="rtl"] :is(h1,h2,h3,h4,h5,p,li,dt,dd,label,figcaption,blockquote){text-align:start}
+:root[dir="rtl"] :is(input,textarea,select){text-align:start}
+:root[lang="ar"] :is(h1,h2,h3,h4,h5,p,li,dt,dd,label,figcaption,blockquote){line-height:1.85}
+:root[lang="ar"] .research-hero h1{line-height:1.28;letter-spacing:0}
+:root[lang="ar"] .research-hero-deck,:root[lang="ar"] .research-method-content p,:root[lang="ar"] .research-caution{line-height:2}
+:root[dir="rtl"] .research-header-actions,:root[dir="rtl"] .story-header-actions,:root[dir="rtl"] .archive-header-right{direction:rtl;flex-wrap:wrap}
+:root[dir="rtl"] .archive-network-heading,:root[dir="rtl"] .archive-network-tools,:root[dir="rtl"] .archive-network-details{min-width:0;text-align:start}
+:root[dir="rtl"] .archive-network-record-title,:root[dir="rtl"] .archive-network-topic-title{font-family:"Cairo","Noto Sans Arabic",Tahoma,sans-serif;font-kerning:normal;letter-spacing:0;unicode-bidi:plaintext}
+:root[lang="ar"] .archive-network-record-title{font-size:14px}
+:root[lang="ar"] .archive-network-topic-title{font-size:15px}
+:root[dir="rtl"] .archive-network-node-meta,:root[dir="rtl"] .archive-network-record-id{font-family:"DM Sans","Cairo",sans-serif;letter-spacing:0;unicode-bidi:plaintext}
+:root[dir="rtl"] .archive-map-detail-meta{direction:rtl}
+:root[dir="rtl"] .archive-map-detail-meta span{unicode-bidi:plaintext;overflow-wrap:anywhere}
+:root[dir="rtl"] #archive-map-detail-title{line-height:1.25;letter-spacing:0;overflow-wrap:anywhere}
+:root[dir="rtl"] .archive-map-detail-summary{line-height:2;overflow-wrap:anywhere}
+:root[dir="rtl"] .archive-map-source-links a{overflow-wrap:anywhere;line-height:1.9}
+:root[dir="rtl"] .archive-network-map-note{line-height:2;overflow-wrap:anywhere}
+:root[dir="rtl"] .archive-network-status{gap:8px}
+:root[dir="rtl"] .archive-network-hint{direction:rtl;text-align:start}
+:root[dir="rtl"] .archive-network-legend{justify-content:flex-start}
+:root[dir="rtl"] .archive-network-details-footer{flex-wrap:wrap}
+:root[dir="rtl"] .archive-map-gesture-list kbd{direction:ltr}
+:root[dir="rtl"] .archive-network-tools input{direction:rtl;text-align:start}
+:root[dir="rtl"] .archive-network-map-controls{direction:ltr}
+[lang="en"],[lang="fr"],[lang="es"],[lang="pt"],[lang="de"]{unicode-bidi:isolate}
+@media(max-width:760px){
+  .noor-language-wrap{margin-inline-start:4px}
+  .noor-language-select{min-width:94px;max-width:100%;padding-inline:8px 22px}
+  :root[dir="rtl"] .archive-network-head{direction:rtl}
+  :root[dir="rtl"] .archive-network-tools{direction:rtl}
+}

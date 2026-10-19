@@ -19,7 +19,10 @@
       card.hidden = !matches;
       if (matches) visible++;
     });
-    count.textContent = visible + (visible === 1 ? ' source entry' : ' source entries');
+    const language = document.documentElement.lang || 'en';
+    const singular = window.NOORLocalization ? window.NOORLocalization.translate('source entry', language) : 'source entry';
+    const plural = window.NOORLocalization ? window.NOORLocalization.translate('source entries', language) : 'source entries';
+    count.textContent = visible + ' ' + (visible === 1 ? singular : plural);
     empty.hidden = visible !== 0;
   }
   [query, kind, topic].forEach((control) => control.addEventListener('input', filter));
@@ -30,5 +33,6 @@
     filter();
     query.focus();
   });
+  document.addEventListener('noor:languagechange', filter);
   filter();
 })();
