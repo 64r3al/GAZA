@@ -11,7 +11,7 @@
     const center = opts.center || { x: 1100, y: 800 };
     const recordW = opts.recordWidth || 226;
     const recordH = opts.recordHeight || 100;
-    const hubW = opts.hubWidth || 190;
+    const hubW = opts.hubWidth || 170;
     const hubH = opts.hubHeight || 70;
     const rootW = opts.rootWidth || 168;
     const rootH = opts.rootHeight || 168;
