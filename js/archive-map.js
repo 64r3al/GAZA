@@ -551,18 +551,18 @@
       item.node.classList.toggle('is-selected', selected);
       if (item.node.hasAttribute('aria-pressed')) item.node.setAttribute('aria-pressed', String(selected));
     });
-    const date = record.start ? record.start + (record.end && record.end !== record.start ? ' → ' + record.end : '') : 'Dates not listed';
+    const date = record.start ? record.start + (record.end && record.end !== record.start ? ' → ' + record.end : '') : mapCopy('dateNotListed');
     const meta = [
       record.categoryLabel,
       date,
-      record.location.replace(/-/g, ' '),
-      record.status.replace(/-/g, ' ')
+      record.location ? translateValue(record.location.replace(/-/g, ' ')) : mapCopy('locationUnknown'),
+      record.status ? translateValue(record.status.replace(/-/g, ' ')) : ''
     ];
     const caseLinks = record.links.filter((link) => /^case-[^#]+\.html(?:#.*)?$/.test(link.href) || link.href.startsWith('case-'));
-    const actions = [{ href: '#' + record.el.id, label: getLang() === 'ar' ? 'افتح السجل الكامل ↓' : 'OPEN FULL RECORD ↓', external: false }];
+    const actions = [{ href: '#' + record.el.id, label: mapCopy('openFullRecord'), external: false }];
     caseLinks.forEach((link) => actions.push(link));
     highlightRecordRelationships(record);
-    setPanel(record.title, 'SOURCE RECORD / ' + String(record.index).padStart(3, '0'), 'ARCHIVE SOURCE RECORD', meta, record.summary, actions, record.links.filter((link) => link.external).slice(0, 5));
+    setPanel(record.title, mapCopy('sourceRecord') + ' / ' + String(record.index).padStart(3, '0'), mapCopy('archiveSourceRecord'), meta, record.summary, actions, record.links.filter((link) => link.external).slice(0, 5));
   }
 
   function selectTopic(hub) {
@@ -582,15 +582,14 @@
     const visible = hub.records.filter((record) => !record.el.hidden);
     const actions = [{
       href: '#archive-filters',
-      label: getLang() === 'ar' ? 'افتح عوامل التصفية ↓' : 'OPEN ARCHIVE FILTERS ↓',
+      label: mapCopy('openArchiveFilters'),
       external: false
     }];
     highlightTopicRelationships(hub);
-    setPanel(hub.label, 'TOPIC HUB / ' + String(hub.count).padStart(2, '0'), 'SUBJECT CLUSTER', [
-      hub.count + ' records', visible.length + ' visible after filters'
-    ], getLang() === 'ar'
-      ? 'يجمع هذا المحور سجلات الأرشيف ذات الموضوع نفسه. تُعرض الروابط لتوضيح صلات التصنيف، لا لإثبات المسؤولية القانونية.'
-      : 'This hub groups archive records under the same subject. Connections show how the records are classified, not proof of legal responsibility.', actions, []);
+    setPanel(hub.label, mapCopy('topicNode') + ' / ' + String(hub.count).padStart(2, '0'), mapCopy('subjectCluster'), [
+      String(hub.count) + ' ' + mapCopy(hub.count === 1 ? 'record' : 'records'),
+      String(visible.length) + ' ' + translateValue('visible after filters')
+    ], mapCopy('topicHelp'), actions, []);
     applyFilters();
   }
 
@@ -650,10 +649,10 @@
       const hub = categories.find((h) => h.id === path.getAttribute('data-to'));
       path.classList.toggle('is-muted-edge', Boolean(mapTopic && hub && mapTopic !== hub.key));
     });
-    const resultText = getLang() === 'ar'
-      ? 'السجلات الظاهرة: ' + matched + ' من ' + records.length + ' · المحاور: ' + categories.length
-      : '<strong>' + matched + '</strong> / ' + records.length + ' RECORDS VISIBLE <i>·</i> ' + categories.length + ' TOPIC HUBS';
-    resultLabel.innerHTML = resultText;
+    resultLabel.textContent = mapCopy('recordsVisible')
+      .replace('{visible}', String(matched))
+      .replace('{total}', String(records.length))
+      .replace('{topics}', String(categories.length));
     if (!records.some((r) => r.key === selectedKey && r.matches) &&
         !categories.some((h) => h.id === selectedKey && (!mapTopic || h.key === mapTopic))) {
       if (selectedKey.startsWith('record:')) resetDetails();
@@ -884,6 +883,27 @@
       }, 0);
     });
   }
+
+  document.addEventListener('noor:languagechange', () => {
+    // Record text and native select labels are localized by the shared runtime.
+    // Re-read them and rebuild all SVG text after the locale has been applied.
+    const previousQuery = queryInput.value;
+    const previousTopic = topicInput.value;
+    const previousSelection = selectedKey;
+    createGraph();
+    queryInput.value = previousQuery;
+    topicInput.value = previousTopic;
+    if (archiveQuery && archiveQuery.value !== previousQuery) archiveQuery.value = previousQuery;
+    applyFilters();
+
+    if (previousSelection.startsWith('record:')) {
+      const record = records.find((item) => item.key === previousSelection);
+      if (record) selectRecord(record);
+    } else if (previousSelection.startsWith('topic:')) {
+      const hub = categories.find((item) => item.id === previousSelection);
+      if (hub) selectTopic(hub);
+    }
+  });
 
   let resizeTimer = null;
   window.addEventListener('resize', () => {
