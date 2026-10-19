@@ -19,6 +19,10 @@ jobs:
           python-version: "3.x"
       - name: Check JavaScript syntax
         run: node --check js/main.js
+      - name: Check localization runtime syntax
+        run: node --check js/i18n.js
+      - name: Check localization dictionary syntax
+        run: node --check js/i18n-content.js
       - name: Check story JavaScript syntax
         run: node --check js/story.js
       - name: Check archive JavaScript syntax
@@ -31,6 +35,8 @@ jobs:
         run: node --check js/research.js
       - name: Smoke-test archive filters and language controls
         run: node scripts/test_archive.js
+      - name: Test six-language localization and RTL layout
+        run: node scripts/test_i18n.js
       - name: Verify collision-free archive map layout
         run: node scripts/test_archive_map_layout.js
       - name: Test research navigation and methodology
