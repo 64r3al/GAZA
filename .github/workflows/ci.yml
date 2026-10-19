@@ -35,6 +35,8 @@ jobs:
         run: node scripts/test_archive_map_layout.js
       - name: Test research navigation and methodology
         run: node scripts/test_research.js
+      - name: Test six-language localization and RTL map
+        run: node scripts/test_i18n.js
       - name: Validate local assets and links
         run: python scripts/check_site.py
       - name: Install image optimization dependency
