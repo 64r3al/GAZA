@@ -2,7 +2,6 @@
   'use strict';
 
   const root = document.documentElement;
-  const languageButton = document.getElementById('archive-language');
   const form = document.getElementById('archive-filter-form');
   const queryInput = document.getElementById('archive-query');
   const fromInput = document.getElementById('archive-date-from');
@@ -26,7 +25,7 @@
   const originalOrder = new Map(cards.map((card, index) => [card, index]));
   const totalLabel = document.getElementById('archive-total');
   if (totalLabel) totalLabel.textContent = String(cards.length);
-  let language = 'en';
+  let language = document.documentElement.lang || 'en';
 
   function normalize(value) {
     return String(value || '')
@@ -36,38 +35,6 @@
       .trim();
   }
 
-  function setLanguage(nextLanguage) {
-    language = nextLanguage === 'ar' ? 'ar' : 'en';
-    root.lang = language;
-    root.dir = language === 'ar' ? 'rtl' : 'ltr';
-
-    document.querySelectorAll('[data-en][data-ar]').forEach((element) => {
-      element.textContent = element.getAttribute('data-' + language);
-    });
-
-    document.querySelectorAll('[data-en-placeholder][data-ar-placeholder]').forEach((element) => {
-      element.setAttribute('placeholder', element.getAttribute('data-' + language + '-placeholder'));
-    });
-
-    if (languageButton) {
-      languageButton.setAttribute(
-        'aria-label',
-        language === 'en' ? 'Switch language to Arabic' : 'حوّل اللغة إلى الإنجليزية'
-      );
-    }
-
-    document.title = language === 'en'
-      ? 'Gaza Evidence Archive | NOOR Field Notes'
-      : 'أرشيف الأدلة في غزة | ملاحظات نور الميدانية';
-
-    try {
-      localStorage.setItem('noor-language', language);
-    } catch (_) {
-      /* The archive works without persistent preferences. */
-    }
-
-    applyFilters();
-  }
 
   function sortCards() {
     const direction = sortInput && sortInput.value === 'oldest' ? 1 : -1;
@@ -134,24 +101,24 @@
     });
 
     noResults.hidden = visibleCount > 0 || invalidRange;
-    if (invalidRange) {
-      resultCount.textContent = language === 'en'
-        ? 'Invalid date range — start date must be on or before end date.'
-        : 'نطاق التاريخ غير صالح — يجب أن يكون تاريخ البداية في يوم النهاية أو قبله.';
-    } else if (visibleCount === 0) {
-      resultCount.textContent = language === 'en'
-        ? 'No matching records'
-        : 'لا توجد سجلات مطابقة';
-    } else {
-      resultCount.textContent = language === 'en'
-        ? 'Showing ' + visibleCount + ' of ' + cards.length + ' records'
-        : 'عرض ' + visibleCount + ' من أصل ' + cards.length + ' سجلات';
-    }
+    const messages = {
+      en: { invalid: 'Invalid date range — start date must be on or before end date.', none: 'No matching records', showing: (n, total) => 'Showing ' + n + ' of ' + total + ' records' },
+      ar: { invalid: 'نطاق التاريخ غير صالح — يجب أن يكون تاريخ البداية في يوم النهاية أو قبله.', none: 'لا توجد سجلات مطابقة', showing: (n, total) => 'عرض ' + n + ' من أصل ' + total + ' سجلات' },
+      fr: { invalid: 'Période invalide — la date de début doit précéder ou égaler la date de fin.', none: 'Aucun résultat correspondant', showing: (n, total) => n + ' enregistrements affichés sur ' + total },
+      es: { invalid: 'Rango de fechas no válido: la fecha inicial debe ser anterior o igual a la final.', none: 'No hay registros coincidentes', showing: (n, total) => 'Mostrando ' + n + ' de ' + total + ' registros' },
+      pt: { invalid: 'Intervalo de datas inválido: a data inicial deve ser anterior ou igual à data final.', none: 'Nenhum registo correspondente', showing: (n, total) => 'A mostrar ' + n + ' de ' + total + ' registos' },
+      de: { invalid: 'Ungültiger Zeitraum: Das Startdatum muss vor oder am Enddatum liegen.', none: 'Keine passenden Einträge', showing: (n, total) => n + ' von ' + total + ' Einträgen angezeigt' }
+    };
+    const message = messages[language] || messages.en;
+    if (invalidRange) resultCount.textContent = message.invalid;
+    else if (visibleCount === 0) resultCount.textContent = message.none;
+    else resultCount.textContent = message.showing(visibleCount, cards.length);
   }
 
-  if (languageButton) {
-    languageButton.addEventListener('click', () => setLanguage(language === 'en' ? 'ar' : 'en'));
-  }
+  document.addEventListener('noor:languagechange', (event) => {
+    language = event.detail && event.detail.language ? event.detail.language : (root.lang || 'en');
+    applyFilters();
+  });
 
   form.addEventListener('submit', (event) => {
     event.preventDefault();
@@ -215,9 +182,4 @@
   sortCards();
   applyFilters();
 
-  try {
-    if (localStorage.getItem('noor-language') === 'ar') setLanguage('ar');
-  } catch (_) {
-    /* Default to English when storage is unavailable. */
-  }
 })();
