@@ -250,7 +250,7 @@
     });
     g.appendChild(svgEl('rect', { x: 0, y: 0, width: HUB_W, height: HUB_H, rx: 3, class: 'archive-network-topic-card' }));
     g.appendChild(svgEl('circle', { cx: 14, cy: 16, r: 3, class: 'archive-network-topic-dot' }));
-    const lines = wrapWords(hub.label.toUpperCase(), 18, 2;
+    const lines = wrapWords(hub.label.toUpperCase(), 18, 2);
     lines.forEach((line, i) => appendText(g, 26, 19 + i * 14, line, 'archive-network-topic-title'));
     appendText(g, 13, HUB_H - 12, 'TOPIC NODE / ' + String(hub.count).padStart(2, '0') + ' RECORD' + (hub.count === 1 ? '' : 'S'), 'archive-network-node-meta');
     hub.node = g;
