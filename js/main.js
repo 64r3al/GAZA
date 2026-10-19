@@ -160,43 +160,58 @@
 
   setupResponseCounters();
 
+  function localized(source, fallback) {
+    if (window.NOORLocalization && typeof window.NOORLocalization.translate === 'function') {
+      return window.NOORLocalization.translate(source, language);
+    }
+    return fallback || source;
+  }
+
   function setLanguage(nextLanguage) {
-    language = nextLanguage === 'ar' ? 'ar' : 'en';
-    html.lang = language;
-    html.dir = language === 'ar' ? 'rtl' : 'ltr';
-    document.querySelectorAll('[data-en][data-ar]').forEach((element) => {
-      element.textContent = element.getAttribute('data-' + language);
-    });
-    document.querySelectorAll('[data-en-alt][data-ar-alt]').forEach((element) => {
-      element.alt = element.getAttribute('data-' + language + '-alt');
-    });
-    languageButton.setAttribute('aria-label', language === 'en' ? 'Switch language to Arabic' : 'حوّل اللغة إلى الإنجليزية');
-    menuButton.setAttribute('aria-label', language === 'en' ? (nav.classList.contains('is-open') ? 'Close navigation' : 'Open navigation') : (nav.classList.contains('is-open') ? 'إغلاق القائمة' : 'فتح القائمة'));
-    pauseButton.setAttribute('aria-label', feedback[language][paused ? 'play' : 'pause']);
-    Array.from(dotsContainer.children).forEach((dot, index) => { dot.setAttribute('aria-label', language === 'en' ? 'Show image ' + (index + 1) : 'عرض الصورة ' + (index + 1)); });
-    copyButton.textContent = copyLabel[language];
+    const supported = window.NOORLocalization && window.NOORLocalization.languages;
+    language = supported && supported.includes(nextLanguage)
+      ? nextLanguage
+      : (html.lang || 'en');
+    const openLabel = localized('Open navigation', language === 'ar' ? 'فتح القائمة' : 'Open navigation');
+    const closeLabel = localized('Close navigation', language === 'ar' ? 'إغلاق القائمة' : 'Close navigation');
+    if (menuButton) {
+      const isOpen = nav.classList.contains('is-open');
+      menuButton.setAttribute('aria-label', isOpen ? closeLabel : openLabel);
+    }
+    if (pauseButton) {
+      pauseButton.setAttribute('aria-label', localized(paused ? 'Play slideshow' : 'Pause slideshow', paused ? 'Play slideshow' : 'Pause slideshow'));
+    }
+    if (dotsContainer) {
+      const showImage = {
+        en: 'Show image', ar: 'عرض الصورة', fr: 'Afficher l’image',
+        es: 'Mostrar imagen', pt: 'Mostrar imagem', de: 'Bild anzeigen'
+      }[language] || 'Show image';
+      Array.from(dotsContainer.children).forEach((dot, index) => {
+        dot.setAttribute('aria-label', showImage + ' ' + (index + 1));
+      });
+    }
+    if (copyButton) copyButton.textContent = localized('Copy page link', copyLabel.en);
     document.querySelectorAll('.footer-bottom p').forEach((paragraph) => {
       paragraph.textContent = paragraph.textContent.replace(/2026/g, String(currentYear));
     });
-    try { localStorage.setItem('noor-language', language); } catch (_) { /* Storage can be disabled. */ }
     updateShareLinks();
   }
 
-  languageButton.addEventListener('click', () => setLanguage(language === 'en' ? 'ar' : 'en'));
-  try {
-    if (localStorage.getItem('noor-language') === 'ar') setLanguage('ar');
-  } catch (_) { /* Default to English when storage is unavailable. */ }
+  document.addEventListener('noor:languagechange', (event) => {
+    setLanguage(event.detail && event.detail.language ? event.detail.language : (html.lang || 'en'));
+  });
+  setLanguage((window.NOORLocalization && window.NOORLocalization.getLanguage()) || html.lang || 'en');
 
   function closeMenu() {
     nav.classList.remove('is-open');
     menuButton.setAttribute('aria-expanded', 'false');
-    menuButton.setAttribute('aria-label', language === 'en' ? 'Open navigation' : 'فتح القائمة');
+    menuButton.setAttribute('aria-label', localized('Open navigation', language === 'ar' ? 'فتح القائمة' : 'Open navigation'));
   }
 
   menuButton.addEventListener('click', () => {
     const isOpen = nav.classList.toggle('is-open');
     menuButton.setAttribute('aria-expanded', String(isOpen));
-    menuButton.setAttribute('aria-label', language === 'en' ? (isOpen ? 'Close navigation' : 'Open navigation') : (isOpen ? 'إغلاق القائمة' : 'فتح القائمة'));
+    menuButton.setAttribute('aria-label', localized(isOpen ? 'Close navigation' : 'Open navigation', language === 'ar' ? (isOpen ? 'إغلاق القائمة' : 'فتح القائمة') : (isOpen ? 'Close navigation' : 'Open navigation')));
   });
   nav.addEventListener('click', (event) => {
     if (event.target.closest('a')) closeMenu();
@@ -337,7 +352,7 @@
       if (navigator.clipboard && window.isSecureContext) {
         try {
           await navigator.clipboard.writeText(currentUrl);
-          shareStatus.textContent = feedback[language].copied;
+          shareStatus.textContent = localized('Link copied.', language === 'ar' ? 'تم نسخ الرابط.' : 'Link copied.');
           return;
         } catch (_) {
           // Fall through to the compatibility copy method if permission is denied.
@@ -362,7 +377,7 @@
       if (!successful) throw new Error('Clipboard copy command failed');
       shareStatus.textContent = feedback[language].copied;
     } catch (_) {
-      shareStatus.textContent = feedback[language].failed;
+      shareStatus.textContent = localized('Copy was unavailable. Copy the page address from your browser.', language === 'ar' ? 'تعذّر النسخ. انسخ عنوان الصفحة من المتصفح.' : 'Copy was unavailable. Copy the page address from your browser.');
     }
   }
   copyButton.addEventListener('click', copyPageLink);
