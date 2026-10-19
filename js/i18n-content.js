@@ -185,6 +185,9 @@
     ["A childhood should not be measured by what a child has survived.","لا ينبغي قياس الطفولة بما اضطر الطفل إلى النجاة منه.","L’enfance ne devrait pas se mesurer à ce qu’un enfant a dû survivre.","La infancia no debería medirse por aquello que un niño ha tenido que sobrevivir.","A infância não deve ser medida pelo que uma criança teve de sobreviver.","Kindheit sollte nicht daran gemessen werden, was ein Kind überleben musste."]
   ];
 
+  // Export the whole dictionary so the runtime can load it regardless of
+  // defer timing; if the runtime already exists, register the rows immediately too.
+  window.NOORTranslationRows = rows;
   if (window.NOORLocalization && typeof window.NOORLocalization.addTranslations === 'function') {
     window.NOORLocalization.addTranslations(rows);
   }
