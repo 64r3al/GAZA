@@ -278,7 +278,7 @@
   function updatePauseButton() {
     pauseButton.textContent = paused ? '▶' : 'Ⅱ';
     pauseButton.setAttribute('aria-pressed', String(paused));
-    pauseButton.setAttribute('aria-label', feedback[language][paused ? 'play' : 'pause']);
+    pauseButton.setAttribute('aria-label', translateUi(feedback.en[paused ? 'play' : 'pause']));
   }
 
   slides.forEach((_, index) => {
@@ -380,7 +380,7 @@
         temporaryInput.remove();
       }
       if (!successful) throw new Error('Clipboard copy command failed');
-      shareStatus.textContent = feedback[language].copied;
+      shareStatus.textContent = translateUi(feedback.en.copied);
     } catch (_) {
       shareStatus.textContent = translateUi(feedback.en.failed);
     }
