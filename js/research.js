@@ -21,9 +21,12 @@
     try { localStorage.setItem('noor-language', language); } catch (_) { /* Storage is optional. */ }
   }
 
-  if (languageButton) {
+  if (languageButton && !document.querySelector('[data-noor-language-select]')) {
     languageButton.addEventListener('click', () => setLanguage(root.lang === 'ar' ? 'en' : 'ar'));
   }
-  try { setLanguage(localStorage.getItem('noor-language') === 'ar' ? 'ar' : 'en'); }
-  catch (_) { setLanguage('en'); }
+  try {
+    if (!document.querySelector('[data-noor-language-select]')) setLanguage(localStorage.getItem('noor-language') === 'ar' ? 'ar' : 'en');
+  } catch (_) {
+    if (!document.querySelector('[data-noor-language-select]')) setLanguage('en');
+  }
 })();
