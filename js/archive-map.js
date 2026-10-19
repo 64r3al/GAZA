@@ -196,101 +196,17 @@
   }
 
   function layoutRecordsWithoutCollisions(records, categories) {
-    const targets = new Map(records.map((record) => [record.key, { x: record.x, y: record.y }]));
-    const fixed = [
-      { x: CENTER.x, y: CENTER.y, w: 168, h: 168, key: 'archive-root' },
-      ...categories.map((hub) => ({ x: hub.x, y: hub.y, w: HUB_W, h: HUB_H, key: hub.id }))
-    ];
-    const margin = 20;
-    const halfW = RECORD_W / 2;
-    const halfH = RECORD_H / 2;
-
-    // Deterministic, tethered collision relaxation. Source cards are repelled
-    // from overlapping cards/hubs; a light spring preserves topic clustering.
-    for (let iteration = 0; iteration < 420; iteration += 1) {
-      const tether = iteration < 240 ? 0.018 : 0.006;
-      records.forEach((record) => {
-        const target = targets.get(record.key);
-        record.x += (target.x - record.x) * tether;
-        record.y += (target.y - record.y) * tether;
-      });
-
-      for (let i = 0; i < records.length; i += 1) {
-        const a = records[i];
-        const boxA = { x: a.x, y: a.y, w: RECORD_W, h: RECORD_H };
-        const collideWith = (b, isRecord, j) => {
-          const dx = a.x - b.x;
-          const dy = a.y - b.y;
-          const bW = isRecord ? RECORD_W : b.w;
-          const bH = isRecord ? RECORD_H : b.h;
-          const overlapX = (boxA.w + bW) / 2 + margin - Math.abs(dx);
-          const overlapY = (boxA.h + bH) / 2 + margin - Math.abs(dy);
-          if (overlapX <= 0 || overlapY <= 0) return;
-
-          if (overlapX <= overlapY) {
-            const direction = dx === 0 ? ((i + j) % 2 ? 1 : -1) : Math.sign(dx);
-            const push = overlapX + 1;
-            if (isRecord) {
-              a.x += direction * push * 0.51;
-              b.x -= direction * push * 0.49;
-            } else {
-              a.x += direction * push;
-            }
-          } else {
-            const direction = dy === 0 ? ((i + j) % 2 ? 1 : -1) : Math.sign(dy);
-            const push = overlapY + 1;
-            if (isRecord) {
-              a.y += direction * push * 0.51;
-              b.y -= direction * push * 0.49;
-            } else {
-              a.y += direction * push;
-            }
-          }
-        };
-
-        fixed.forEach((item, index) => collideWith(item, false, index + records.length));
-        for (let j = i + 1; j < records.length; j += 1) {
-          const b = records[j];
-          collideWith(b, true, j);
-        }
-      }
+    if (!window.NOORArchiveMapLayout) {
+      throw new Error('NOOR archive map layout module was not loaded.');
     }
-
-    // One final projection guarantees clear separation after the gentle tether.
-    for (let pass = 0; pass < 30; pass += 1) {
-      let collisions = 0;
-      for (let i = 0; i < records.length; i += 1) {
-        const a = records[i];
-        const resolveAgainst = (b, isRecord, j) => {
-          const bW = isRecord ? RECORD_W : b.w;
-          const bH = isRecord ? RECORD_H : b.h;
-          const overlapX = (RECORD_W + bW) / 2 + margin - Math.abs(a.x - b.x);
-          const overlapY = (RECORD_H + bH) / 2 + margin - Math.abs(a.y - b.y);
-          if (overlapX <= 0 || overlapY <= 0) return;
-          collisions += 1;
-          if (overlapX <= overlapY) {
-            const sign = a.x === b.x ? ((i + j) % 2 ? 1 : -1) : Math.sign(a.x - b.x);
-            const shift = overlapX + 2;
-            if (isRecord) {
-              a.x += sign * shift * 0.51;
-              b.x -= sign * shift * 0.49;
-            } else a.x += sign * shift;
-          } else {
-            const sign = a.y === b.y ? ((i + j) % 2 ? 1 : -1) : Math.sign(a.y - b.y);
-            const shift = overlapY + 2;
-            if (isRecord) {
-              a.y += sign * shift * 0.51;
-              b.y -= sign * shift * 0.49;
-            } else a.y += sign * shift;
-          }
-        };
-        fixed.forEach((item, index) => resolveAgainst(item, false, index + records.length));
-        for (let j = i + 1; j < records.length; j += 1) {
-          resolveAgainst(records[j], true, j);
-        }
-      }
-      if (collisions === 0) break;
+    const result = window.NOORArchiveMapLayout.layoutRecordsWithoutCollisions(records, categories, {
+      center: CENTER, recordWidth: RECORD_W, recordHeight: RECORD_H,
+      hubWidth: HUB_W, hubHeight: HUB_H, rootWidth: 168, rootHeight: 168, margin: 20
+    });
+    if (result.overlaps.length) {
+      console.error('Archive map could not fully resolve collisions:', result.overlaps);
     }
+    return result;
   }
 
   let records = readRecords();
