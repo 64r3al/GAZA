@@ -24,6 +24,8 @@
   if (languageButton) {
     languageButton.addEventListener('click', () => setLanguage(root.lang === 'ar' ? 'en' : 'ar'));
   }
-  try { setLanguage(localStorage.getItem('noor-language') === 'ar' ? 'ar' : 'en'); }
-  catch (_) { setLanguage('en'); }
+  if (languageButton) {
+    try { setLanguage(localStorage.getItem('noor-language') === 'ar' ? 'ar' : 'en'); }
+    catch (_) { setLanguage('en'); }
+  }
 })();
