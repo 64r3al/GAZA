@@ -41,6 +41,8 @@ jobs:
         run: node scripts/test_archive_map_layout.js
       - name: Test research navigation and methodology
         run: node scripts/test_research.js
+      - name: Test six-language localization and RTL map
+        run: node scripts/test_i18n.js
       - name: Install image optimization dependency
         run: python -m pip install --disable-pip-version-check "Pillow>=11,<13"
       - name: Build optimized public site
