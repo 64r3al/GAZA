@@ -203,6 +203,8 @@
   let drag = null;
   let movedDuringDrag = false;
   let suppressClick = false;
+  const activePointers = new Map();
+  let pinchState = null;
   let mapQuery = '';
   let mapTopic = '';
   let allNodes = [];
@@ -551,12 +553,55 @@
   viewport.addEventListener('pointerdown', (event) => {
     if (event.button !== 0 && event.pointerType !== 'touch') return;
     if (event.target.closest('button, a, input, select, label')) return;
-    drag = { pointerId: event.pointerId, clientX: event.clientX, clientY: event.clientY, tx, ty, moved: false, node: event.target.closest('[data-node-id]') };
+    activePointers.set(event.pointerId, { clientX: event.clientX, clientY: event.clientY });
+    if (viewport.setPointerCapture) viewport.setPointerCapture(event.pointerId);
+
+    if (activePointers.size >= 2) {
+      const points = [...activePointers.values()].slice(0, 2);
+      const dx = points[1].clientX - points[0].clientX;
+      const dy = points[1].clientY - points[0].clientY;
+      const midClientX = (points[0].clientX + points[1].clientX) / 2;
+      const midClientY = (points[0].clientY + points[1].clientY) / 2;
+      const mid = svgPoint(midClientX, midClientY);
+      pinchState = {
+        distance: Math.max(1, Math.hypot(dx, dy)),
+        scale,
+        anchorX: (mid.x - tx) / scale,
+        anchorY: (mid.y - ty) / scale
+      };
+      drag = null;
+      movedDuringDrag = true;
+      viewport.classList.add('is-dragging');
+      return;
+    }
+
+    drag = {
+      pointerId: event.pointerId,
+      clientX: event.clientX,
+      clientY: event.clientY,
+      tx, ty, moved: false,
+      node: event.target.closest('[data-node-id]')
+    };
     movedDuringDrag = false;
     viewport.classList.add('is-dragging');
-    viewport.setPointerCapture(event.pointerId);
   });
+
   viewport.addEventListener('pointermove', (event) => {
+    if (activePointers.has(event.pointerId)) {
+      activePointers.set(event.pointerId, { clientX: event.clientX, clientY: event.clientY });
+    }
+    if (pinchState && activePointers.size >= 2) {
+      const points = [...activePointers.values()].slice(0, 2);
+      const dx = points[1].clientX - points[0].clientX;
+      const dy = points[1].clientY - points[0].clientY;
+      const mid = svgPoint((points[0].clientX + points[1].clientX) / 2, (points[0].clientY + points[1].clientY) / 2);
+      scale = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, pinchState.scale * Math.hypot(dx, dy) / pinchState.distance));
+      tx = mid.x - pinchState.anchorX * scale;
+      ty = mid.y - pinchState.anchorY * scale;
+      movedDuringDrag = true;
+      setTransform();
+      return;
+    }
     if (!drag || drag.pointerId !== event.pointerId) return;
     const p0 = svgPoint(drag.clientX, drag.clientY);
     const p1 = svgPoint(event.clientX, event.clientY);
@@ -568,20 +613,51 @@
       setTransform();
     }
   });
+
   function endPointer(event) {
-    if (!drag || drag.pointerId !== event.pointerId) return;
-    const current = drag;
-    drag = null;
-    viewport.classList.remove('is-dragging');
-    if (!current.moved && current.node) {
+    const wasPinching = Boolean(pinchState);
+    const current = drag && drag.pointerId === event.pointerId ? drag : null;
+    activePointers.delete(event.pointerId);
+
+    if (wasPinching) {
+      pinchState = null;
+      drag = null;
       suppressClick = true;
-      onNodeActivate(current.node);
-      window.setTimeout(() => { suppressClick = false; }, 120);
-    } else if (current.moved) {
-      suppressClick = true;
-      window.setTimeout(() => { suppressClick = false; }, 120);
+      window.setTimeout(() => { suppressClick = false; }, 140);
+      if (activePointers.size === 1) {
+        const [remainingId, point] = [...activePointers.entries()][0];
+        drag = {
+          pointerId: remainingId,
+          clientX: point.clientX,
+          clientY: point.clientY,
+          tx, ty, moved: true, node: null
+        };
+      }
+    } else if (current) {
+      drag = null;
+      if (!current.moved && current.node) {
+        suppressClick = true;
+        onNodeActivate(current.node);
+        window.setTimeout(() => { suppressClick = false; }, 120);
+      } else if (current.moved) {
+        suppressClick = true;
+        window.setTimeout(() => { suppressClick = false; }, 120);
+      }
+      if (activePointers.size === 1) {
+        const [remainingId, point] = [...activePointers.entries()][0];
+        drag = {
+          pointerId: remainingId,
+          clientX: point.clientX,
+          clientY: point.clientY,
+          tx, ty, moved: true, node: null
+        };
+      }
     }
-    if (viewport.hasPointerCapture(event.pointerId)) viewport.releasePointerCapture(event.pointerId);
+
+    if (activePointers.size === 0) viewport.classList.remove('is-dragging');
+    if (viewport.hasPointerCapture && viewport.hasPointerCapture(event.pointerId)) {
+      viewport.releasePointerCapture(event.pointerId);
+    }
   }
   viewport.addEventListener('pointerup', endPointer);
   viewport.addEventListener('pointercancel', endPointer);
