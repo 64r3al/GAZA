@@ -396,3 +396,5 @@
  .archive-body #archive-main>.archive-method,.archive-body #archive-main>.archive-topic-directory,.archive-body #archive-main>.research-case-directory,.archive-body #archive-main>.archive-search-section,.archive-body #archive-main>.archive-editorial-note,.archive-body #archive-main>.archive-results,.archive-body #archive-main>.archive-pagination,.archive-body #archive-main>.archive-footer{width:calc(100% - 22px)}
 }
 @media(prefers-reduced-motion:reduce){.archive-cinema-feature,.archive-feature-image img,.archive-cinema-cta,.archive-entry-stack,.archive-entry-card{transition:none!important}}
+
+.archive-cinema-count .archive-fact-number{display:inline-block;margin:0;color:#fff0e3;font:400 22px/1 "Anton","Arial Narrow",sans-serif}
