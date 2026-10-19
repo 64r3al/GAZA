@@ -240,6 +240,21 @@
       element.setAttribute('content', target);
     });
 
+    // Translate common accessibility/tool-tip attributes from the same source
+    // dictionary when a page has not authored a dedicated data-en-* variant.
+    ['aria-label', 'title', 'alt'].forEach((attribute) => {
+      const explicitName = 'data-en-' + attribute;
+      const customName = attribute === 'aria-label' ? 'data-en-aria' : null;
+      document.querySelectorAll('[' + attribute + ']').forEach((element) => {
+        if (element.hasAttribute(explicitName) || (customName && element.hasAttribute(customName))) return;
+        const savedName = 'data-i18n-original-' + attribute;
+        if (!element.hasAttribute(savedName)) element.setAttribute(savedName, element.getAttribute(attribute) || '');
+        const original = element.getAttribute(savedName) || '';
+        const target = language === 'en' ? original : (lookup(original, language) || original);
+        if (target) element.setAttribute(attribute, target);
+      });
+    });
+
     const titleText = titles[language][pageTitleIndex()];
     if (titleText) document.title = titleText;
     const select = document.getElementById('noor-language-select');
