@@ -123,6 +123,16 @@
       element.setAttribute('aria-label', value);
     });
 
+    // Localize accessible names, alt text and tooltips from their immutable
+    // original values when a dictionary entry exists for the chosen language.
+    ['placeholder', 'alt', 'title', 'aria-label'].forEach((attribute) => {
+      document.querySelectorAll('[data-i18n-original-' + attribute + ']').forEach((element) => {
+        if (element.hasAttribute('data-en-' + attribute) || element.hasAttribute('data-en-aria') && attribute === 'aria-label') return;
+        const original = element.getAttribute('data-i18n-original-' + attribute) || '';
+        element.setAttribute(attribute, language === 'en' ? original : translate(original, language));
+      });
+    });
+
     // Translate exact dictionary matches for unannotated leaf copy; keep unknown
     // text in its source language instead of generating hybrid or broken text.
     const leafSelector = 'h1,h2,h3,h4,h5,p,a,button,label,span,strong,em,li,dt,dd,figcaption,option,th,td,small,summary,legend';
