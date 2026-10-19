@@ -544,12 +544,46 @@
   queryInput.addEventListener('input', () => setMapQuery(queryInput.value));
   topicInput.addEventListener('change', () => {
     mapTopic = topicInput.value;
-    if (archiveCategory) {
+    if (archiveCategory && archiveCategory.value !== mapTopic) {
       archiveCategory.value = mapTopic;
       archiveCategory.dispatchEvent(new Event('change', { bubbles: true }));
     }
     applyFilters();
   });
+
+  // Keep the relationship map in sync when people use the detailed filters
+  // farther down the page, not only when they use the map-specific controls.
+  if (archiveQuery) {
+    archiveQuery.addEventListener('input', () => {
+      if (queryInput.value !== archiveQuery.value) queryInput.value = archiveQuery.value;
+      applyFilters();
+    });
+  }
+  if (archiveCategory) {
+    archiveCategory.addEventListener('change', () => {
+      if (topicInput.value !== archiveCategory.value) topicInput.value = archiveCategory.value;
+      mapTopic = archiveCategory.value || '';
+      applyFilters();
+    });
+  }
+  const archiveFilterForm = document.getElementById('archive-filter-form');
+  if (archiveFilterForm) {
+    archiveFilterForm.addEventListener('input', () => window.setTimeout(applyFilters, 0));
+    archiveFilterForm.addEventListener('change', () => window.setTimeout(applyFilters, 0));
+    archiveFilterForm.addEventListener('submit', () => window.setTimeout(applyFilters, 0));
+  }
+  const archiveClearButton = document.getElementById('archive-clear');
+  if (archiveClearButton) {
+    archiveClearButton.addEventListener('click', () => window.setTimeout(() => {
+      queryInput.value = archiveQuery ? archiveQuery.value : '';
+      topicInput.value = archiveCategory ? archiveCategory.value : '';
+      mapQuery = queryInput.value;
+      mapTopic = topicInput.value;
+      applyFilters();
+      resetDetails();
+      fitMap();
+    }, 0));
+  }
 
   document.getElementById('archive-map-clear').addEventListener('click', () => {
     queryInput.value = '';
