@@ -25,6 +25,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Cairo:wght@400;600;700;800&family=Caveat:wght@500;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="preload" as="image" href="assets/hero/child-receiving-a-meal.jpg" fetchpriority="high">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/i18n.css">
 </head>
 <body>
   <a class="skip" href="#main" data-en="Skip to content" data-ar="تجاوز إلى المحتوى">Skip to content</a>
@@ -40,7 +41,7 @@
         <a class="nav-feature-link" href="a-hard-pill-to-swallow.html" data-en="A hard pill to swallow" data-ar="حقيقة يصعب تقبّلها">A hard pill to swallow</a>
       </nav>
       <div class="header-actions">
-        <button class="language-toggle" id="lang" type="button" aria-label="Switch language to Arabic" data-en="العربية" data-ar="English">العربية</button>
+        <label class="noor-language-wrap"><span class="noor-sr-only">Choose language</span><select class="language-toggle noor-language-select" id="lang" data-noor-language-select aria-label="Choose language" data-en-aria="Choose language" data-ar-aria="اختر اللغة"><option value="en">English</option><option value="ar">العربية</option><option value="fr">Français</option><option value="es">Español</option><option value="pt">Português</option><option value="de">Deutsch</option></select></label>
         <a class="button button-small donate-link" href="https://help.unicef.org/en/gaza-2026" target="_blank" rel="noopener noreferrer" data-en="Support children ↗" data-ar="ساند الأطفال ↗">Support children ↗</a>
         <button class="menu-toggle" id="menu" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button>
       </div>
@@ -163,5 +164,7 @@
     <div class="wrap footer-bottom"><p data-en="© 2026 NOOR. Independent awareness project; not affiliated with UNICEF. No donations are collected on this site." data-ar="© 2026 نور. مشروع توعوي مستقل وغير تابع لليونيسف. لا تُجمع التبرعات عبر هذا الموقع.">© 2026 NOOR. Independent awareness project; not affiliated with UNICEF. No donations are collected on this site.</p><a href="https://www.unicef.org/appeals/state-of-palestine" target="_blank" rel="noopener noreferrer" data-en="Official information ↗" data-ar="معلومات رسمية ↗">Official information ↗</a></div>
   </footer>
   <script src="js/main.js" defer></script>
+  <script src="js/i18n.js" defer></script>
+  <script src="js/i18n-content.js" defer></script>
 </body>
 </html>
