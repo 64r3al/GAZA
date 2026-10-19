@@ -578,3 +578,13 @@
 @media(prefers-reduced-motion:reduce){
  .archive-network-node,.archive-network-edge,.archive-network-topic-card,.archive-network-record-card,.archive-map-top-actions button,.archive-network-map-controls button{transition:none!important}
 }
+
+/* Map page places the site header/navigation in flow; no controls sit over the map title. */
+.archive-body .archive-header{position:relative;top:auto;left:auto;right:auto;width:calc(100% - 42px);min-height:48px;margin:0 auto;pointer-events:auto}
+.archive-body .research-nav{position:relative;top:auto;left:auto;right:auto;width:calc(100% - 42px);margin:0 auto 12px;background:transparent}
+.archive-body .research-nav-inner{min-height:30px}
+@media(max-width:640px){
+ .archive-body .archive-header{top:auto;left:auto;right:auto;width:calc(100% - 20px);min-height:43px}
+ .archive-body .research-nav{top:auto;left:auto;right:auto;width:calc(100% - 20px);margin:0 auto 9px}
+ .archive-body .research-nav-inner{min-height:28px}
+}
