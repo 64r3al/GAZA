@@ -254,6 +254,19 @@
     return (map[language] && map[language][status]) || (map.en[status] || String(status || '').replace(/-/g, ' ').toUpperCase());
   }
 
+  function translateLocation(location) {
+    const map = {
+      en: { 'gaza-strip': 'Gaza Strip', 'gaza-west-bank': 'Gaza and the West Bank', 'gaza-city': 'Gaza City', 'multiple-sites': 'Multiple sites', rafah: 'Rafah' },
+      ar: { 'gaza-strip': 'قطاع غزة', 'gaza-west-bank': 'غزة والضفة الغربية', 'gaza-city': 'مدينة غزة', 'multiple-sites': 'مواقع متعددة', rafah: 'رفح' },
+      fr: { 'gaza-strip': 'Bande de Gaza', 'gaza-west-bank': 'Gaza et Cisjordanie', 'gaza-city': 'Ville de Gaza', 'multiple-sites': 'Plusieurs sites', rafah: 'Rafah' },
+      es: { 'gaza-strip': 'Franja de Gaza', 'gaza-west-bank': 'Gaza y Cisjordania', 'gaza-city': 'Ciudad de Gaza', 'multiple-sites': 'Varios lugares', rafah: 'Ráfah' },
+      pt: { 'gaza-strip': 'Faixa de Gaza', 'gaza-west-bank': 'Gaza e Cisjordânia', 'gaza-city': 'Cidade de Gaza', 'multiple-sites': 'Vários locais', rafah: 'Rafah' },
+      de: { 'gaza-strip': 'Gazastreifen', 'gaza-west-bank': 'Gaza und Westjordanland', 'gaza-city': 'Stadt Gaza', 'multiple-sites': 'Mehrere Orte', rafah: 'Rafah' }
+    };
+    const language = getLang();
+    return (map[language] && map[language][location]) || (map.en[location] || String(location || '').replace(/-/g, ' '));
+  }
+
   function createCenterNode() {
     const g = svgEl('g', {
       class: 'archive-network-node archive-network-node-center',
@@ -501,8 +514,8 @@
     const meta = [
       record.categoryLabel,
       date,
-      record.location.replace(/-/g, ' '),
-      record.status.replace(/-/g, ' ')
+      translateLocation(record.location),
+      translateStatus(record.status)
     ];
     const caseLinks = record.links.filter((link) => /^case-[^#]+\.html(?:#.*)?$/.test(link.href) || link.href.startsWith('case-'));
     const actions = [{ href: '#' + record.el.id, label: mapText('openFullRecord'), external: false }];
