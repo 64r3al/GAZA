@@ -679,7 +679,18 @@
     "Al-Huda Girls' School in Jabalia, damaged by bombing on 22 February 2025.": ["L’école de filles Al-Huda à Jabalia, endommagée par un bombardement le 22 février 2025.", "La escuela de niñas Al-Huda en Jabalia, dañada por un bombardeo el 22 de febrero de 2025.", "A escola feminina Al-Huda, em Jabalia, danificada por um bombardeamento em 22 de fevereiro de 2025.", "Die Al-Huda-Mädchenschule in Jabalia, die am 22. Februar 2025 durch einen Bombenangriff beschädigt wurde."],
     "Open original post on X": ["Ouvrir la publication originale sur X", "Abrir la publicación original en X", "Abrir a publicação original no X", "Originalbeitrag auf X öffnen"],
     "Open original post on X": ["Ouvrir la publication originale sur X", "Abrir la publicación original en X", "Abrir a publicação original no X", "Originalbeitrag auf X öffnen"],
-    "Open original post on X": ["Ouvrir la publication originale sur X", "Abrir la publicación original en X", "Abrir a publicação original no X", "Originalbeitrag auf X öffnen"]
+    "Open original post on X": ["Ouvrir la publication originale sur X", "Abrir la publicación original en X", "Abrir a publicação original no X", "Originalbeitrag auf X öffnen"],
+
+    "1 in 3": ["1 sur 3", "1 de cada 3", "1 em cada 3", "1 von 3"],
+    "Nearly 9 in 10": ["Près de 9 sur 10", "Casi 9 de cada 10", "Quase 9 em cada 10", "Fast 9 von 10"],
+    "CASE / CIVILIAN HARM": ["DOSSIER / VICTIMES CIVILES", "CASO / DAÑOS A CIVILES", "CASO / DANOS A CIVIS", "FALL / SCHÄDEN AN ZIVILPERSONEN"],
+    "Hind Rajab and the rescue response ↗": ["Hind Rajab et l’intervention de secours ↗", "Hind Rajab y la operación de rescate ↗", "Hind Rajab e a operação de socorro ↗", "Hind Rajab und der Rettungseinsatz ↗"],
+    "CASE / AID WORKERS": ["DOSSIER / HUMANITAIRES", "CASO / PERSONAL DE AYUDA", "CASO / TRABALHADORES HUMANITÁRIOS", "FALL / HILFSKRÄFTE"],
+    "The Tal as-Sultan rescue convoy ↗": ["Le convoi de secours de Tal as-Sultan ↗", "El convoy de rescate de Tal as-Sultan ↗", "A coluna de socorro de Tal as-Sultan ↗", "Der Rettungskonvoi von Tal as-Sultan ↗"],
+    "CASE / INVESTIGATION": ["DOSSIER / ENQUÊTE", "CASO / INVESTIGACIÓN", "CASO / INVESTIGAÇÃO", "FALL / UNTERSUCHUNG"],
+    "The Engineers’ Building strike ↗": ["La frappe contre l’immeuble des ingénieurs ↗", "El ataque al edificio de los ingenieros ↗", "O ataque ao edifício dos engenheiros ↗", "Der Angriff auf das Ingenieursgebäude ↗"],
+    "CASE / SHELTERS": ["DOSSIER / ABRIS", "CASO / REFUGIOS", "CASO / ABRIGOS", "FALL / UNTERKÜNFTE"],
+    "Attacks on schools used as shelters ↗": ["Attaques contre des écoles utilisées comme abris ↗", "Ataques contra escuelas utilizadas como refugios ↗", "Ataques a escolas usadas como abrigos ↗", "Angriffe auf als Unterkünfte genutzte Schulen ↗"]
   };
 
   const languages = ['fr', 'es', 'pt', 'de'];
