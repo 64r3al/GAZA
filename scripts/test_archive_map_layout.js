@@ -51,7 +51,7 @@ categories.forEach((hub) => {
 });
 
 const result = layout.layoutRecordsWithoutCollisions(records, categories, {
-  center, recordWidth: 226, recordHeight: 100, hubWidth: 170, hubHeight: 70,
+  center, recordWidth: 226, recordHeight: 122, hubWidth: 170, hubHeight: 70,
   rootWidth: 168, rootHeight: 168, margin: 20
 });
 assert.equal(result.records.length, 18, 'Collision layout must retain every record node.');
